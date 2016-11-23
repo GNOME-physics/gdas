@@ -1,0 +1,7 @@
+#!/usr/bin/env python
+
+import argparse
+from maincode.main import *
+from maincode.customscripts.transients import *
+
+main.do_analysis()
