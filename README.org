@@ -1,41 +1,9 @@
 #+TITLE:  README
 #+AUTHOR: Vincent Dumont
 #+EMAIL:  vincentdumont11@gmail.com
-* What is it?
 
-This is 
+A full documentation of the software is provided at the following link:
 
-* Dependencies
+ https://gnome-physics.github.io/gdas
 
-** Built-in modules
-
-| Module   | Description                                                 |
-|----------+-------------------------------------------------------------|
-| [[https://docs.python.org/3/library/argparse.html][argparse]] | Parser for command-line options, arguments and sub-commands |
-| [[https://docs.python.org/2/library/datetime.html][datetime]] | Basic date and time types                                   |
-| [[https://docs.python.org/2/library/glob.html][glob]]     | Unix style pathname pattern expansion                       |
-| [[https://docs.python.org/2/library/logging.html][logging]]  | Logging facility for Python                                 |
-| [[https://docs.python.org/2/library/math.html][math]]     | Mathematical functions                                      |
-| [[https://docs.python.org/2/library/os.html][os]]       | Miscellaneous operating system interfaces                   |
-| [[https://docs.python.org/2/library/pprint.html][pprint]]   | Data pretty printer                                         |
-| [[https://docs.python.org/2/library/sys.html][sys]]      | System-specific parameters and functions                    |
-
-** External packages
-
-| Libraries  | Description                                                                                                              | Download |
-|------------+--------------------------------------------------------------------------------------------------------------------------+----------|
-| [[http://www.astropy.org/][astropy]]    | Python package for Astronomy research                                                                                    | [[https://pypi.python.org/pypi/astropy][here]]     |
-| [[http://software.ligo.org/docs/glue/][glue]]       | Grid LSC User Environment                                                                                                | [[https://pypi.python.org/pypi/pycbc-glue][here]]     |
-| [[https://gwpy.github.io/docs/][gwpy]]       | Tools for studying data from ground-based gravitational-wave detectors                                                   | [[https://pypi.python.org/pypi/gwpy][here]]     |
-| [[http://www.h5py.org/][h5py]]       | Pythonic interface to the HDF5 binary data format                                                                        | [[https://pypi.python.org/pypi/h5py][here]]     |
-| lal        | LIGO Scientific Collaboration Algorithm Library containing core routines for gravitational wave data analysis            | [[https://wiki.ligo.org/DASWG/LALSuite][here]]     |
-| lalburst   | LIGO Scientific Collaboration Algorithm Library - Burst, containing routines for burst gravitational wave data analysis. | [[https://wiki.ligo.org/DASWG/LALSuite][here]]     |
-| [[http://matplotlib.org/][matplotlib]] |                                                                                                                          | [[https://pypi.python.org/pypi/matplotlib/1.5.3][here]]     |
-| numpy      |                                                                                                                          |          |
-| pycbc      | Gravitational wave CBC analysis toolkit                                                                                  | [[https://pypi.python.org/pypi/PyCBC][pip]]      |
-| scipy      |                                                                                                                          |          |
-| wave       |                                                                                                                          |          |
-
-* Installation
-
-* Usage
+Feel free to [[mailto:vincentdumont11@gmail.com][email me]] if you have any questions.
