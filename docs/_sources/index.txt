@@ -6,7 +6,9 @@
 GNOME Data Analysis Software
 ============================
 
-Contents:
+This package contains functions useful for magnetic field signal processing, with a focus on astronomical research. The documentation details everything that is available, but some example tasks that can be handled are:
+
+* Plot time 
 
 .. toctree::
    :maxdepth: 2
