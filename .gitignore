@@ -3,5 +3,5 @@ Makefile
 README.org
 conf.py
 _build
-generated
+./generated
 make.bat
