@@ -1,6 +1,0 @@
-#!/usr/bin/env python
-
-import argparse
-from maincode.main import *
-
-do_analysis(0,0,0)

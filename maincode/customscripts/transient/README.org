@@ -1,8 +1,0 @@
-#+TITLE:  README
-#+AUTHOR: Vincent Dumont
-#+EMAIL:  vincentdumont11@gmail.com
-* What is it?
-
-* Installation
-
-* Usage

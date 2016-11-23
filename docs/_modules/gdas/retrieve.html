@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gdas.retrieve &#8212; gdas 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="gdas 1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="../../index.html">
+          <span>gdas 1.0 documentation</span></a></h1>
+        <h2 class="heading"><span>gdas.retrieve</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for gdas.retrieve</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot; Retrieving magnetic field data.&quot;&quot;&quot;</span> 
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
+
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span><span class="nn">glob</span><span class="o">,</span><span class="nn">h5py</span>
+<span class="kn">from</span> <span class="nn">astropy.time</span> <span class="k">import</span> <span class="n">Time</span>
+
+<div class="viewcode-block" id="magfield"><a class="viewcode-back" href="../../generated/gdas.retrieve.magfield.html#gdas.retrieve.magfield">[docs]</a><span class="k">def</span> <span class="nf">magfield</span><span class="p">(</span><span class="n">station</span><span class="p">,</span><span class="n">starttime</span><span class="p">,</span><span class="n">endtime</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Glob all files withing user-defined period and extract data.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    station : str</span>
+<span class="sd">      Name of the station to be analysed</span>
+<span class="sd">    t0 : int</span>
+<span class="sd">      GPS timestamp of the first required magnetic field data</span>
+<span class="sd">    t1 : int</span>
+<span class="sd">      GPS timestamp of the last required magnetic field data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">setname</span> <span class="o">=</span> <span class="s2">&quot;MagneticFields&quot;</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">1980</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span><span class="o">+</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">starttime</span><span class="p">)</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">1980</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span><span class="o">+</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">endtime</span><span class="p">)</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="n">end</span><span class="p">,</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">1</span><span class="p">)):</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">datetime</span><span class="p">)</span>
+        <span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="n">hour</span><span class="p">,</span><span class="n">minute</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">date</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">date</span><span class="o">.</span><span class="n">day</span><span class="p">,</span><span class="n">date</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span><span class="n">date</span><span class="o">.</span><span class="n">minute</span>
+        <span class="n">path1</span> <span class="o">=</span> <span class="s1">&#39;/Users/vincent/ASTRO/data/GNOMEDrive/gnome/serverdata/&#39;</span>
+        <span class="n">path2</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">/</span><span class="si">%02i</span><span class="s2">/</span><span class="si">%02i</span><span class="s2">/&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">station</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">)</span>
+        <span class="n">path3</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s%02i%02i</span><span class="s2">_</span><span class="si">%02i%02i</span><span class="s2">*.hdf5&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">station</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="n">hour</span><span class="p">,</span><span class="n">minute</span><span class="p">)</span>
+        <span class="n">fullpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path1</span><span class="p">,</span><span class="n">path2</span><span class="p">,</span><span class="n">path3</span><span class="p">)</span>
+        <span class="n">dataset</span> <span class="o">+=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">fullpath</span><span class="p">)</span>
+    <span class="n">file_order</span><span class="p">,</span><span class="n">data_order</span> <span class="o">=</span> <span class="p">{},{}</span>
+    <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">:</span>
+        <span class="n">hfile</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+        <span class="n">segfile</span> <span class="o">=</span> <span class="n">file_to_segment</span><span class="p">(</span><span class="n">hfile</span><span class="p">,</span><span class="n">setname</span><span class="p">)</span>
+        <span class="n">file_order</span><span class="p">[</span><span class="n">segfile</span><span class="p">]</span> <span class="o">=</span> <span class="n">fname</span>
+        <span class="n">data_order</span><span class="p">[</span><span class="n">segfile</span><span class="p">]</span> <span class="o">=</span> <span class="n">hfile</span>
+    <span class="n">sample_rate</span> <span class="o">=</span> <span class="n">hfile</span><span class="p">[</span><span class="n">setname</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;SamplingRate(Hz)&quot;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="file_to_segment"><a class="viewcode-back" href="../../generated/gdas.retrieve.file_to_segment.html#gdas.retrieve.file_to_segment">[docs]</a><span class="k">def</span> <span class="nf">file_to_segment</span><span class="p">(</span><span class="n">hfile</span><span class="p">,</span><span class="n">segname</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Define length of data segment</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    hfile : HDF5 file object</span>
+<span class="sd">      HDF5 data file preloaded with the h5py package</span>
+<span class="sd">    segname : str</span>
+<span class="sd">      Attribute name of the metadata to extract.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">attrs</span> <span class="o">=</span> <span class="n">hfile</span><span class="p">[</span><span class="n">segname</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span>
+    <span class="n">dstr</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;Date&quot;</span><span class="p">],</span> <span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;t0&quot;</span><span class="p">],</span> <span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;t1&quot;</span><span class="p">]</span>
+    <span class="n">start_utc</span> <span class="o">=</span> <span class="n">construct_utc_from_metadata</span><span class="p">(</span><span class="n">dstr</span><span class="p">,</span> <span class="n">t0</span><span class="p">)</span>
+    <span class="n">end_utc</span> <span class="o">=</span> <span class="n">construct_utc_from_metadata</span><span class="p">(</span><span class="n">dstr</span><span class="p">,</span> <span class="n">t1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">segment</span><span class="p">(</span><span class="n">start_utc</span><span class="p">,</span><span class="n">end_utc</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="construct_utc_from_metadata"><a class="viewcode-back" href="../../generated/gdas.retrieve.construct_utc_from_metadata.html#gdas.retrieve.construct_utc_from_metadata">[docs]</a><span class="k">def</span> <span class="nf">construct_utc_from_metadata</span><span class="p">(</span><span class="n">datestr</span><span class="p">,</span> <span class="n">t0str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Constructing UTC timestamp from metadata</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    datestr : str</span>
+<span class="sd">      Date of the extracted data</span>
+<span class="sd">    t0str : str</span>
+<span class="sd">      GPS time</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">instr</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">-</span><span class="si">%d</span><span class="s2">-</span><span class="si">%02d</span><span class="s2">T&quot;</span> <span class="o">%</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">datestr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)))</span>
+    <span class="n">instr</span> <span class="o">+=</span> <span class="n">t0str</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">Time</span><span class="p">(</span><span class="n">instr</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;isot&#39;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s1">&#39;utc&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">t</span><span class="o">.</span><span class="n">gps</span></div>
+</pre></div>
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Vincent Dumont.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+    </div>
+  </body>
+</html>
