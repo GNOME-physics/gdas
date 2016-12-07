@@ -1,0 +1,6 @@
+gdas.utils.retrieve.arguments
+=============================
+
+.. currentmodule:: gdas.utils.retrieve
+
+.. autofunction:: arguments

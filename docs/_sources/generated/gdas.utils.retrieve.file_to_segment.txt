@@ -1,0 +1,6 @@
+gdas.utils.retrieve.file_to_segment
+===================================
+
+.. currentmodule:: gdas.utils.retrieve
+
+.. autofunction:: file_to_segment

@@ -27,7 +27,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="top" title="gdas 1.0 documentation" href="#" />
-    <link rel="next" title="gdas.retrieve.magfield" href="generated/gdas.retrieve.magfield.html" /> 
+    <link rel="next" title="gdas.utils.arguments.construct_args" href="generated/gdas.utils.arguments.construct_args.html" /> 
   </head>
   <body role="document">
       <div class="header" role="banner"><h1 class="heading"><a href="#">
@@ -39,7 +39,7 @@
         <p>
         <a class="uplink" href="#">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="generated/gdas.retrieve.magfield.html">gdas.retrieve.magfield</a>&#160;&#160;»
+        <a href="generated/gdas.utils.arguments.construct_args.html">gdas.utils.arguments.construct_args</a>&#160;&#160;»
         </p>
 
       </div>
@@ -57,14 +57,31 @@
 <li>Cross-correlation of continuous sine wave signals.</li>
 <li>Perform Allan Standard deviation.</li>
 </ul>
+<p>It requires the following general packages to run: <a class="reference external" href="http://numpy.scipy.org/">Numpy</a>, <a class="reference external" href="http://matplotlib.sourceforge.net/">Matplotlib</a>, <a class="reference external" href="http://www.scipy.org/">Scipy</a> and <a class="reference external" href="http://www.astropy.org/">Astropy</a>. The following LIGO-related packages are also required for full functionality: <a class="reference external" href="https://www.lsc-group.phys.uwm.edu/daswg/projects/glue.html">Glue</a>, <a class="reference external" href="https://gwpy.github.io/">Gwpy</a>, <a class="reference external" href="https://github.com/ligo-cbc/pycbc">PyCBC</a>, <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lal/index.html">lal</a>, <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lalburst/index.html">lalburst</a> and <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lalsimulation/index.html">LALsimulation</a></p>
+<p>The software is fairly easy to use, you can either use the main gdas script present in the <a class="reference external" href="https://github.com/GNOME-physics/gdas/scripts">scripts folder</a> or you can follow the steps from one of the notebooks available <a class="reference external" href="https://github.com/GNOME-physics/gdas/notebooks">here</a> to write your own script. The notebooks can also be used as a guide on how the analysis is done. Finally, a much more thorough description on how the theory behind the Excess Power search analysis is being translated into code is provided at the following link: <a class="reference external" href="https://gnome-physics.github.io/">https://gnome-physics.github.io/</a></p>
 <a href="https://github.com/GNOME-physics/gdas"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a><div class="toctree-wrapper compound">
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">GNOME Data Analysis Software</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#arguments">arguments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#retrieve">retrieve</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#command-line-scripts">Command line scripts</a></li>
 </ul>
 </li>
 </ul>
+</div>
+<div class="section" id="arguments">
+<h2>arguments<a class="headerlink" href="#arguments" title="Permalink to this headline">¶</a></h2>
+<p>Construct argument array based on user-defined parameters.</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.utils.arguments.construct_args.html#gdas.utils.arguments.construct_args" title="gdas.utils.arguments.construct_args"><code class="xref py py-obj docutils literal"><span class="pre">construct_args</span></code></a>()</td>
+<td>Construct argument array</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section" id="retrieve">
 <h2>retrieve<a class="headerlink" href="#retrieve" title="Permalink to this headline">¶</a></h2>
@@ -75,28 +92,17 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.retrieve.magfield.html#gdas.retrieve.magfield" title="gdas.retrieve.magfield"><code class="xref py py-obj docutils literal"><span class="pre">magfield</span></code></a>(station,&nbsp;starttime,&nbsp;endtime)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.utils.retrieve.convertdate.html#gdas.utils.retrieve.convertdate" title="gdas.utils.retrieve.convertdate"><code class="xref py py-obj docutils literal"><span class="pre">convertdate</span></code></a>(start,&nbsp;end)</td>
+<td>Convert start and end dates to GPS time</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.utils.retrieve.magfield.html#gdas.utils.retrieve.magfield" title="gdas.utils.retrieve.magfield"><code class="xref py py-obj docutils literal"><span class="pre">magfield</span></code></a>(station,&nbsp;starttime,&nbsp;endtime)</td>
 <td>Glob all files withing user-defined period and extract data.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/gdas.retrieve.file_to_segment.html#gdas.retrieve.file_to_segment" title="gdas.retrieve.file_to_segment"><code class="xref py py-obj docutils literal"><span class="pre">file_to_segment</span></code></a>(hfile,&nbsp;segname)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.utils.retrieve.file_to_segment.html#gdas.utils.retrieve.file_to_segment" title="gdas.utils.retrieve.file_to_segment"><code class="xref py py-obj docutils literal"><span class="pre">file_to_segment</span></code></a>(hfile,&nbsp;segname)</td>
 <td>Define length of data segment</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.retrieve.construct_utc_from_metadata.html#gdas.retrieve.construct_utc_from_metadata" title="gdas.retrieve.construct_utc_from_metadata"><code class="xref py py-obj docutils literal"><span class="pre">construct_utc_from_metadata</span></code></a>(datestr,&nbsp;t0str)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.utils.retrieve.construct_utc_from_metadata.html#gdas.utils.retrieve.construct_utc_from_metadata" title="gdas.utils.retrieve.construct_utc_from_metadata"><code class="xref py py-obj docutils literal"><span class="pre">construct_utc_from_metadata</span></code></a>(datestr,&nbsp;t0str)</td>
 <td>Constructing UTC timestamp from metadata</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section" id="command-line-scripts">
-<h2>Command line scripts<a class="headerlink" href="#command-line-scripts" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="docutils">
-<colgroup>
-<col width="26%" />
-<col width="74%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>./script/gdas</td>
-<td>Perform excess power search analysis</td>
 </tr>
 </tbody>
 </table>
@@ -110,7 +116,7 @@
         <p>
         <a class="uplink" href="#">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="generated/gdas.retrieve.magfield.html">gdas.retrieve.magfield</a>&#160;&#160;»
+        <a href="generated/gdas.utils.arguments.construct_args.html">gdas.utils.arguments.construct_args</a>&#160;&#160;»
         </p>
 
       </div>

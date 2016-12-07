@@ -47,9 +47,7 @@
   <h1>Source code for gdas.retrieve</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot; Retrieving magnetic field data.&quot;&quot;&quot;</span> 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
-
-<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span><span class="nn">glob</span><span class="o">,</span><span class="nn">h5py</span>
-<span class="kn">from</span> <span class="nn">astropy.time</span> <span class="k">import</span> <span class="n">Time</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span><span class="nn">glob</span><span class="o">,</span><span class="nn">h5py</span><span class="o">,</span><span class="nn">astropy</span><span class="o">,</span><span class="nn">datetime</span>
 
 <div class="viewcode-block" id="magfield"><a class="viewcode-back" href="../../generated/gdas.retrieve.magfield.html#gdas.retrieve.magfield">[docs]</a><span class="k">def</span> <span class="nf">magfield</span><span class="p">(</span><span class="n">station</span><span class="p">,</span><span class="n">starttime</span><span class="p">,</span><span class="n">endtime</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -65,8 +63,8 @@
 <span class="sd">      GPS timestamp of the last required magnetic field data</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">setname</span> <span class="o">=</span> <span class="s2">&quot;MagneticFields&quot;</span>
-    <span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">1980</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span><span class="o">+</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">starttime</span><span class="p">)</span>
-    <span class="n">end</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">1980</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span><span class="o">+</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">endtime</span><span class="p">)</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1980</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span><span class="o">+</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">starttime</span><span class="p">)</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1980</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span><span class="o">+</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">endtime</span><span class="p">)</span>
     <span class="n">dataset</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="n">end</span><span class="p">,</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">1</span><span class="p">)):</span>
         <span class="n">date</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">datetime</span><span class="p">)</span>
@@ -114,7 +112,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">instr</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">-</span><span class="si">%d</span><span class="s2">-</span><span class="si">%02d</span><span class="s2">T&quot;</span> <span class="o">%</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">datestr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)))</span>
     <span class="n">instr</span> <span class="o">+=</span> <span class="n">t0str</span>
-    <span class="n">t</span> <span class="o">=</span> <span class="n">Time</span><span class="p">(</span><span class="n">instr</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;isot&#39;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s1">&#39;utc&#39;</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">astropy</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">Time</span><span class="p">(</span><span class="n">instr</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;isot&#39;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s1">&#39;utc&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">t</span><span class="o">.</span><span class="n">gps</span></div>
 </pre></div>
 
