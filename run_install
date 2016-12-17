@@ -1,0 +1,14 @@
+#!/bin/bash
+#go to the directory of the script
+reldir=`dirname $0`
+cd $reldir
+directory=`pwd`
+if [ "$(id -u)" != "0" ]; then
+   echo "This script must be run as root" 1>&2
+   exit 1
+fi
+pip-2.7 install dist/gdas* --upgrade
+if [ $? -ne 0 ]; then
+  echo 'Package installation failed. Did you build the package? Do you have pip3 installed?'
+  exit
+fi

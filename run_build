@@ -1,0 +1,11 @@
+#!/bin/bash
+#go to the directory of the script
+reldir=`dirname $0`
+cd $reldir
+directory=`pwd`
+rm -rf dist
+python2.7 setup.py sdist
+if [ $? -ne 0 ]; then
+  echo 'Python packager source distribution tool failed.'
+  exit
+fi

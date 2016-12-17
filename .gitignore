@@ -1,5 +1,6 @@
 *~
 *.pyc
+\#*
 Makefile
 conf.py
 make.bat
