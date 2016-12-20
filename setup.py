@@ -9,7 +9,7 @@ setup(
     packages=["gdas"],
     requires=["numpy","matplolib","scipy","astropy","glue","gwpy","pycbc"],
     include_package_data=True,
-    url="https://github.com/GNOME-physics/gdas",
+    url="https://gnome-physics.github.io/gdas",
     description="GNOME Data Analysis package",
     install_requires=[]
 )

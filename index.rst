@@ -28,7 +28,7 @@ arguments
 
 Construct argument array based on user-defined parameters.
 
-.. currentmodule:: gdas.utils.arguments
+.. currentmodule:: gdas.arguments
 
 .. autosummary::
    :toctree: generated/
@@ -40,7 +40,7 @@ retrieve
 
 Extract magnetic field data from HDF5 files.
 
-.. currentmodule:: gdas.utils.retrieve
+.. currentmodule:: gdas.retrieve
 
 .. autosummary::
    :toctree: generated/
@@ -49,3 +49,7 @@ Extract magnetic field data from HDF5 files.
    magfield
    file_to_segment
    construct_utc_from_metadata
+   generate_timeseries
+   retrieve_data_timeseries
+   retrieve_channel_data
+   

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gdas.retrieve.construct_utc_from_metadata &#8212; gdas 1.0 documentation</title>
+    <title>gdas.retrieve.convertdate &#8212; gdas 1.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -27,45 +27,45 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="top" title="gdas 1.0 documentation" href="../index.html" />
-    <link rel="next" title="gdas.retrieve.generate_timeseries" href="gdas.retrieve.generate_timeseries.html" />
-    <link rel="prev" title="gdas.retrieve.file_to_segment" href="gdas.retrieve.file_to_segment.html" /> 
+    <link rel="next" title="gdas.retrieve.magfield" href="gdas.retrieve.magfield.html" />
+    <link rel="prev" title="gdas.arguments.construct_args" href="gdas.arguments.construct_args.html" /> 
   </head>
   <body role="document">
       <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
           <span>gdas 1.0 documentation</span></a></h1>
-        <h2 class="heading"><span>gdas.retrieve.construct_utc_from_metadata</span></h2>
+        <h2 class="heading"><span>gdas.retrieve.convertdate</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
       
         <p>
-        «&#160;&#160;<a href="gdas.retrieve.file_to_segment.html">gdas.retrieve.file_to_segment</a>
+        «&#160;&#160;<a href="gdas.arguments.construct_args.html">gdas.arguments.construct_args</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="gdas.retrieve.generate_timeseries.html">gdas.retrieve.generate_timeseries</a>&#160;&#160;»
+        <a href="gdas.retrieve.magfield.html">gdas.retrieve.magfield</a>&#160;&#160;»
         </p>
 
       </div>
       <div class="content">
         
         
-  <div class="section" id="gdas-retrieve-construct-utc-from-metadata">
-<h1>gdas.retrieve.construct_utc_from_metadata<a class="headerlink" href="#gdas-retrieve-construct-utc-from-metadata" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="gdas-retrieve-convertdate">
+<h1>gdas.retrieve.convertdate<a class="headerlink" href="#gdas-retrieve-convertdate" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="gdas.retrieve.construct_utc_from_metadata">
-<code class="descclassname">gdas.retrieve.</code><code class="descname">construct_utc_from_metadata</code><span class="sig-paren">(</span><em>datestr</em>, <em>t0str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gdas/retrieve.html#construct_utc_from_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gdas.retrieve.construct_utc_from_metadata" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constructing UTC timestamp from metadata</p>
+<dt id="gdas.retrieve.convertdate">
+<code class="descclassname">gdas.retrieve.</code><code class="descname">convertdate</code><span class="sig-paren">(</span><em>start</em>, <em>end</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gdas/retrieve.html#convertdate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gdas.retrieve.convertdate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert start and end dates to GPS time</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>datestr</strong> : str</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>start</strong> : str</p>
 <blockquote>
-<div><p>Date of the extracted data</p>
+<div><p>Starting date in format YYYY-MM-DD[-HH-MM]</p>
 </div></blockquote>
-<p><strong>t0str</strong> : str</p>
+<p><strong>end</strong> : str</p>
 <blockquote class="last">
-<div><p>GPS time</p>
+<div><p>Ending date in format YYYY-MM-DD[-HH-MM]</p>
 </div></blockquote>
 </td>
 </tr>
@@ -80,11 +80,11 @@
       <div class="bottomnav" role="navigation" aria-label="bottom navigation">
       
         <p>
-        «&#160;&#160;<a href="gdas.retrieve.file_to_segment.html">gdas.retrieve.file_to_segment</a>
+        «&#160;&#160;<a href="gdas.arguments.construct_args.html">gdas.arguments.construct_args</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="gdas.retrieve.generate_timeseries.html">gdas.retrieve.generate_timeseries</a>&#160;&#160;»
+        <a href="gdas.retrieve.magfield.html">gdas.retrieve.magfield</a>&#160;&#160;»
         </p>
 
       </div>

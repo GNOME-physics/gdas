@@ -1,0 +1,6 @@
+gdas.arguments.construct_args
+=============================
+
+.. currentmodule:: gdas.arguments
+
+.. autofunction:: construct_args
