@@ -12,7 +12,29 @@ This package contains functions useful for magnetic field signal processing, wit
 
 It requires the following general packages to run: `Numpy <http://numpy.scipy.org/>`_, `Matplotlib <http://matplotlib.sourceforge.net/>`_, `Scipy <http://www.scipy.org/>`_ and `Astropy <http://www.astropy.org/>`_. The following LIGO-related packages are also required for full functionality: `Glue <https://www.lsc-group.phys.uwm.edu/daswg/projects/glue.html>`_, `Gwpy <https://gwpy.github.io/>`_, `PyCBC <https://github.com/ligo-cbc/pycbc>`_, `lal <http://software.ligo.org/docs/lalsuite/lal/index.html>`_, `lalburst <http://software.ligo.org/docs/lalsuite/lalburst/index.html>`_ and `LALsimulation <http://software.ligo.org/docs/lalsuite/lalsimulation/index.html>`_
 
-The software is fairly easy to use, you can either use the main gdas script present in the `scripts folder <https://github.com/GNOME-physics/gdas/scripts>`_ or you can follow the steps from one of the notebooks available `here <https://github.com/GNOME-physics/gdas/notebooks>`_ to write your own script. The notebooks can also be used as a guide on how the analysis is done. Finally, a much more thorough description on how the theory behind the Excess Power search analysis is being translated into code is provided at the following link: https://gnome-physics.github.io/
+The best way to install the package is by using `pip`::
+
+   pip install gdas
+
+(You may need to put a ``sudo`` in front of this). For this to work
+you need to have `pip
+<http://www.pip-installer.org/en/latest/index.html>`_ installed. This
+method allows for easy uninstallation.
+
+You can also simply download the tarball from the PyPI website, unpack
+it and then do::
+
+   python setup.py install
+
+To run the tests you need `py.test <http://pytest.org/latest/>`_
+installed. Then run::
+
+   py.test gdas
+
+from the ``gdas/`` directory created by the install commands above.
+
+The latest stable package can be downloaded from PyPI: https://pypi.python.org/pypi/gdas.
+The development version can be downloaded from `here <https://github.com/GNOME-physics/gdas>`_.
 
 .. raw:: html
 
