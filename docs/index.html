@@ -17,7 +17,8 @@
         VERSION:     '1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
@@ -26,7 +27,6 @@
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="gdas 1.0 documentation" href="#" />
     <link rel="next" title="gdas.arguments.construct_args" href="generated/gdas.arguments.construct_args.html" /> 
   </head>
   <body role="document">
@@ -58,7 +58,26 @@
 <li>Perform Allan Standard deviation.</li>
 </ul>
 <p>It requires the following general packages to run: <a class="reference external" href="http://numpy.scipy.org/">Numpy</a>, <a class="reference external" href="http://matplotlib.sourceforge.net/">Matplotlib</a>, <a class="reference external" href="http://www.scipy.org/">Scipy</a> and <a class="reference external" href="http://www.astropy.org/">Astropy</a>. The following LIGO-related packages are also required for full functionality: <a class="reference external" href="https://www.lsc-group.phys.uwm.edu/daswg/projects/glue.html">Glue</a>, <a class="reference external" href="https://gwpy.github.io/">Gwpy</a>, <a class="reference external" href="https://github.com/ligo-cbc/pycbc">PyCBC</a>, <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lal/index.html">lal</a>, <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lalburst/index.html">lalburst</a> and <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lalsimulation/index.html">LALsimulation</a></p>
-<p>The software is fairly easy to use, you can either use the main gdas script present in the <a class="reference external" href="https://github.com/GNOME-physics/gdas/scripts">scripts folder</a> or you can follow the steps from one of the notebooks available <a class="reference external" href="https://github.com/GNOME-physics/gdas/notebooks">here</a> to write your own script. The notebooks can also be used as a guide on how the analysis is done. Finally, a much more thorough description on how the theory behind the Excess Power search analysis is being translated into code is provided at the following link: <a class="reference external" href="https://gnome-physics.github.io/">https://gnome-physics.github.io/</a></p>
+<p>The best way to install the package is by using <cite>pip</cite>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">gdas</span>
+</pre></div>
+</div>
+<p>(You may need to put a <code class="docutils literal"><span class="pre">sudo</span></code> in front of this). For this to work
+you need to have <a class="reference external" href="http://www.pip-installer.org/en/latest/index.html">pip</a> installed. This
+method allows for easy uninstallation.</p>
+<p>You can also simply download the tarball from the PyPI website, unpack
+it and then do:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
+</pre></div>
+</div>
+<p>To run the tests you need <a class="reference external" href="http://pytest.org/latest/">py.test</a>
+installed. Then run:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">py</span><span class="o">.</span><span class="n">test</span> <span class="n">gdas</span>
+</pre></div>
+</div>
+<p>from the <code class="docutils literal"><span class="pre">gdas/</span></code> directory created by the install commands above.</p>
+<p>The latest stable package can be downloaded from PyPI: <a class="reference external" href="https://pypi.python.org/pypi/gdas">https://pypi.python.org/pypi/gdas</a>.
+The development version can be downloaded from <a class="reference external" href="https://github.com/GNOME-physics/gdas">here</a>.</p>
 <a href="https://github.com/GNOME-physics/gdas"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a><div class="toctree-wrapper compound">
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">GNOME Data Analysis Software</a><ul>
@@ -132,7 +151,7 @@
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016, Vincent Dumont.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.8.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
     </div>
   </body>
 </html>
