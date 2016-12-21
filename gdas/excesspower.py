@@ -1,10 +1,5 @@
-def check_filtering_settings():
+def check_filtering_settings(channels=None,tile_bandwidth=None):
     
-    print tprint(t0),"Check filtering settings..."
-    # Check if strain high pass frequency is greater than the tile minimum frequency
-    if args.min_frequency < args.strain_high_pass:
-        # Print out warning message
-        print >>sys.stderr, "Warning: strain high pass frequency %f is greater than the tile minimum frequency %f --- this is likely to cause strange output below the bandpass frequency" % (args.strain_high_pass, args.min_frequency)
     # Check if tile maximum frequency is not defined
     if args.max_frequency is None or args.max_frequency>args.sample_rate/2.:
         # Set the tile maximum frequency equal to the Nyquist frequency (i.e. half the sampling rate)
