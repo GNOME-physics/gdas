@@ -39,6 +39,12 @@ def magfield(station,starttime,endtime):
       GPS timestamp of the first required magnetic field data
     t1 : int
       GPS timestamp of the last required magnetic field data
+
+    Return
+    ------
+    sample_rate, ts_data : float, TimeSeries
+      Sampling rate of the data retrieved and entire time series
+      of the selected time period, time series data
     """    
     setname = "MagneticFields"
     start = datetime(1980,1,6)+timedelta(seconds=starttime)
@@ -73,7 +79,7 @@ def magfield(station,starttime,endtime):
     ts_data = types.TimeSeries(full_data,delta_t=1/sample_rate,epoch=seglist[0][0])
     for v in data_order.values():
         v.close()        
-    return ts_data
+    return sample_rate,ts_data
 
 def file_to_segment(hfile,segname):
     """
