@@ -26,13 +26,6 @@ it and then do::
 
    python setup.py install
 
-To run the tests you need `py.test <http://pytest.org/latest/>`_
-installed. Then run::
-
-   py.test gdas
-
-from the ``gdas/`` directory created by the install commands above.
-
 The latest stable package can be downloaded from PyPI: https://pypi.python.org/pypi/gdas.
 The development version can be downloaded from `here <https://github.com/GNOME-physics/gdas>`_.
 

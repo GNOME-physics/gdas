@@ -85,6 +85,12 @@
 <span class="sd">      GPS timestamp of the first required magnetic field data</span>
 <span class="sd">    t1 : int</span>
 <span class="sd">      GPS timestamp of the last required magnetic field data</span>
+
+<span class="sd">    Return</span>
+<span class="sd">    ------</span>
+<span class="sd">    sample_rate, ts_data : float, TimeSeries</span>
+<span class="sd">      Sampling rate of the data retrieved and entire time series</span>
+<span class="sd">      of the selected time period, time series data</span>
 <span class="sd">    &quot;&quot;&quot;</span>    
     <span class="n">setname</span> <span class="o">=</span> <span class="s2">&quot;MagneticFields&quot;</span>
     <span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">1980</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span><span class="o">+</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">starttime</span><span class="p">)</span>
@@ -119,7 +125,7 @@
     <span class="n">ts_data</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">TimeSeries</span><span class="p">(</span><span class="n">full_data</span><span class="p">,</span><span class="n">delta_t</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="n">sample_rate</span><span class="p">,</span><span class="n">epoch</span><span class="o">=</span><span class="n">seglist</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data_order</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
         <span class="n">v</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>        
-    <span class="k">return</span> <span class="n">ts_data</span></div>
+    <span class="k">return</span> <span class="n">sample_rate</span><span class="p">,</span><span class="n">ts_data</span></div>
 
 <div class="viewcode-block" id="file_to_segment"><a class="viewcode-back" href="../../generated/gdas.retrieve.file_to_segment.html#gdas.retrieve.file_to_segment">[docs]</a><span class="k">def</span> <span class="nf">file_to_segment</span><span class="p">(</span><span class="n">hfile</span><span class="p">,</span><span class="n">segname</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
