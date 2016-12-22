@@ -1,6 +1,6 @@
 """Other routines"""
 
-def create_sounds(ts):
+def create_sound(ts):
     """
     Create sound based on the data
 

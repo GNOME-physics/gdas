@@ -31,8 +31,8 @@ def excess_power(ts_data,min_frequency,max_frequency,psd_segment_length,psd_segm
     band : float
       Tile bandwidth
 
-    Output
-    ------
+    Notes
+    -----
     This method will produce a bunch of time-frequency plots for every
     tile duration and bandwidth analysed as well as a XML file identifying
     all the triggers found in the selected data within the user-defined
@@ -294,8 +294,8 @@ def convert_to_time_domain(fdb,sample_rate):
     """
     Convert filter bank from frequency to time domain
     
-    Parameter
-    ---------
+    Parameters
+    ----------
     fdb : list
       List of filters from the filter bank in frequency domain
     sample_rate : float
