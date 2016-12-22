@@ -1,33 +1,14 @@
 """ Retrieving magnetic field data.""" 
 
 import os,glob,h5py,astropy,numpy,astropy
-from astropy.time import Time
-from datetime import datetime,timedelta
-from glue.segments import segment,segmentlist
+from astropy.time    import Time
+from datetime        import datetime,timedelta
+from glue.segments   import segment,segmentlist
+from gwpy.segments   import DataQualityDict,DataQualityFlag
 from gwpy.timeseries import TimeSeries,TimeSeriesList
-from pycbc import types
+from pycbc           import types
 
-def convertdate(start,end):
-    """
-    Convert start and end dates to GPS time
-
-    Parameters
-    ----------
-    start : str
-      Starting date in format YYYY-MM-DD[-HH-MM]
-    end : str
-      Ending date in format YYYY-MM-DD[-HH-MM]
-    """
-    dstr   = ['%Y','%m','%d','%H','%M']
-    date1  = '-'.join(dstr[:start.count('-')+1])
-    date1  = datetime.strptime(start,date1)
-    start  = int((date1-datetime(1980,1,6)).total_seconds())
-    date2  = '-'.join(dstr[:end.count('-')+1])
-    date2  = datetime.strptime(end,date2)
-    end    = int((date2-datetime(1980,1,6)).total_seconds())
-    return start,end
-
-def magfield(station,starttime,endtime):
+def magfield(station,starttime,endtime,activity=False):
     """
     Glob all files withing user-defined period and extract data.
     
@@ -39,16 +20,21 @@ def magfield(station,starttime,endtime):
       GPS timestamp of the first required magnetic field data
     t1 : int
       GPS timestamp of the last required magnetic field data
-
+    
     Return
     ------
-    sample_rate, ts_data : float, TimeSeries
+    sample_rate, activity, ts_data, ts_list : float, dictionary
+    TimeSeries, list
       Sampling rate of the data retrieved and entire time series
-      of the selected time period, time series data
-    """    
+      of the selected time period, list of segments, time series
+      data, list of time series from each segment
+    """
     setname = "MagneticFields"
-    start = datetime(1980,1,6)+timedelta(seconds=starttime)
-    end   = datetime(1980,1,6)+timedelta(seconds=endtime)
+    dstr    = ['%Y','%m','%d','%H','%M']
+    dsplit  = '-'.join(dstr[:starttime.count('-')+1])
+    start   = datetime.strptime(starttime,dsplit)
+    dsplit  = '-'.join(dstr[:endtime.count('-')+1])
+    end     = datetime.strptime(endtime,dsplit)
     dataset = []
     for date in numpy.arange(start,end,timedelta(minutes=1)):
         date = date.astype(datetime)
@@ -66,20 +52,21 @@ def magfield(station,starttime,endtime):
         data_order[segfile] = hfile
     # Extract sample rate from metadata of last read data file
     sample_rate = hfile[setname].attrs["SamplingRate(Hz)"]
-    # Generate an ASCII representation of the GPS timestamped segments
-    # of time covered by the input data
+    # Estimate full segment activity list
+    activity = create_activity_list(station,data_order)
+    # Generate an ASCII representation of the GPS timestamped segments of time covered by the input data
     seglist = segmentlist(data_order.keys())
     # Sort the segment list
     seglist.sort()
-    # Generate time series for the ensemble of data
-    data_list = generate_timeseries(file_order,setname)
+    # Create list of time series from every segment
+    ts_list = generate_timeseries(file_order,setname)
     # Retrieve channel data for all the segments
     full_data = numpy.hstack([retrieve_channel_data(data_order[seg],setname) for seg in seglist])
     # Models a time series consisting of uniformly sampled scalar values
     ts_data = types.TimeSeries(full_data,delta_t=1/sample_rate,epoch=seglist[0][0])
     for v in data_order.values():
         v.close()        
-    return sample_rate,ts_data
+    return sample_rate,activity,ts_data,ts_list
 
 def file_to_segment(hfile,segname):
     """
@@ -126,7 +113,7 @@ def generate_timeseries(data_list, setname="MagneticFields"):
     
     Returns
     -------
-    full_data : 
+    full_data : Array of segment's name
     """
     full_data = TimeSeriesList()
     for seg in sorted(data_list):
@@ -134,6 +121,36 @@ def generate_timeseries(data_list, setname="MagneticFields"):
         full_data.append(retrieve_data_timeseries(hfile, "MagneticFields"))
         hfile.close()
     return full_data
+
+def create_activity_list(station,data_order):
+    """
+    Create consecutive list of available data segment.
+
+    Parameters
+    ----------
+    station : string
+      Name of the station
+    data_order : dictionary
+      List of all the HDF5 data file for each segment
+
+    Return
+    ------
+    full_seglist : dictionary
+      Ordered list of segment
+    """
+    # Generate an ASCII representation of the GPS timestamped segments of time covered by the input data
+    seglist = segmentlist(data_order.keys())
+    # Sort the segment list
+    seglist.sort()
+    # Initialise dictionary for segment information
+    full_seglist = DataQualityDict()
+    # Save time span for each segment in ASCII file
+    with open("segments.txt", "w") as fout:
+        for seg in seglist:
+            print >>fout, "%10.9f %10.9f" % seg
+    # FIXME: Active should be masked from the sanity channel
+    full_seglist[station] = DataQualityFlag(station,active=seglist.coalesce(),known=seglist.coalesce())
+    return full_seglist
 
 def retrieve_data_timeseries(hfile, setname):
     """
@@ -163,5 +180,10 @@ def retrieve_channel_data(hfile, setname):
       Metadata from the HDF5 data file
     setname : string
       Attribute of the channel to retrieve data from
+
+    Return
+    ------
+    data : array
+      Data from setname channel
     """
     return hfile[setname][:]
