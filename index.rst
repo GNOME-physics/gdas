@@ -38,17 +38,37 @@ The development version can be downloaded from `here <https://github.com/GNOME-p
 
    index.rst
 
-arguments
----------
+excesspower
+-----------
 
-Construct argument array based on user-defined parameters.
+Main class to do excess-power search analysis
 
-.. currentmodule:: gdas.arguments
+.. currentmodule:: gdas.excesspower
 
 .. autosummary::
    :toctree: generated/
 
-   construct_args
+   excesspower
+   
+plots
+-----
+
+Methods to produce time-frequency plots and others
+
+.. currentmodule:: gdas.plots
+
+.. autosummary::
+   :toctree: generated/
+
+   plot_activity
+   plot_time_series
+   plot_asd
+   plot_whitening
+   plot_ts
+   plot_spectrum
+   plot_spectrogram
+   plot_spectrogram_from_ts
+   plot_triggers
 
 retrieve
 --------
@@ -60,11 +80,11 @@ Extract magnetic field data from HDF5 files.
 .. autosummary::
    :toctree: generated/
 
-   convertdate
    magfield
    file_to_segment
    construct_utc_from_metadata
    generate_timeseries
+   create_activity_list
    retrieve_data_timeseries
    retrieve_channel_data
    

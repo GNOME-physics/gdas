@@ -1,0 +1,6 @@
+gdas.plots.plot_activity
+========================
+
+.. currentmodule:: gdas.plots
+
+.. autofunction:: plot_activity

@@ -1,0 +1,6 @@
+gdas.plots.plot_spectrogram
+===========================
+
+.. currentmodule:: gdas.plots
+
+.. autofunction:: plot_spectrogram

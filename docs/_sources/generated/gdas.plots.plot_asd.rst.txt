@@ -1,0 +1,6 @@
+gdas.plots.plot_asd
+===================
+
+.. currentmodule:: gdas.plots
+
+.. autofunction:: plot_asd

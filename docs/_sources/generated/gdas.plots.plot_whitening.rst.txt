@@ -1,0 +1,6 @@
+gdas.plots.plot_whitening
+=========================
+
+.. currentmodule:: gdas.plots
+
+.. autofunction:: plot_whitening

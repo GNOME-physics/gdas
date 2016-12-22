@@ -26,7 +26,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="gdas.excesspower.excesspower" href="generated/gdas.excesspower.excesspower.html" /> 
   </head>
   <body role="document">
       <div class="header" role="banner"><h1 class="heading"><a href="#">
@@ -37,6 +38,8 @@
       
         <p>
         <a class="uplink" href="#">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="generated/gdas.excesspower.excesspower.html">gdas.excesspower.excesspower</a>&#160;&#160;»
         </p>
 
       </div>
@@ -72,22 +75,62 @@ The development version can be downloaded from <a class="reference external" hre
 <a href="https://github.com/GNOME-physics/gdas"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a><div class="toctree-wrapper compound">
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">GNOME Data Analysis Software</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#arguments">arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#excesspower">excesspower</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plots">plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#retrieve">retrieve</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="section" id="arguments">
-<h2>arguments<a class="headerlink" href="#arguments" title="Permalink to this headline">¶</a></h2>
-<p>Construct argument array based on user-defined parameters.</p>
+<div class="section" id="excesspower">
+<h2>excesspower<a class="headerlink" href="#excesspower" title="Permalink to this headline">¶</a></h2>
+<p>Main class to do excess-power search analysis</p>
 <table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">construct_args</span></code></td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.excesspower.excesspower.html#gdas.excesspower.excesspower" title="gdas.excesspower.excesspower"><code class="xref py py-obj docutils literal"><span class="pre">excesspower</span></code></a>()</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="plots">
+<h2>plots<a class="headerlink" href="#plots" title="Permalink to this headline">¶</a></h2>
+<p>Methods to produce time-frequency plots and others</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.plots.plot_activity.html#gdas.plots.plot_activity" title="gdas.plots.plot_activity"><code class="xref py py-obj docutils literal"><span class="pre">plot_activity</span></code></a>(full_seglist)</td>
+<td>Plot full activity period for station.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.plots.plot_time_series.html#gdas.plots.plot_time_series" title="gdas.plots.plot_time_series"><code class="xref py py-obj docutils literal"><span class="pre">plot_time_series</span></code></a>(station,&nbsp;ts_list,&nbsp;full_seglist)</td>
+<td>Generate a plot of the whole data time series</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.plots.plot_asd.html#gdas.plots.plot_asd" title="gdas.plots.plot_asd"><code class="xref py py-obj docutils literal"><span class="pre">plot_asd</span></code></a>(station,&nbsp;ts_list)</td>
+<td>Plot Amplitude Spectral Density.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.plots.plot_whitening.html#gdas.plots.plot_whitening" title="gdas.plots.plot_whitening"><code class="xref py py-obj docutils literal"><span class="pre">plot_whitening</span></code></a>(station,&nbsp;ts_list,&nbsp;...)</td>
+<td>Generate a spectrogram plot and normalized spectrogram</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.plots.plot_ts.html#gdas.plots.plot_ts" title="gdas.plots.plot_ts"><code class="xref py py-obj docutils literal"><span class="pre">plot_ts</span></code></a>(ts[,&nbsp;fname])</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.plots.plot_spectrum.html#gdas.plots.plot_spectrum" title="gdas.plots.plot_spectrum"><code class="xref py py-obj docutils literal"><span class="pre">plot_spectrum</span></code></a>(fd_psd)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.plots.plot_spectrogram.html#gdas.plots.plot_spectrogram" title="gdas.plots.plot_spectrogram"><code class="xref py py-obj docutils literal"><span class="pre">plot_spectrogram</span></code></a>(spec,&nbsp;dt,&nbsp;df,&nbsp;sample_rate,&nbsp;...)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.plots.plot_spectrogram_from_ts.html#gdas.plots.plot_spectrogram_from_ts" title="gdas.plots.plot_spectrogram_from_ts"><code class="xref py py-obj docutils literal"><span class="pre">plot_spectrogram_from_ts</span></code></a>(ts)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.plots.plot_triggers.html#gdas.plots.plot_triggers" title="gdas.plots.plot_triggers"><code class="xref py py-obj docutils literal"><span class="pre">plot_triggers</span></code></a>(sample_rate)</td>
 <td></td>
 </tr>
 </tbody>
@@ -102,20 +145,20 @@ The development version can be downloaded from <a class="reference external" hre
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.retrieve.convertdate.html#gdas.retrieve.convertdate" title="gdas.retrieve.convertdate"><code class="xref py py-obj docutils literal"><span class="pre">convertdate</span></code></a>(start,&nbsp;end)</td>
-<td>Convert start and end dates to GPS time</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/gdas.retrieve.magfield.html#gdas.retrieve.magfield" title="gdas.retrieve.magfield"><code class="xref py py-obj docutils literal"><span class="pre">magfield</span></code></a>(station,&nbsp;starttime,&nbsp;endtime)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.retrieve.magfield.html#gdas.retrieve.magfield" title="gdas.retrieve.magfield"><code class="xref py py-obj docutils literal"><span class="pre">magfield</span></code></a>(station,&nbsp;starttime,&nbsp;endtime[,&nbsp;activity])</td>
 <td>Glob all files withing user-defined period and extract data.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.retrieve.file_to_segment.html#gdas.retrieve.file_to_segment" title="gdas.retrieve.file_to_segment"><code class="xref py py-obj docutils literal"><span class="pre">file_to_segment</span></code></a>(hfile,&nbsp;segname)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.retrieve.file_to_segment.html#gdas.retrieve.file_to_segment" title="gdas.retrieve.file_to_segment"><code class="xref py py-obj docutils literal"><span class="pre">file_to_segment</span></code></a>(hfile,&nbsp;segname)</td>
 <td>Define length of data segment</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/gdas.retrieve.construct_utc_from_metadata.html#gdas.retrieve.construct_utc_from_metadata" title="gdas.retrieve.construct_utc_from_metadata"><code class="xref py py-obj docutils literal"><span class="pre">construct_utc_from_metadata</span></code></a>(datestr,&nbsp;t0str)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.retrieve.construct_utc_from_metadata.html#gdas.retrieve.construct_utc_from_metadata" title="gdas.retrieve.construct_utc_from_metadata"><code class="xref py py-obj docutils literal"><span class="pre">construct_utc_from_metadata</span></code></a>(datestr,&nbsp;t0str)</td>
 <td>Constructing UTC timestamp from metadata</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.retrieve.generate_timeseries.html#gdas.retrieve.generate_timeseries" title="gdas.retrieve.generate_timeseries"><code class="xref py py-obj docutils literal"><span class="pre">generate_timeseries</span></code></a>(data_list[,&nbsp;setname])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.retrieve.generate_timeseries.html#gdas.retrieve.generate_timeseries" title="gdas.retrieve.generate_timeseries"><code class="xref py py-obj docutils literal"><span class="pre">generate_timeseries</span></code></a>(data_list[,&nbsp;setname])</td>
 <td>Generate time series using list of HDF5 data file paths</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.retrieve.create_activity_list.html#gdas.retrieve.create_activity_list" title="gdas.retrieve.create_activity_list"><code class="xref py py-obj docutils literal"><span class="pre">create_activity_list</span></code></a>(station,&nbsp;data_order)</td>
+<td>Create consecutive list of available data segment.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="generated/gdas.retrieve.retrieve_data_timeseries.html#gdas.retrieve.retrieve_data_timeseries" title="gdas.retrieve.retrieve_data_timeseries"><code class="xref py py-obj docutils literal"><span class="pre">retrieve_data_timeseries</span></code></a>(hfile,&nbsp;setname)</td>
 <td>Retrieve data time series from HDF5 data file</td>
@@ -134,6 +177,8 @@ The development version can be downloaded from <a class="reference external" hre
       
         <p>
         <a class="uplink" href="#">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="generated/gdas.excesspower.excesspower.html">gdas.excesspower.excesspower</a>&#160;&#160;»
         </p>
 
       </div>

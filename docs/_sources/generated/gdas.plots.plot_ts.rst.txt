@@ -1,0 +1,6 @@
+gdas.plots.plot_ts
+==================
+
+.. currentmodule:: gdas.plots
+
+.. autofunction:: plot_ts
