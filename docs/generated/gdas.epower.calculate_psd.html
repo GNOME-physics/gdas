@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gdas.epower.calculate_psd &#8212; gdas 0.1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="gdas.epower.calculate_spectral_correlation" href="gdas.epower.calculate_spectral_correlation.html" />
+    <link rel="prev" title="gdas.epower.check_filtering_settings" href="gdas.epower.check_filtering_settings.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
+          <span>gdas 0.1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>gdas.epower.calculate_psd</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        «&#160;&#160;<a href="gdas.epower.check_filtering_settings.html">gdas.epower.check_filtering_settings</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="gdas.epower.calculate_spectral_correlation.html">gdas.epower.calculate_spectral_correlation</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="gdas-epower-calculate-psd">
+<h1>gdas.epower.calculate_psd<a class="headerlink" href="#gdas-epower-calculate-psd" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="gdas.epower.calculate_psd">
+<code class="descclassname">gdas.epower.</code><code class="descname">calculate_psd</code><span class="sig-paren">(</span><em>ts_data</em>, <em>sample_rate</em>, <em>psd_segment_length</em>, <em>psd_segment_stride</em>, <em>psd_estimation</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gdas/epower.html#calculate_psd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gdas.epower.calculate_psd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate Power Spectral Density (PSD)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>ts_data</strong> : TimeSeries</p>
+<blockquote>
+<div><p>Time series of magnetic field data</p>
+</div></blockquote>
+<p><strong>sample_rate</strong> : float</p>
+<blockquote>
+<div><p>Sampling rate of data</p>
+</div></blockquote>
+<p><strong>psd_segment_length</strong> : float</p>
+<blockquote>
+<div><p>Length of data segment in seconds</p>
+</div></blockquote>
+<p><strong>psd_segment_stride</strong> : float</p>
+<blockquote>
+<div><p>Separation between consecutive segments in seconds</p>
+</div></blockquote>
+<p><strong>psd_estimation</strong> : string</p>
+<blockquote class="last">
+<div><p>Average method to measure PSD from the data</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Need to contact Chris Pankow for more information on the 2 formats.</p>
+</dd></dl>
+
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        «&#160;&#160;<a href="gdas.epower.check_filtering_settings.html">gdas.epower.check_filtering_settings</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="gdas.epower.calculate_spectral_correlation.html">gdas.epower.calculate_spectral_correlation</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Vincent Dumont.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+    </div>
+  </body>
+</html>

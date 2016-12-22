@@ -1,6 +1,0 @@
-gdas.retrieve.retrieve_data_timeseries
-======================================
-
-.. currentmodule:: gdas.retrieve
-
-.. autofunction:: retrieve_data_timeseries

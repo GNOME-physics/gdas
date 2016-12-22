@@ -1,0 +1,6 @@
+gdas.epower.identify_block
+==========================
+
+.. currentmodule:: gdas.epower
+
+.. autofunction:: identify_block

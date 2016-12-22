@@ -3,6 +3,7 @@ from astropy.units   import Quantity
 from matplotlib      import pyplot
 from gwpy.plotter    import SegmentPlot,TimeSeriesPlot,SpectrumPlot,SpectrogramPlot
 from gwpy.segments   import SegmentList
+from gwpy.spectrum   import Spectrum
 from gwpy.timeseries import TimeSeries
 
 def plot_activity(full_seglist):
@@ -79,7 +80,7 @@ def plot_asd(station,ts_list):
     # Save figure
     plot.savefig("asd.png",dpi=500)
     
-def plot_whitening(station,ts_list,sample_rate,seglist=None):
+def plot_whitening(station,ts_list,seglist=None):
     """
     Generate a spectrogram plot and normalized spectrogram
     norm: \sqrt{S(f,t)} / \sqrt{\overbar{S(f)}}
@@ -97,10 +98,10 @@ def plot_whitening(station,ts_list,sample_rate,seglist=None):
         wspec = spec.ratio('median')
         wax.plot(wspec, vmin=0.1, vmax=100)
     ax.set_title('$\mathrm{'+station+'}$')
-    ax.set_ylim(0.1, sample_rate/2.)
+    ax.set_ylim(0.1, ts.sample_rate.value/2.)
     ax.set_yscale('log')
     wax.set_title('$\mathrm{'+station+'}$')
-    wax.set_ylim(0.1, sample_rate/2.)
+    wax.set_ylim(0.1, ts.sample_rate.value/2.)
     wax.set_yscale('log')
     plot.add_colorbar(label='Amplitude')
     white_plot.add_colorbar(label='Amplitude')
@@ -109,6 +110,30 @@ def plot_whitening(station,ts_list,sample_rate,seglist=None):
         white_plot.add_state_segments(SegmentList(seglist[station].active),plotargs={'label':'data present','facecolor':'g','edgecolor':'k'})
     plot.savefig("spectrogram.png",dpi=500)
     white_plot.savefig("whitened.png",dpi=500)
+
+def plot_bank(fdb):
+    pyplot.figure()
+    for i, fdt in enumerate(fdb[:5]):
+        pyplot.plot(fdt.frequencies, fdt, 'k-')
+    pyplot.grid()
+    pyplot.xlabel("frequency [Hz]")
+    pyplot.savefig('bank.png')
+    pyplot.close()
+
+def plot_filters(tdb,flow,band):
+    pyplot.figure()
+    pyplot.subplots_adjust(left=0.2,right=0.95,bottom=0.15,top=0.95,hspace=0,wspace=0)
+    for i, tdt in enumerate(tdb[:8:3]):
+        ax = pyplot.subplot(3, 1, i+1)
+        ax.plot(tdt.times.value - 2., numpy.real_if_close(tdt.value), 'k-')
+        c_f = flow+band/2 + 3 * (band*i) + 2.
+        ax.set_xlabel("Time (s)")
+        ax.set_ylabel("%d Hz" % c_f)
+        ax.set_xlim(25.0, 31.0)
+        ax.set_ylim([-max(tdt.value), max(tdt.value)])
+        if i!=2: pyplot.setp(ax.get_xticklabels(), visible=False)
+    pyplot.savefig('filters.png')
+    pyplot.close()
     
 def plot_ts(ts, fname="ts.png"):
     plot = TimeSeriesPlot()
@@ -160,4 +185,23 @@ def plot_triggers(sample_rate):
     plot.add_colorbar(cmap='copper_r',label='Tile Energy')
     pyplot.savefig("triggers.png",dpi=400)
 
-    
+def plot_tiles():    
+    bins = numpy.linspace(0, 40, 100)
+    cnt = numpy.zeros(bins.shape[0]-1)
+    for i, tdf in enumerate(tdb[:nchans]):
+        us_rate = int(1.0 / (2 * band*nc_sum * ts_data.dt.value))
+        pyplot.figure(0, figsize=(10, 10))
+        pyplot.subplot(nchans, 1, i+1)
+        white = tmp_ts_data.whiten(64, 32, asd=numpy.sqrt(cdata_psd_tmp), window='boxcar') * sample_rate/4
+        snr_1dof = numpy.convolve(tdf, white, "valid")
+        # Undersample the data
+        snr_1dof = snr_1dof[::us_rate]**2
+        # Sum semi-adjacent samples to get 2 DOF tiles
+        snr_2dof = numpy.convolve(snr_1dof, numpy.array([1, 0, 1, 0]))
+        t = TimeSeries(snr_2dof, epoch=white.epoch, sample_rate=int(1.0/(us_rate * tmp_ts_data.dt.value)))
+        pyplot.plot(t.times + len(tdf)/2 * tdf.dt, snr_2dof, 'k-')
+        pyplot.axvline(random_time)
+        tmp, _ = numpy.histogram(snr_2dof, bins=bins)
+        cnt += tmp
+    plot_spectrogram(dof_tiles.T,fname='%s/tf_%ichans_%02idof.png'%(segfolder,nc_sum+1,2*j))
+    plot.savefig("%s/bands.png"%(segfolder))

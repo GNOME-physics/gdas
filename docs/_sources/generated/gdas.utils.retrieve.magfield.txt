@@ -1,6 +1,0 @@
-gdas.utils.retrieve.magfield
-============================
-
-.. currentmodule:: gdas.utils.retrieve
-
-.. autofunction:: magfield

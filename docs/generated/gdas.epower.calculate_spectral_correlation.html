@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gdas.plots.plot_time_series &#8212; gdas 0.1.1 documentation</title>
+    <title>gdas.epower.calculate_spectral_correlation &#8212; gdas 0.1.1 documentation</title>
     
     <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -27,34 +27,37 @@
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="gdas.plots.plot_asd" href="gdas.plots.plot_asd.html" />
-    <link rel="prev" title="gdas.plots.plot_activity" href="gdas.plots.plot_activity.html" /> 
+    <link rel="next" title="gdas.epower.create_filter_bank" href="gdas.epower.create_filter_bank.html" />
+    <link rel="prev" title="gdas.epower.calculate_psd" href="gdas.epower.calculate_psd.html" /> 
   </head>
   <body role="document">
       <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
           <span>gdas 0.1.1 documentation</span></a></h1>
-        <h2 class="heading"><span>gdas.plots.plot_time_series</span></h2>
+        <h2 class="heading"><span>gdas.epower.calculate_spectral_correlation</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
       
         <p>
-        «&#160;&#160;<a href="gdas.plots.plot_activity.html">gdas.plots.plot_activity</a>
+        «&#160;&#160;<a href="gdas.epower.calculate_psd.html">gdas.epower.calculate_psd</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="gdas.plots.plot_asd.html">gdas.plots.plot_asd</a>&#160;&#160;»
+        <a href="gdas.epower.create_filter_bank.html">gdas.epower.create_filter_bank</a>&#160;&#160;»
         </p>
 
       </div>
       <div class="content">
         
         
-  <div class="section" id="gdas-plots-plot-time-series">
-<h1>gdas.plots.plot_time_series<a class="headerlink" href="#gdas-plots-plot-time-series" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="gdas-epower-calculate-spectral-correlation">
+<h1>gdas.epower.calculate_spectral_correlation<a class="headerlink" href="#gdas-epower-calculate-spectral-correlation" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="gdas.plots.plot_time_series">
-<code class="descclassname">gdas.plots.</code><code class="descname">plot_time_series</code><span class="sig-paren">(</span><em>station</em>, <em>ts_list</em>, <em>seglist=None</em>, <em>hp=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gdas/plots.html#plot_time_series"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gdas.plots.plot_time_series" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate a plot of the whole data time series</p>
+<dt id="gdas.epower.calculate_spectral_correlation">
+<code class="descclassname">gdas.epower.</code><code class="descname">calculate_spectral_correlation</code><span class="sig-paren">(</span><em>fft_window_len</em>, <em>wtype='hann'</em>, <em>window_fraction=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gdas/epower.html#calculate_spectral_correlation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gdas.epower.calculate_spectral_correlation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the two point spectral correlation introduced by windowing
+the data before transforming to the frequency domain &#8211; valid choices
+are &#8216;hann&#8217; and &#8216;tukey&#8217;. The window_fraction parameter only has meaning
+for wtype=&#8217;tukey&#8217;.</p>
 </dd></dl>
 
 </div>
@@ -64,11 +67,11 @@
       <div class="bottomnav" role="navigation" aria-label="bottom navigation">
       
         <p>
-        «&#160;&#160;<a href="gdas.plots.plot_activity.html">gdas.plots.plot_activity</a>
+        «&#160;&#160;<a href="gdas.epower.calculate_psd.html">gdas.epower.calculate_psd</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="gdas.plots.plot_asd.html">gdas.plots.plot_asd</a>&#160;&#160;»
+        <a href="gdas.epower.create_filter_bank.html">gdas.epower.create_filter_bank</a>&#160;&#160;»
         </p>
 
       </div>

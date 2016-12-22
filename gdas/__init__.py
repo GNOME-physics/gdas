@@ -1,5 +1,6 @@
 __version__ = '0.1.1'
 
-from .excesspower import *
-from .retrieve    import *
-from .utils       import *
+from .epower   import excess_power
+from .plots    import *
+from .retrieve import *
+from .utils    import *

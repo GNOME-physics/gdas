@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gdas.epower.excess_power &#8212; gdas 0.1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="gdas.epower.check_filtering_settings" href="gdas.epower.check_filtering_settings.html" />
+    <link rel="prev" title="GNOME Data Analysis Software" href="../index.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
+          <span>gdas 0.1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>gdas.epower.excess_power</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        «&#160;&#160;<a href="../index.html">GNOME Data Analysis Software</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="gdas.epower.check_filtering_settings.html">gdas.epower.check_filtering_settings</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="gdas-epower-excess-power">
+<h1>gdas.epower.excess_power<a class="headerlink" href="#gdas-epower-excess-power" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="gdas.epower.excess_power">
+<code class="descclassname">gdas.epower.</code><code class="descname">excess_power</code><span class="sig-paren">(</span><em>ts_data</em>, <em>min_frequency</em>, <em>max_frequency</em>, <em>psd_segment_length</em>, <em>psd_segment_stride</em>, <em>psd_estimation</em>, <em>window_fraction</em>, <em>tile_fap</em>, <em>nchans</em>, <em>band</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gdas/epower.html#excess_power"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gdas.epower.excess_power" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform excess-power search analysis on magnetic field data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>ts_data</strong> : TimeSeries</p>
+<blockquote>
+<div><p>Time Series from magnetic field data</p>
+</div></blockquote>
+<p><strong>min_frequency</strong> : float</p>
+<blockquote>
+<div><p>Lowest frequency of the filter bank.</p>
+</div></blockquote>
+<p><strong>max_frequency</strong> : float</p>
+<blockquote>
+<div><p>Highest frequency of the filter bank</p>
+</div></blockquote>
+<p><strong>psd_segment_length</strong> : float</p>
+<blockquote>
+<div><p>Length of each segment in seconds</p>
+</div></blockquote>
+<p><strong>psd_segment_stride</strong> : float</p>
+<blockquote>
+<div><p>Separation between 2 consecutive segments in seconds</p>
+</div></blockquote>
+<p><strong>psd_estimation</strong> : string</p>
+<blockquote>
+<div><p>Average method</p>
+</div></blockquote>
+<p><strong>window_fraction</strong> : float</p>
+<blockquote>
+<div><p>Withening window fraction</p>
+</div></blockquote>
+<p><strong>tile_fap</strong> : float</p>
+<blockquote>
+<div><p>Tile false alarm probability threshold in Gaussian noise.</p>
+</div></blockquote>
+<p><strong>nchans</strong> : int</p>
+<blockquote>
+<div><p>Total number of channels</p>
+</div></blockquote>
+<p><strong>band</strong> : float</p>
+<blockquote class="last">
+<div><p>Tile bandwidth</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        «&#160;&#160;<a href="../index.html">GNOME Data Analysis Software</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="gdas.epower.check_filtering_settings.html">gdas.epower.check_filtering_settings</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Vincent Dumont.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+    </div>
+  </body>
+</html>

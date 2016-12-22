@@ -23,11 +23,9 @@ def magfield(station,starttime,endtime,activity=False):
     
     Return
     ------
-    sample_rate, activity, ts_data, ts_list : float, dictionary
-    TimeSeries, list
-      Sampling rate of the data retrieved and entire time series
-      of the selected time period, list of segments, time series
-      data, list of time series from each segment
+    ts_data, ts_list, activity : TimeSeries, dictionary, list
+      Time series data for selected time period, list of time series
+      for each segment, sampling rate of the retrieved data
     """
     setname = "MagneticFields"
     dstr    = ['%Y','%m','%d','%H','%M']
@@ -66,7 +64,7 @@ def magfield(station,starttime,endtime,activity=False):
     ts_data = types.TimeSeries(full_data,delta_t=1/sample_rate,epoch=seglist[0][0])
     for v in data_order.values():
         v.close()        
-    return sample_rate,activity,ts_data,ts_list
+    return ts_data,ts_list,activity
 
 def file_to_segment(hfile,segname):
     """

@@ -1,6 +1,0 @@
-gdas.utils.retrieve.construct_utc_from_metadata
-===============================================
-
-.. currentmodule:: gdas.utils.retrieve
-
-.. autofunction:: construct_utc_from_metadata

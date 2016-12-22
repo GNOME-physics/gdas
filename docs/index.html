@@ -27,7 +27,7 @@
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="gdas.excesspower.excesspower" href="generated/gdas.excesspower.excesspower.html" /> 
+    <link rel="next" title="gdas.epower.excess_power" href="generated/gdas.epower.excess_power.html" /> 
   </head>
   <body role="document">
       <div class="header" role="banner"><h1 class="heading"><a href="#">
@@ -39,7 +39,7 @@
         <p>
         <a class="uplink" href="#">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="generated/gdas.excesspower.excesspower.html">gdas.excesspower.excesspower</a>&#160;&#160;»
+        <a href="generated/gdas.epower.excess_power.html">gdas.epower.excess_power</a>&#160;&#160;»
         </p>
 
       </div>
@@ -91,7 +91,64 @@ The development version can be downloaded from <a class="reference external" hre
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.excesspower.excesspower.html#gdas.excesspower.excesspower" title="gdas.excesspower.excesspower"><code class="xref py py-obj docutils literal"><span class="pre">excesspower</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.excess_power.html#gdas.epower.excess_power" title="gdas.epower.excess_power"><code class="xref py py-obj docutils literal"><span class="pre">excess_power</span></code></a>(ts_data,&nbsp;min_frequency,&nbsp;...)</td>
+<td>Perform excess-power search analysis on magnetic field data.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.check_filtering_settings.html#gdas.epower.check_filtering_settings" title="gdas.epower.check_filtering_settings"><code class="xref py py-obj docutils literal"><span class="pre">check_filtering_settings</span></code></a>(sample_rate,&nbsp;...[,&nbsp;...])</td>
+<td>Check filtering settings and define the total number of channels and bandwidth to use for filter bank.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.calculate_psd.html#gdas.epower.calculate_psd" title="gdas.epower.calculate_psd"><code class="xref py py-obj docutils literal"><span class="pre">calculate_psd</span></code></a>(ts_data,&nbsp;sample_rate,&nbsp;...)</td>
+<td>Estimate Power Spectral Density (PSD)</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.calculate_spectral_correlation.html#gdas.epower.calculate_spectral_correlation" title="gdas.epower.calculate_spectral_correlation"><code class="xref py py-obj docutils literal"><span class="pre">calculate_spectral_correlation</span></code></a>(fft_window_len)</td>
+<td>Calculate the two point spectral correlation introduced by windowing the data before transforming to the frequency domain &#8211; valid choices are &#8216;hann&#8217; and &#8216;tukey&#8217;.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.create_filter_bank.html#gdas.epower.create_filter_bank" title="gdas.epower.create_filter_bank"><code class="xref py py-obj docutils literal"><span class="pre">create_filter_bank</span></code></a>(delta_f,&nbsp;flow,&nbsp;band,&nbsp;...)</td>
+<td>Create filter bank</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.convert_to_time_domain.html#gdas.epower.convert_to_time_domain" title="gdas.epower.convert_to_time_domain"><code class="xref py py-obj docutils literal"><span class="pre">convert_to_time_domain</span></code></a>(fdb,&nbsp;sample_rate)</td>
+<td>Convert filter bank from frequency to time domain</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.identify_block.html#gdas.epower.identify_block" title="gdas.epower.identify_block"><code class="xref py py-obj docutils literal"><span class="pre">identify_block</span></code></a>(ts_data,&nbsp;fd_psd,&nbsp;window,&nbsp;...)</td>
+<td>Get frequency series of the current block</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.create_tf_plane.html#gdas.epower.create_tf_plane" title="gdas.epower.create_tf_plane"><code class="xref py py-obj docutils literal"><span class="pre">create_tf_plane</span></code></a>(fd_psd,&nbsp;nchans,&nbsp;seg_len,&nbsp;...)</td>
+<td>Create time-frequency map</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.compute_filter_ips_self.html#gdas.epower.compute_filter_ips_self" title="gdas.epower.compute_filter_ips_self"><code class="xref py py-obj docutils literal"><span class="pre">compute_filter_ips_self</span></code></a>(lal_filters,&nbsp;spec_corr)</td>
+<td>Compute a set of inner products of input filters with themselves.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.compute_filter_ips_adjacent.html#gdas.epower.compute_filter_ips_adjacent" title="gdas.epower.compute_filter_ips_adjacent"><code class="xref py py-obj docutils literal"><span class="pre">compute_filter_ips_adjacent</span></code></a>(lal_filters,&nbsp;...)</td>
+<td>Compute a set of filter inner products between input adjacent filters.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.compute_channel_renormalization.html#gdas.epower.compute_channel_renormalization" title="gdas.epower.compute_channel_renormalization"><code class="xref py py-obj docutils literal"><span class="pre">compute_channel_renormalization</span></code></a>(nc_sum,&nbsp;...)</td>
+<td>Compute the renormalization for the base filters up to a given bandwidth.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.measure_hrss.html#gdas.epower.measure_hrss" title="gdas.epower.measure_hrss"><code class="xref py py-obj docutils literal"><span class="pre">measure_hrss</span></code></a>(z_j_b,&nbsp;uw_ss_ii,&nbsp;uw_ss_ij,&nbsp;...)</td>
+<td>Approximation of unwhitened sum of squares signal energy in a given EP tile.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.measure_hrss_slowly.html#gdas.epower.measure_hrss_slowly" title="gdas.epower.measure_hrss_slowly"><code class="xref py py-obj docutils literal"><span class="pre">measure_hrss_slowly</span></code></a>(z_j_b,&nbsp;lal_filters,&nbsp;...)</td>
+<td>Approximation of unwhitened sum of squares signal energy in a given EP tile.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.measure_hrss_poorly.html#gdas.epower.measure_hrss_poorly" title="gdas.epower.measure_hrss_poorly"><code class="xref py py-obj docutils literal"><span class="pre">measure_hrss_poorly</span></code></a>(tile_energy,&nbsp;sub_psd)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.trigger_list_from_map.html#gdas.epower.trigger_list_from_map" title="gdas.epower.trigger_list_from_map"><code class="xref py py-obj docutils literal"><span class="pre">trigger_list_from_map</span></code></a>(tfmap,&nbsp;event_list,&nbsp;...)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.determine_output_segment.html#gdas.epower.determine_output_segment" title="gdas.epower.determine_output_segment"><code class="xref py py-obj docutils literal"><span class="pre">determine_output_segment</span></code></a>(inseg,&nbsp;dt_stride,&nbsp;...)</td>
+<td>Given an input data stretch segment inseg, a data block stride dt_stride, the data sample rate, and an optional window_fraction, return the amount of data that can be processed without corruption effects from the window.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.make_tiles.html#gdas.epower.make_tiles" title="gdas.epower.make_tiles"><code class="xref py py-obj docutils literal"><span class="pre">make_tiles</span></code></a>(tf_map,&nbsp;nc_sum,&nbsp;mu_sq)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.make_indp_tiles.html#gdas.epower.make_indp_tiles" title="gdas.epower.make_indp_tiles"><code class="xref py py-obj docutils literal"><span class="pre">make_indp_tiles</span></code></a>(tf_map,&nbsp;nc_sum,&nbsp;mu_sq)</td>
+<td>Create a time frequency map with resolution of tf_map binning divided by nc_sum + 1.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.make_filename.html#gdas.epower.make_filename" title="gdas.epower.make_filename"><code class="xref py py-obj docutils literal"><span class="pre">make_filename</span></code></a>(ifo,&nbsp;seg[,&nbsp;tag,&nbsp;ext])</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.create_xml.html#gdas.epower.create_xml" title="gdas.epower.create_xml"><code class="xref py py-obj docutils literal"><span class="pre">create_xml</span></code></a>()</td>
 <td></td>
 </tr>
 </tbody>
@@ -109,13 +166,13 @@ The development version can be downloaded from <a class="reference external" hre
 <tr class="row-odd"><td><a class="reference internal" href="generated/gdas.plots.plot_activity.html#gdas.plots.plot_activity" title="gdas.plots.plot_activity"><code class="xref py py-obj docutils literal"><span class="pre">plot_activity</span></code></a>(full_seglist)</td>
 <td>Plot full activity period for station.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/gdas.plots.plot_time_series.html#gdas.plots.plot_time_series" title="gdas.plots.plot_time_series"><code class="xref py py-obj docutils literal"><span class="pre">plot_time_series</span></code></a>(station,&nbsp;ts_list,&nbsp;full_seglist)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.plots.plot_time_series.html#gdas.plots.plot_time_series" title="gdas.plots.plot_time_series"><code class="xref py py-obj docutils literal"><span class="pre">plot_time_series</span></code></a>(station,&nbsp;ts_list[,&nbsp;seglist,&nbsp;hp])</td>
 <td>Generate a plot of the whole data time series</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="generated/gdas.plots.plot_asd.html#gdas.plots.plot_asd" title="gdas.plots.plot_asd"><code class="xref py py-obj docutils literal"><span class="pre">plot_asd</span></code></a>(station,&nbsp;ts_list)</td>
 <td>Plot Amplitude Spectral Density.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/gdas.plots.plot_whitening.html#gdas.plots.plot_whitening" title="gdas.plots.plot_whitening"><code class="xref py py-obj docutils literal"><span class="pre">plot_whitening</span></code></a>(station,&nbsp;ts_list,&nbsp;...)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.plots.plot_whitening.html#gdas.plots.plot_whitening" title="gdas.plots.plot_whitening"><code class="xref py py-obj docutils literal"><span class="pre">plot_whitening</span></code></a>(station,&nbsp;ts_list[,&nbsp;seglist])</td>
 <td>Generate a spectrogram plot and normalized spectrogram</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="generated/gdas.plots.plot_ts.html#gdas.plots.plot_ts" title="gdas.plots.plot_ts"><code class="xref py py-obj docutils literal"><span class="pre">plot_ts</span></code></a>(ts[,&nbsp;fname])</td>
@@ -178,7 +235,7 @@ The development version can be downloaded from <a class="reference external" hre
         <p>
         <a class="uplink" href="#">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="generated/gdas.excesspower.excesspower.html">gdas.excesspower.excesspower</a>&#160;&#160;»
+        <a href="generated/gdas.epower.excess_power.html">gdas.epower.excess_power</a>&#160;&#160;»
         </p>
 
       </div>

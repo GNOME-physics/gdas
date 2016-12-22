@@ -43,12 +43,31 @@ excesspower
 
 Main class to do excess-power search analysis
 
-.. currentmodule:: gdas.excesspower
+.. currentmodule:: gdas.epower
 
 .. autosummary::
    :toctree: generated/
 
-   excesspower
+   excess_power
+   check_filtering_settings
+   calculate_psd
+   calculate_spectral_correlation
+   create_filter_bank
+   convert_to_time_domain
+   identify_block
+   create_tf_plane
+   compute_filter_ips_self
+   compute_filter_ips_adjacent
+   compute_channel_renormalization
+   measure_hrss
+   measure_hrss_slowly
+   measure_hrss_poorly
+   trigger_list_from_map
+   determine_output_segment
+   make_tiles
+   make_indp_tiles
+   make_filename
+   create_xml
    
 plots
 -----

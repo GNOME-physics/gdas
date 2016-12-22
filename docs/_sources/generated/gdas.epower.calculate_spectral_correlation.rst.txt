@@ -1,0 +1,6 @@
+gdas.epower.calculate_spectral_correlation
+==========================================
+
+.. currentmodule:: gdas.epower
+
+.. autofunction:: calculate_spectral_correlation

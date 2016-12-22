@@ -1,6 +1,0 @@
-gdas.utils.retrieve.convertdate
-===============================
-
-.. currentmodule:: gdas.utils.retrieve
-
-.. autofunction:: convertdate
