@@ -1,4 +1,6 @@
-import time,lal,lalburst,math,os,scipy,glue
+import time,math,os,scipy,glue
+from lal import *
+from lalburst import *
 from glue.ligolw.utils.search_summary import append_search_summary
 from glue.ligolw.utils.process        import register_to_xmldoc
 from glue.ligolw   import lsctables,ligolw,utils
