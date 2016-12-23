@@ -45,12 +45,13 @@
         
   <h1>Source code for gdas.plots</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">matplotlib</span><span class="o">,</span><span class="nn">numpy</span>
-<span class="kn">from</span> <span class="nn">astropy.units</span>   <span class="k">import</span> <span class="n">Quantity</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span>      <span class="k">import</span> <span class="n">pyplot</span>
-<span class="kn">from</span> <span class="nn">gwpy.plotter</span>    <span class="k">import</span> <span class="n">SegmentPlot</span><span class="p">,</span><span class="n">TimeSeriesPlot</span><span class="p">,</span><span class="n">SpectrumPlot</span><span class="p">,</span><span class="n">SpectrogramPlot</span>
-<span class="kn">from</span> <span class="nn">gwpy.segments</span>   <span class="k">import</span> <span class="n">SegmentList</span>
-<span class="kn">from</span> <span class="nn">gwpy.spectrum</span>   <span class="k">import</span> <span class="n">Spectrum</span>
-<span class="kn">from</span> <span class="nn">gwpy.timeseries</span> <span class="k">import</span> <span class="n">TimeSeries</span>
+<span class="kn">from</span> <span class="nn">astropy.units</span>    <span class="k">import</span> <span class="n">Quantity</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span>       <span class="k">import</span> <span class="n">pyplot</span>
+<span class="kn">from</span> <span class="nn">gwpy.plotter</span>     <span class="k">import</span> <span class="n">SegmentPlot</span><span class="p">,</span><span class="n">TimeSeriesPlot</span><span class="p">,</span><span class="n">SpectrumPlot</span><span class="p">,</span><span class="n">SpectrogramPlot</span>
+<span class="kn">from</span> <span class="nn">gwpy.segments</span>    <span class="k">import</span> <span class="n">SegmentList</span>
+<span class="kn">from</span> <span class="nn">gwpy.spectrogram</span> <span class="k">import</span> <span class="n">Spectrogram</span>
+<span class="kn">from</span> <span class="nn">gwpy.spectrum</span>    <span class="k">import</span> <span class="n">Spectrum</span>
+<span class="kn">from</span> <span class="nn">gwpy.timeseries</span>  <span class="k">import</span> <span class="n">TimeSeries</span>
 
 <div class="viewcode-block" id="plot_activity"><a class="viewcode-back" href="../../generated/gdas.plots.plot_activity.html#gdas.plots.plot_activity">[docs]</a><span class="k">def</span> <span class="nf">plot_activity</span><span class="p">(</span><span class="n">full_seglist</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>

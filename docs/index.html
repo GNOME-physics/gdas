@@ -164,10 +164,10 @@ The development version can be downloaded from <a class="reference external" hre
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.excess_power.html#gdas.epower.excess_power" title="gdas.epower.excess_power"><code class="xref py py-obj docutils literal"><span class="pre">excess_power</span></code></a>(ts_data,&nbsp;min_frequency,&nbsp;...)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.excess_power.html#gdas.epower.excess_power" title="gdas.epower.excess_power"><code class="xref py py-obj docutils literal"><span class="pre">excess_power</span></code></a>(ts_data,&nbsp;psd_segment_length,&nbsp;...)</td>
 <td>Perform excess-power search analysis on magnetic field data.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.check_filtering_settings.html#gdas.epower.check_filtering_settings" title="gdas.epower.check_filtering_settings"><code class="xref py py-obj docutils literal"><span class="pre">check_filtering_settings</span></code></a>(sample_rate,&nbsp;...[,&nbsp;...])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.check_filtering_settings.html#gdas.epower.check_filtering_settings" title="gdas.epower.check_filtering_settings"><code class="xref py py-obj docutils literal"><span class="pre">check_filtering_settings</span></code></a>(sample_rate,&nbsp;...)</td>
 <td>Check filtering settings and define the total number of channels and bandwidth to use for filter bank.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.calculate_psd.html#gdas.epower.calculate_psd" title="gdas.epower.calculate_psd"><code class="xref py py-obj docutils literal"><span class="pre">calculate_psd</span></code></a>(ts_data,&nbsp;sample_rate,&nbsp;...)</td>
@@ -194,7 +194,7 @@ The development version can be downloaded from <a class="reference external" hre
 <tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.compute_filter_ips_adjacent.html#gdas.epower.compute_filter_ips_adjacent" title="gdas.epower.compute_filter_ips_adjacent"><code class="xref py py-obj docutils literal"><span class="pre">compute_filter_ips_adjacent</span></code></a>(lal_filters,&nbsp;...)</td>
 <td>Compute a set of filter inner products between input adjacent filters.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.compute_channel_renormalization.html#gdas.epower.compute_channel_renormalization" title="gdas.epower.compute_channel_renormalization"><code class="xref py py-obj docutils literal"><span class="pre">compute_channel_renormalization</span></code></a>(nc_sum,&nbsp;...)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.compute_channel_renormalization.html#gdas.epower.compute_channel_renormalization" title="gdas.epower.compute_channel_renormalization"><code class="xref py py-obj docutils literal"><span class="pre">compute_channel_renormalization</span></code></a>(filter_bank,&nbsp;...)</td>
 <td>Compute the renormalization for the base filters up to a given bandwidth.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.measure_hrss.html#gdas.epower.measure_hrss" title="gdas.epower.measure_hrss"><code class="xref py py-obj docutils literal"><span class="pre">measure_hrss</span></code></a>(z_j_b,&nbsp;uw_ss_ii,&nbsp;uw_ss_ij,&nbsp;...)</td>
@@ -221,7 +221,13 @@ The development version can be downloaded from <a class="reference external" hre
 <tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.make_filename.html#gdas.epower.make_filename" title="gdas.epower.make_filename"><code class="xref py py-obj docutils literal"><span class="pre">make_filename</span></code></a>(ifo,&nbsp;seg[,&nbsp;tag,&nbsp;ext])</td>
 <td></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.create_xml.html#gdas.epower.create_xml" title="gdas.epower.create_xml"><code class="xref py py-obj docutils literal"><span class="pre">create_xml</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.construct_tiles.html#gdas.epower.construct_tiles" title="gdas.epower.construct_tiles"><code class="xref py py-obj docutils literal"><span class="pre">construct_tiles</span></code></a>(nc_sum,&nbsp;mu_sq,&nbsp;band,&nbsp;...)</td>
+<td>Constructing tile and calculate their energy</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.create_tile_duration.html#gdas.epower.create_tile_duration" title="gdas.epower.create_tile_duration"><code class="xref py py-obj docutils literal"><span class="pre">create_tile_duration</span></code></a>(j,&nbsp;df,&nbsp;duration,&nbsp;tiles)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.create_xml.html#gdas.epower.create_xml" title="gdas.epower.create_xml"><code class="xref py py-obj docutils literal"><span class="pre">create_xml</span></code></a>(ts_data)</td>
 <td></td>
 </tr>
 </tbody>

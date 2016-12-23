@@ -105,7 +105,7 @@ def excess_power(ts_data,psd_segment_length,psd_segment_stride,psd_estimation,wi
                 print "|------ Total number of events: %d" % len(event_list)
         t_idx_min += int(seg_len * (1 - window_fraction))
         t_idx_max += int(seg_len * (1 - window_fraction))
-    create_xml()
+    create_xml(ts_data)
         
 def check_filtering_settings(sample_rate,channels,tile_bandwidth,fmin,fmax):
     """

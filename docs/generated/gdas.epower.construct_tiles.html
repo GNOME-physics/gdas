@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gdas.epower.create_tf_plane &#8212; gdas 0.1.1 documentation</title>
+    <title>gdas.epower.construct_tiles &#8212; gdas 0.1.1 documentation</title>
     
     <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -27,34 +27,34 @@
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="gdas.epower.compute_filter_ips_self" href="gdas.epower.compute_filter_ips_self.html" />
-    <link rel="prev" title="gdas.epower.identify_block" href="gdas.epower.identify_block.html" /> 
+    <link rel="next" title="gdas.epower.create_tile_duration" href="gdas.epower.create_tile_duration.html" />
+    <link rel="prev" title="gdas.epower.make_filename" href="gdas.epower.make_filename.html" /> 
   </head>
   <body role="document">
       <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
           <span>gdas 0.1.1 documentation</span></a></h1>
-        <h2 class="heading"><span>gdas.epower.create_tf_plane</span></h2>
+        <h2 class="heading"><span>gdas.epower.construct_tiles</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
       
         <p>
-        «&#160;&#160;<a href="gdas.epower.identify_block.html">gdas.epower.identify_block</a>
+        «&#160;&#160;<a href="gdas.epower.make_filename.html">gdas.epower.make_filename</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="gdas.epower.compute_filter_ips_self.html">gdas.epower.compute_filter_ips_self</a>&#160;&#160;»
+        <a href="gdas.epower.create_tile_duration.html">gdas.epower.create_tile_duration</a>&#160;&#160;»
         </p>
 
       </div>
       <div class="content">
         
         
-  <div class="section" id="gdas-epower-create-tf-plane">
-<h1>gdas.epower.create_tf_plane<a class="headerlink" href="#gdas-epower-create-tf-plane" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="gdas-epower-construct-tiles">
+<h1>gdas.epower.construct_tiles<a class="headerlink" href="#gdas-epower-construct-tiles" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="gdas.epower.create_tf_plane">
-<code class="descclassname">gdas.epower.</code><code class="descname">create_tf_plane</code><span class="sig-paren">(</span><em>fd_psd</em>, <em>nchans</em>, <em>seg_len</em>, <em>filter_bank</em>, <em>band</em>, <em>fs_data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gdas/epower.html#create_tf_plane"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gdas.epower.create_tf_plane" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create time-frequency map</p>
+<dt id="gdas.epower.construct_tiles">
+<code class="descclassname">gdas.epower.</code><code class="descname">construct_tiles</code><span class="sig-paren">(</span><em>nc_sum</em>, <em>mu_sq</em>, <em>band</em>, <em>ts_data</em>, <em>tf_map</em>, <em>psd_segment_length</em>, <em>window_fraction</em>, <em>max_duration</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gdas/epower.html#construct_tiles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gdas.epower.construct_tiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructing tile and calculate their energy</p>
 </dd></dl>
 
 </div>
@@ -64,11 +64,11 @@
       <div class="bottomnav" role="navigation" aria-label="bottom navigation">
       
         <p>
-        «&#160;&#160;<a href="gdas.epower.identify_block.html">gdas.epower.identify_block</a>
+        «&#160;&#160;<a href="gdas.epower.make_filename.html">gdas.epower.make_filename</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="gdas.epower.compute_filter_ips_self.html">gdas.epower.compute_filter_ips_self</a>&#160;&#160;»
+        <a href="gdas.epower.create_tile_duration.html">gdas.epower.create_tile_duration</a>&#160;&#160;»
         </p>
 
       </div>

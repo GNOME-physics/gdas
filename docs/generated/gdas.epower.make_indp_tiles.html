@@ -59,6 +59,18 @@ divided by nc_sum + 1. All tiles will be independent up to
 overlap from the original tiling. The mu_sq is applied to the
 resulting addition to normalize the outputs to be zero-mean
 unit-variance Gaussian variables (if the input is Gaussian).</p>
+<p class="rubric">Notes</p>
+<p>Optimization plan: If we keep the summed complex TF plane in known
+indices, we can save ourselves individual sums at wider frequency
+resolutions.
+Caveats:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>We have to keep track of where we&#8217;re storing things</li>
+<li>We have to do it from the finest resolution (for <em>all</em> t0s) and work our way up</li>
+</ol>
+</div></blockquote>
+<p>In the end, I think this is a Haar wavelet transform. Look into it</p>
 </dd></dl>
 
 </div>
