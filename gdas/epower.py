@@ -1,12 +1,15 @@
-import time,lal,lalburst,math,os,scipy
-from glue.ligolw  import lsctables
-from glue.lal     import LIGOTimeGPS
-from scipy.signal import fftconvolve
+import time,lal,lalburst,math,os,scipy,glue
+from glue.ligolw.utils.search_summary import append_search_summary
+from glue.ligolw.utils.process        import register_to_xmldoc
+from glue.ligolw   import lsctables,ligolw,utils
+from glue.lal      import LIGOTimeGPS
+from glue.segments import segment
+from scipy.signal  import fftconvolve
 from pycbc import psd,types,filter
 from utils import *
 from plots import *
 
-def excess_power(ts_data,psd_segment_length,psd_segment_stride,psd_estimation,window_fraction,tile_fap,nchans=None,band=None,fmin=0,fmax=None,max_duration=None):
+def excess_power(ts_data,psd_segment_length,psd_segment_stride,psd_estimation,window_fraction,tile_fap,station,nchans=None,band=None,fmin=0,fmax=None,max_duration=None):
     """
     Perform excess-power search analysis on magnetic field data.
 
@@ -40,6 +43,8 @@ def excess_power(ts_data,psd_segment_length,psd_segment_stride,psd_estimation,wi
     all the triggers found in the selected data within the user-defined
     time range.
     """
+    #print strain.insert_strain_option_group.__dict__
+    print psd.insert_psd_option_group.__dict__
     sample_rate = ts_data.sample_rate
     nchans,band,flow = check_filtering_settings(sample_rate,nchans,band,fmin,fmax)
     seg_len,fd_psd,lal_psd = calculate_psd(ts_data,sample_rate,psd_segment_length,psd_segment_stride,psd_estimation)
@@ -105,7 +110,7 @@ def excess_power(ts_data,psd_segment_length,psd_segment_stride,psd_estimation,wi
                 print "|------ Total number of events: %d" % len(event_list)
         t_idx_min += int(seg_len * (1 - window_fraction))
         t_idx_max += int(seg_len * (1 - window_fraction))
-    create_xml(ts_data)
+    create_xml(ts_data,psd_segment_length,window_fraction,event_list,station)
         
 def check_filtering_settings(sample_rate,channels,tile_bandwidth,fmin,fmax):
     """
@@ -315,6 +320,11 @@ def identify_block(ts_data,fd_psd,window,t_idx_min,t_idx_max):
 def create_tf_plane(fd_psd,nchans,seg_len,filter_bank,band,fs_data):
     """
     Create time-frequency map
+
+    Parameters
+    ----------
+    fd_psd : array
+      Power Spectrum Density
     """
     print "|-- Create time-frequency plane for current block"
     # Return the complex snr, along with its associated normalization of the template,
@@ -501,21 +511,6 @@ def trigger_list_from_map(tfmap, event_list, threshold, start_time, start_freq, 
         event.event_id = event_list.get_next_id()
         event_list.append(event)
         
-def determine_output_segment(inseg, dt_stride, sample_rate, window_fraction=0.0):
-    """
-    Given an input data stretch segment inseg, a data block stride dt_stride, the data sample rate, and an optional window_fraction, return the amount of data that can be processed without corruption effects from the window.
-    If window_fration is set to 0 (default), assume no windowing.
-    """
-    # Amount to overlap successive blocks so as not to lose data
-    window_overlap_samples = window_fraction * sample_rate
-    outseg = inseg.contract(window_fraction * dt_stride / 2)
-
-    # With a given dt_stride, we cannot process the remainder of this data
-    remainder = math.fmod(abs(outseg), dt_stride * (1 - window_fraction))
-    # ...so make an accounting of it
-    outseg = segment(outseg[0], outseg[1] - remainder)
-    return outseg
-
 def make_tiles(tf_map, nc_sum, mu_sq):
     tiles = numpy.zeros(tf_map.shape)
     sum_filter = numpy.ones(nc_sum+1)
@@ -606,18 +601,17 @@ def create_tile_duration(j,df,duration,tiles):
     print "|----- Summed tile energy mean: %f, var %f" % (numpy.mean(dof_tiles), numpy.var(dof_tiles))
     return dof_tiles
     
-def create_xml(ts_data):
+def create_xml(ts_data,psd_segment_length,window_fraction,event_list,station,setname="MagneticFields"):
     __program__ = 'pyburst_excesspower'
-    # Represent the range of values in the semi-open interval
-    start_time = LIGOTimeGPS(ts_data.start_time)
-    end_time = LIGOTimeGPS(ts_data.end_time)
+    start_time = LIGOTimeGPS(int(ts_data.start_time))
+    end_time = LIGOTimeGPS(int(ts_data.end_time))
     inseg = segment(start_time,end_time)
     xmldoc = ligolw.Document()
     xmldoc.appendChild(ligolw.LIGO_LW())
-    ifo = channel_name.split(":")[0]
-    proc_row = register_to_xmldoc(xmldoc, __program__, __dict__, ifos=[ifo],version=glue.git_version.id, cvs_repository=glue.git_version.branch, cvs_entry_time=glue.git_version.date)
-    # Figure out the data we actually analyzed
-    outseg = determine_output_segment(inseg, psd_segment_length, sample_rate, window_fraction)
+    ifo = 'H1'#channel_name.split(":")[0]
+    straindict = psd.insert_psd_option_group.__dict__
+    proc_row = register_to_xmldoc(xmldoc, __program__,straindict, ifos=[ifo],version=glue.git_version.id, cvs_repository=glue.git_version.branch, cvs_entry_time=glue.git_version.date)
+    outseg = determine_output_segment(inseg, psd_segment_length, ts_data.sample_rate, window_fraction)
     ss = append_search_summary(xmldoc, proc_row, ifos=(station,), inseg=inseg, outseg=outseg)
     for sb in event_list:
         sb.process_id = proc_row.process_id
@@ -625,4 +619,19 @@ def create_xml(ts_data):
         sb.ifo, sb.channel = station, setname
     xmldoc.childNodes[0].appendChild(event_list)
     fname = make_filename(station, inseg)
-    utils.write_filename(xmldoc, fname, gz=fname.endswith("gz"), verbose=True)
+    utils.write_filename(xmldoc, fname, gz=fname.endswith("gz"))
+
+def determine_output_segment(inseg, dt_stride, sample_rate, window_fraction=0.0):
+    """
+    Given an input data stretch segment inseg, a data block stride dt_stride, the data sample rate, and an optional window_fraction, return the amount of data that can be processed without corruption effects from the window.
+    If window_fration is set to 0 (default), assume no windowing.
+    """
+    # Amount to overlap successive blocks so as not to lose data
+    window_overlap_samples = window_fraction * sample_rate
+    outseg = inseg.contract(window_fraction * dt_stride / 2)
+
+    # With a given dt_stride, we cannot process the remainder of this data
+    remainder = math.fmod(abs(outseg), dt_stride * (1 - window_fraction))
+    # ...so make an accounting of it
+    outseg = segment(outseg[0], outseg[1] - remainder)
+    return outseg

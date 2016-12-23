@@ -8,7 +8,7 @@ from gwpy.segments   import DataQualityDict,DataQualityFlag
 from gwpy.timeseries import TimeSeries,TimeSeriesList
 from pycbc           import types
 
-def magfield(station,starttime,endtime,activity=False):
+def magfield(station,starttime,endtime,activity=False,rep='/GNOMEDrive/gnome/serverdata/'):
     """
     Glob all files withing user-defined period and extract data.
     
@@ -37,10 +37,9 @@ def magfield(station,starttime,endtime,activity=False):
     for date in numpy.arange(start,end,timedelta(minutes=1)):
         date = date.astype(datetime)
         year,month,day,hour,minute = date.year,date.month,date.day,date.hour,date.minute
-        path1 = '/Users/vincent/ASTRO/data/GNOMEDrive/gnome/serverdata/'
-        path2 = "%s/%s/%02i/%02i/"%(station,year,month,day)
-        path3 = "%s_%s%02i%02i_%02i%02i*.hdf5"%(station,year,month,day,hour,minute)
-        fullpath = os.path.join(path1,path2,path3)
+        path1 = "%s%s/%s/%02i/%02i/"%(rep,station,year,month,day)
+        path2 = "%s_%s%02i%02i_%02i%02i*.hdf5"%(station,year,month,day,hour,minute)
+        fullpath = os.path.join(path1,path2)
         dataset += glob.glob(fullpath)
     file_order,data_order = {},{}
     for fname in dataset:

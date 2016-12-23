@@ -1,11 +1,12 @@
 import matplotlib,numpy
-from astropy.units    import Quantity
-from matplotlib       import pyplot
-from gwpy.plotter     import SegmentPlot,TimeSeriesPlot,SpectrumPlot,SpectrogramPlot
-from gwpy.segments    import SegmentList
-from gwpy.spectrogram import Spectrogram
-from gwpy.spectrum    import Spectrum
-from gwpy.timeseries  import TimeSeries
+from gwpy.table.lsctables import SnglBurstTable
+from astropy.units        import Quantity
+from matplotlib           import pyplot
+from gwpy.plotter         import SegmentPlot,TimeSeriesPlot,SpectrumPlot,SpectrogramPlot
+from gwpy.segments        import SegmentList
+from gwpy.spectrogram     import Spectrogram
+from gwpy.spectrum        import Spectrum
+from gwpy.timeseries      import TimeSeries
 
 def plot_activity(full_seglist):
     """
@@ -174,15 +175,15 @@ def plot_spectrogram_from_ts(ts):
     pyplot.savefig("specgram.png")
     pyplot.close()
 
-def plot_triggers(sample_rate):
+def plot_triggers():
     events = SnglBurstTable.read('excesspower.xml.gz')
     #plot = events.plot('time', 'central_freq', "duration", "bandwidth", color='snr')
     plot = events.plot('time','central_freq',color='snr',edgecolor='none')
     #plot.set_xlim(time_start,time_end)
-    plot.set_ylim(band, sample_rate/2.)
+    #plot.set_ylim(band, sample_rate/2.)
     plot.set_ylabel('Frequency [Hz]')
     plot.set_yscale('log')
-    plot.set_title('GNOME '+station+' station event triggers')
+    #plot.set_title('GNOME '+station+' station event triggers')
     plot.add_colorbar(cmap='copper_r',label='Tile Energy')
     pyplot.savefig("triggers.png",dpi=400)
 
