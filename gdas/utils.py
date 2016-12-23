@@ -15,4 +15,3 @@ def create_sound(ts):
     wout.setframerate(1000)
     wout.writeframes(ts[:])
     wout.close()
-    

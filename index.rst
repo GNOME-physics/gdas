@@ -105,6 +105,8 @@ Main class to do excess-power search analysis
    make_tiles
    make_indp_tiles
    make_filename
+   construct_tiles
+   create_tile_duration
    create_xml
    
 Utilities
@@ -112,7 +114,7 @@ Utilities
 
 Independent routines to do various other things
 
-.. currentmodule:: utils
+.. currentmodule:: gdas.utils
 
 .. autosummary::
    :toctree: generated/

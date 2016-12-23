@@ -1,10 +1,11 @@
 import matplotlib,numpy
-from astropy.units   import Quantity
-from matplotlib      import pyplot
-from gwpy.plotter    import SegmentPlot,TimeSeriesPlot,SpectrumPlot,SpectrogramPlot
-from gwpy.segments   import SegmentList
-from gwpy.spectrum   import Spectrum
-from gwpy.timeseries import TimeSeries
+from astropy.units    import Quantity
+from matplotlib       import pyplot
+from gwpy.plotter     import SegmentPlot,TimeSeriesPlot,SpectrumPlot,SpectrogramPlot
+from gwpy.segments    import SegmentList
+from gwpy.spectrogram import Spectrogram
+from gwpy.spectrum    import Spectrum
+from gwpy.timeseries  import TimeSeries
 
 def plot_activity(full_seglist):
     """

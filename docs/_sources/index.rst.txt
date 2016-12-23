@@ -112,7 +112,7 @@ Utilities
 
 Independent routines to do various other things
 
-.. currentmodule:: utils
+.. currentmodule:: gdas.utils
 
 .. autosummary::
    :toctree: generated/
