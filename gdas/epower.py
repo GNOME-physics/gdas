@@ -1,15 +1,17 @@
-import time,math,os,scipy,glue
-from lal import *
-from lalburst import *
+import time,math,os,scipy,lal,lalburst
+from plots                            import *
+from pycbc                            import psd,types,filter
+from glue.ligolw                      import lsctables
+from gwpy.spectrum                    import Spectrum
+from gwpy.timeseries                  import TimeSeries
+from scipy.signal                     import fftconvolve
+from utils                            import *
+from glue                             import git_version
+from glue.lal                         import LIGOTimeGPS
+from glue.ligolw                      import ligolw,utils
 from glue.ligolw.utils.search_summary import append_search_summary
 from glue.ligolw.utils.process        import register_to_xmldoc
-from glue.ligolw   import lsctables,ligolw,utils
-from glue.lal      import LIGOTimeGPS
-from glue.segments import segment
-from scipy.signal  import fftconvolve
-from pycbc import psd,types,filter
-from utils import *
-from plots import *
+from glue.segments                    import segment
 
 def excess_power(ts_data,psd_segment_length,psd_segment_stride,psd_estimation,window_fraction,tile_fap,station,nchans=None,band=None,fmin=0,fmax=None,max_duration=None):
     """
@@ -46,7 +48,7 @@ def excess_power(ts_data,psd_segment_length,psd_segment_stride,psd_estimation,wi
     time range.
     """
     #print strain.insert_strain_option_group.__dict__
-    print psd.insert_psd_option_group.__dict__
+    #print psd.insert_psd_option_group.__dict__
     sample_rate = ts_data.sample_rate
     nchans,band,flow = check_filtering_settings(sample_rate,nchans,band,fmin,fmax)
     seg_len,fd_psd,lal_psd = calculate_psd(ts_data,sample_rate,psd_segment_length,psd_segment_stride,psd_estimation)
@@ -466,7 +468,7 @@ def measure_hrss_poorly(tile_energy, sub_psd):
     return math.sqrt(tile_energy / numpy.average(1.0 / sub_psd) / 2)
 
 def trigger_list_from_map(tfmap, event_list, threshold, start_time, start_freq, duration, band, df, dt, psd=None):
-    
+
     # FIXME: If we don't convert this the calculation takes forever ---
     # but we should convert it once and handle deltaF better later
     if psd is not None:
@@ -612,7 +614,7 @@ def create_xml(ts_data,psd_segment_length,window_fraction,event_list,station,set
     xmldoc.appendChild(ligolw.LIGO_LW())
     ifo = 'H1'#channel_name.split(":")[0]
     straindict = psd.insert_psd_option_group.__dict__
-    proc_row = register_to_xmldoc(xmldoc, __program__,straindict, ifos=[ifo],version=glue.git_version.id, cvs_repository=glue.git_version.branch, cvs_entry_time=glue.git_version.date)
+    proc_row = register_to_xmldoc(xmldoc, __program__,straindict, ifos=[ifo],version=git_version.id, cvs_repository=git_version.branch, cvs_entry_time=git_version.date)
     outseg = determine_output_segment(inseg, psd_segment_length, ts_data.sample_rate, window_fraction)
     ss = append_search_summary(xmldoc, proc_row, ifos=(station,), inseg=inseg, outseg=outseg)
     for sb in event_list:
@@ -631,7 +633,6 @@ def determine_output_segment(inseg, dt_stride, sample_rate, window_fraction=0.0)
     # Amount to overlap successive blocks so as not to lose data
     window_overlap_samples = window_fraction * sample_rate
     outseg = inseg.contract(window_fraction * dt_stride / 2)
-
     # With a given dt_stride, we cannot process the remainder of this data
     remainder = math.fmod(abs(outseg), dt_stride * (1 - window_fraction))
     # ...so make an accounting of it
