@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Introduction &#8212; gdas 0.2.6 documentation</title>
+    <title>GNOME Data Analysis Software &#8212; gdas 0.2.6 documentation</title>
     
     <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -32,7 +32,7 @@
   <body role="document">
       <div class="header" role="banner"><h1 class="heading"><a href="#">
           <span>gdas 0.2.6 documentation</span></a></h1>
-        <h2 class="heading"><span>Introduction</span></h2>
+        <h2 class="heading"><span>GNOME Data Analysis Software</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
       
@@ -46,8 +46,8 @@
       <div class="content">
         
         
-  <div class="section" id="introduction">
-<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="gnome-data-analysis-software">
+<h1>GNOME Data Analysis Software<a class="headerlink" href="#gnome-data-analysis-software" title="Permalink to this headline">¶</a></h1>
 <p>This package contains functions useful for magnetic field signal processing, with a focus on Excess Power search analysis and application on the data for the GNOME collaboration, see <a class="reference external" href="https://arxiv.org/abs/1303.5524">Pustelny et al. (2013)</a>. This documentation details all the available functions and tasks available through this software. Here are some example tasks that can (or will soon to) be handled:</p>
 <ul class="simple">
 <li>Plot usual time series and spectrogram of magnetic field data.</li>
@@ -59,7 +59,7 @@
 </ul>
 <a href="https://github.com/GNOME-physics/gdas"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a><div class="toctree-wrapper compound">
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul class="simple">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">GNOME Data Analysis Software</a><ul class="simple">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="#installation">Installation</a><ul>
@@ -67,6 +67,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#main-program">Main Program</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="#server-access-and-usage">Server access and usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#functionalities">Functionalities</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#extract-magnetic-field-data">Extract Magnetic Field Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#plotting-routines">Plotting routines</a></li>
@@ -79,33 +80,59 @@
 </div>
 <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>The program requires the following general packages to run: <a class="reference external" href="http://numpy.scipy.org/">Numpy</a>, <a class="reference external" href="http://matplotlib.sourceforge.net/">Matplotlib</a>, <a class="reference external" href="http://www.scipy.org/">Scipy</a> and <a class="reference external" href="http://www.astropy.org/">Astropy</a>. The following LIGO-related packages are also required for full functionality: <a class="reference external" href="https://www.lsc-group.phys.uwm.edu/daswg/projects/glue.html">Glue</a>, <a class="reference external" href="https://gwpy.github.io/">Gwpy</a>, <a class="reference external" href="https://github.com/ligo-cbc/pycbc">PyCBC</a>, <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lal/index.html">lal</a>, <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lalburst/index.html">lalburst</a> and <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lalsimulation/index.html">LALsimulation</a></p>
+<p>The program requires the following general packages to run: <a class="reference external" href="http://numpy.scipy.org/">Numpy</a>, <a class="reference external" href="http://matplotlib.sourceforge.net/">Matplotlib</a>, <a class="reference external" href="http://www.scipy.org/">Scipy</a> and <a class="reference external" href="http://www.astropy.org/">Astropy</a>. The following LIGO-related packages are also required for full functionality: <a class="reference external" href="https://gwpy.github.io/">Gwpy</a>, <a class="reference external" href="https://github.com/ligo-cbc/pycbc">PyCBC</a>, <a class="reference external" href="https://www.lsc-group.phys.uwm.edu/daswg/projects/glue.html">Glue</a>, <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lal/index.html">LAL</a>, <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lalburst/index.html">LALburst</a> and <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lalsimulation/index.html">LALsimulation</a>.</p>
+<p>While most of the packages can be installed automatically using <a class="reference external" href="http://www.pip-installer.org/en/latest/index.html">pip</a>, some LIGO packages (Glue, LAL, LALburst and LALsimulation) must be installed separately beforehand as they contain several C routines that need specific compilation. However, these packages are already included in a bigger package called <a class="reference external" href="https://wiki.ligo.org/DASWG/LALSuite">LALsuite</a> which can be installed fairly easily on Debian (Linux) and Mac OS machines.</p>
 <div class="section" id="lalsuite-tools">
 <h2>LALsuite tools<a class="headerlink" href="#lalsuite-tools" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="through-macports">
-<h3>Through MacPorts<a class="headerlink" href="#through-macports" title="Permalink to this headline">¶</a></h3>
+<p>Some useful pages on how to download and install the LIGO software can be found <a class="reference external" href="https://wiki.ligo.org/DASWG/HowToDocs">here</a>.</p>
+<div class="section" id="macports-mac">
+<h3>MacPorts (Mac)<a class="headerlink" href="#macports-mac" title="Permalink to this headline">¶</a></h3>
+<p>For Mac users, the installation is pretty easy, detailed information can be found on <a class="reference external" href="https://wiki.ligo.org/DASWG/MacPorts">this page</a>. You need to have <a class="reference external" href="https://www.macports.org/install.php">MacPorts</a> installed. The following commands should suffice to install the LALsuite package on your machine:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">port</span> <span class="n">install</span> <span class="n">lscsoft</span><span class="o">-</span><span class="n">deps</span>
+<span class="n">sudo</span> <span class="n">port</span> <span class="n">install</span> <span class="n">glue</span>
+<span class="n">sudo</span> <span class="n">port</span> <span class="n">install</span> <span class="n">lalapps</span>
+</pre></div>
 </div>
-<div class="section" id="through-aptget">
-<h3>Through AptGet<a class="headerlink" href="#through-aptget" title="Permalink to this headline">¶</a></h3>
+<p>The first command will install all the dependencies needed for the LIGO software to be installed. The following 2 commands will install the actual packages.</p>
+</div>
+<div class="section" id="apt-get-debian">
+<h3>apt-get (Debian)<a class="headerlink" href="#apt-get-debian" title="Permalink to this headline">¶</a></h3>
+<p>Since the LIGO software is not a default package in the apt package manager system on Debian machine, additional steps will be needed. The first step is to add the following links to the source list located at <code class="docutils literal"><span class="pre">/etc/apt/sources.list</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">deb</span> <span class="p">[</span><span class="n">arch</span><span class="o">=</span><span class="n">amd64</span><span class="p">]</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">software</span><span class="o">.</span><span class="n">ligo</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">lscsoft</span><span class="o">/</span><span class="n">debian</span> <span class="n">jessie</span> <span class="n">contrib</span>
+<span class="n">deb</span><span class="o">-</span><span class="n">src</span> <span class="p">[</span><span class="n">arch</span><span class="o">=</span><span class="n">amd64</span><span class="p">]</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">software</span><span class="o">.</span><span class="n">ligo</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">lscsoft</span><span class="o">/</span><span class="n">debian</span> <span class="n">jessie</span> <span class="n">contrib</span>
+</pre></div>
+</div>
+<p>Note that the <code class="docutils literal"><span class="pre">[arch=amd64]</span></code> is needed to fix the architecture problem in case it tries to install i386 version on 64-bit Debian. Once the sources have been added, you must first install all the dependencies as follows:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">build</span><span class="o">-</span><span class="n">essential</span> <span class="n">automake</span> <span class="n">autoconf</span> <span class="n">libtool</span> <span class="n">devscripts</span>
+</pre></div>
+</div>
+<p>The LIGO software can finally be installed using the following command:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">lscsoft</span><span class="o">-</span><span class="nb">all</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="main-program">
 <h2>Main Program<a class="headerlink" href="#main-program" title="Permalink to this headline">¶</a></h2>
-<p>The best way to install the package is by using <cite>pip</cite>:</p>
+<p>The best way to install the GNOME software along with the rest of the dependencies is by using <cite>pip</cite>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">gdas</span>
 </pre></div>
 </div>
 <p>(You may need to put a <code class="docutils literal"><span class="pre">sudo</span></code> in front of this). For this to work
 you need to have <a class="reference external" href="http://www.pip-installer.org/en/latest/index.html">pip</a> installed. This
 method allows for easy uninstallation.</p>
-<p>You can also simply download the tarball from the PyPI website, unpack
-it and then do:</p>
+<p>You can also simply download the tarball from the PyPI website, unpack it and then do:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
 </pre></div>
 </div>
 <p>The latest stable package can be downloaded from PyPI: <a class="reference external" href="https://pypi.python.org/pypi/gdas">https://pypi.python.org/pypi/gdas</a>.
 The development version can be downloaded from <a class="reference external" href="https://github.com/GNOME-physics/gdas">here</a>.</p>
 </div>
+</div>
+<div class="section" id="server-access-and-usage">
+<h1>Server access and usage<a class="headerlink" href="#server-access-and-usage" title="Permalink to this headline">¶</a></h1>
+<p>A GNOME JupyterHub, or multi-user server has been created to allow each member to access the entire available dataset. The server can be accessed at the following link:</p>
+<p><a class="reference external" href="https://budker.uni-mainz.de:8000/hub/login">https://budker.uni-mainz.de:8000/hub/login</a></p>
 </div>
 <div class="section" id="functionalities">
 <h1>Functionalities<a class="headerlink" href="#functionalities" title="Permalink to this headline">¶</a></h1>

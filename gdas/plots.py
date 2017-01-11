@@ -1,4 +1,5 @@
 import matplotlib,numpy
+matplotlib.use('Agg')
 from astropy.units import Quantity
 from matplotlib    import pyplot
 
