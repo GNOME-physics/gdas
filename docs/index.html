@@ -48,34 +48,19 @@
         
   <div class="section" id="gnome-data-analysis-software">
 <h1>GNOME Data Analysis Software<a class="headerlink" href="#gnome-data-analysis-software" title="Permalink to this headline">¶</a></h1>
-<p>This package contains functions useful for magnetic field signal processing, with a focus on Excess Power search analysis and application on the data for the GNOME collaboration, see <a class="reference external" href="https://arxiv.org/abs/1303.5524">Pustelny et al. (2013)</a>. This documentation details all the available functions and tasks available through this software. Here are some example tasks that can (or will soon to) be handled:</p>
-<ul class="simple">
-<li>Plot usual time series and spectrogram of magnetic field data.</li>
-<li>Perform excess power analysis and plot detected triggers in time-frequency map.</li>
-<li>Create artificial data for testing data analysis.</li>
-<li>Inject fake signal of different bandwidth and durations.</li>
-<li>Cross-correlation of continuous sine wave signals.</li>
-<li>Perform Allan Standard deviation.</li>
-</ul>
-<a href="https://github.com/GNOME-physics/gdas"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a></div>
-<div class="section" id="contents">
-<h1>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">GNOME Data Analysis Software</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#contents">Contents</a><ul class="simple">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">GNOME Data Analysis Software</a><ul class="simple">
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="#introduction">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#installation">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#lalsuite-tools">LALsuite tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#main-program">Main Program</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#multi-user-server-and-analysis-tutorial">Multi-user Server and Analysis Tutorial</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#server-access">Server Access</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="#multi-user-server">Multi-user Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#getting-started">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#functionalities">Functionalities</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#extract-magnetic-field-data">Extract Magnetic Field Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#plotting-routines">Plotting routines</a></li>
@@ -86,6 +71,18 @@
 </ul>
 </div>
 </div>
+<div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>This package contains functions useful for magnetic field signal processing, with a focus on Excess Power search analysis and application on the data for the GNOME collaboration, see <a class="reference external" href="https://arxiv.org/abs/1303.5524">Pustelny et al. (2013)</a>. This documentation details all the available functions and tasks available through this software. Here are some example tasks that can (or will soon to) be handled:</p>
+<ul class="simple">
+<li>Plot usual time series and spectrogram of magnetic field data.</li>
+<li>Perform excess power analysis and plot detected triggers in time-frequency map.</li>
+<li>Create artificial data for testing data analysis.</li>
+<li>Inject fake signal of different bandwidth and durations.</li>
+<li>Cross-correlation of continuous sine wave signals.</li>
+<li>Perform Allan Standard deviation.</li>
+</ul>
+<a href="https://github.com/GNOME-physics/gdas"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a></div>
 <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
 <p>The program requires the following general packages to run: <a class="reference external" href="http://numpy.scipy.org/">Numpy</a>, <a class="reference external" href="http://matplotlib.sourceforge.net/">Matplotlib</a>, <a class="reference external" href="http://www.scipy.org/">Scipy</a> and <a class="reference external" href="http://www.astropy.org/">Astropy</a>. The following LIGO-related packages are also required for full functionality: <a class="reference external" href="https://gwpy.github.io/">Gwpy</a>, <a class="reference external" href="https://github.com/ligo-cbc/pycbc">PyCBC</a>, <a class="reference external" href="https://www.lsc-group.phys.uwm.edu/daswg/projects/glue.html">Glue</a>, <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lal/index.html">LAL</a>, <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lalburst/index.html">LALburst</a> and <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lalsimulation/index.html">LALsimulation</a>.</p>
@@ -137,19 +134,24 @@ method allows for easy uninstallation.</p>
 The development version can be downloaded from <a class="reference external" href="https://github.com/GNOME-physics/gdas">here</a>.</p>
 </div>
 </div>
-<div class="section" id="multi-user-server-and-analysis-tutorial">
-<h1>Multi-user Server and Analysis Tutorial<a class="headerlink" href="#multi-user-server-and-analysis-tutorial" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="server-access">
-<h2>Server Access<a class="headerlink" href="#server-access" title="Permalink to this headline">¶</a></h2>
-<p>A GNOME JupyterHub, or multi-user server has been created to allow each member to access the entire available dataset. The server can be accessed in two ways, either by acceding the <a class="reference external" href="https://budker.uni-mainz.de:8000/hub/login">server&#8217;s webpage</a>, or from your terminal through SSH:</p>
+<div class="section" id="multi-user-server">
+<h1>Multi-user Server<a class="headerlink" href="#multi-user-server" title="Permalink to this headline">¶</a></h1>
+<p>A GNOME JupyterHub, or multi-user server has been created to allow each member to access the entire available dataset. Member who do not have access to the server but wish to access it should send a request to Dr. Sam Afach. Member who are not part of the GNOME collaboration will not be granted access to the dataset but are free to use our software on their own data.</p>
+<p>The server can be accessed in two ways, either by acceding the <a class="reference external" href="https://budker.uni-mainz.de:8000/hub/login">server&#8217;s webpage</a>, or from your terminal through SSH:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="o">-</span><span class="n">X</span> <span class="n">username</span><span class="nd">@budker</span><span class="o">.</span><span class="n">uni</span><span class="o">-</span><span class="n">mainz</span><span class="o">.</span><span class="n">de</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8022</span>
 </pre></div>
 </div>
-<p>Although you can also open a terminal in the server&#8217;s webpage, I recommend to use the webpage to work on Jupyter notebook only.</p>
-<p>Member who do not have access to the server but wish to access it should send a request to Dr. Sam Afach. Member who are not part of the GNOME collaboration will not be granted access to the dataset but are free to use our software on their own data.</p>
+<p>While SSH is very handy for people using UNIX-like operating systems, this can become more complicated for those working on Windows machines. Fortunately, access to a terminal is also possible through the webpage, which means directly from your internet browser! This can be done by clicking on the New tab after login and select Terminal:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/jupyter1.png"><img alt="_images/jupyter1.png" src="_images/jupyter1.png" style="width: 70%;" /></a>
+</div>
+<p>You can then use the terminal window to access files and create new Python scripts for your analysis.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/jupyter2.png"><img alt="_images/jupyter2.png" src="_images/jupyter2.png" style="width: 70%;" /></a>
+</div>
 </div>
 <div class="section" id="getting-started">
-<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
 <p>Either on your own computer or on the server, on a Jupyter notebook or on a Python script, the first thing to do is to import the <code class="docutils literal"><span class="pre">gdas</span></code> package that contain all the modules present in the GNOME software. That can be done easily by doing the following:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gdas</span>
 </pre></div>
@@ -187,7 +189,6 @@ The development version can be downloaded from <a class="reference external" hre
 <span class="n">gdas</span><span class="o">.</span><span class="n">excess_power</span><span class="p">(</span><span class="n">ts_data</span><span class="p">,</span><span class="n">psd_segment_length</span><span class="p">,</span><span class="n">psd_segment_stride</span><span class="p">,</span><span class="n">psd_estimation</span><span class="p">,</span><span class="n">window_fraction</span><span class="p">,</span><span class="n">tile_fap</span><span class="p">,</span><span class="n">station</span><span class="p">,</span><span class="n">nchans</span><span class="o">=</span><span class="n">channels</span><span class="p">)</span>
 <span class="n">gdas</span><span class="o">.</span><span class="n">plot_triggers</span><span class="p">()</span>
 </pre></div>
-</div>
 </div>
 </div>
 <div class="section" id="functionalities">

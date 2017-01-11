@@ -1,6 +1,14 @@
 GNOME Data Analysis Software
 ============================
 
+.. toctree::
+   :maxdepth: 2
+
+   index.rst
+
+Introduction
+============
+
 This package contains functions useful for magnetic field signal processing, with a focus on Excess Power search analysis and application on the data for the GNOME collaboration, see `Pustelny et al. (2013) <https://arxiv.org/abs/1303.5524>`_. This documentation details all the available functions and tasks available through this software. Here are some example tasks that can (or will soon to) be handled:
 
 * Plot usual time series and spectrogram of magnetic field data.
@@ -13,14 +21,6 @@ This package contains functions useful for magnetic field signal processing, wit
 .. raw:: html
 
  <a href="https://github.com/GNOME-physics/gdas"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
-
-Contents
-========
- 
-.. toctree::
-   :maxdepth: 2
-
-   index.rst
 
 Installation
 ============
@@ -80,22 +80,29 @@ You can also simply download the tarball from the PyPI website, unpack it and th
 The latest stable package can be downloaded from PyPI: https://pypi.python.org/pypi/gdas.
 The development version can be downloaded from `here <https://github.com/GNOME-physics/gdas>`_.
 
-Multi-user Server and Analysis Tutorial
-=======================================
+Multi-user Server
+=================
 
-Server Access
--------------
+A GNOME JupyterHub, or multi-user server has been created to allow each member to access the entire available dataset. Member who do not have access to the server but wish to access it should send a request to Dr. Sam Afach. Member who are not part of the GNOME collaboration will not be granted access to the dataset but are free to use our software on their own data.
 
-A GNOME JupyterHub, or multi-user server has been created to allow each member to access the entire available dataset. The server can be accessed in two ways, either by acceding the `server's webpage <https://budker.uni-mainz.de:8000/hub/login>`_, or from your terminal through SSH::
+The server can be accessed in two ways, either by acceding the `server's webpage <https://budker.uni-mainz.de:8000/hub/login>`_, or from your terminal through SSH::
 
   ssh -X username@budker.uni-mainz.de -p 8022
 
-Although you can also open a terminal in the server's webpage, I recommend to use the webpage to work on Jupyter notebook only.
- 
-Member who do not have access to the server but wish to access it should send a request to Dr. Sam Afach. Member who are not part of the GNOME collaboration will not be granted access to the dataset but are free to use our software on their own data.
+While SSH is very handy for people using UNIX-like operating systems, this can become more complicated for those working on Windows machines. Fortunately, access to a terminal is also possible through the webpage, which means directly from your internet browser! This can be done by clicking on the New tab after login and select Terminal:
+
+.. figure:: img/jupyter1.png
+	    :width: 70%
+	    :align: center
+
+You can then use the terminal window to access files and create new Python scripts for your analysis.
+
+.. figure:: img/jupyter2.png
+	    :width: 70%
+	    :align: center
 
 Getting Started
----------------
+===============
 
 Either on your own computer or on the server, on a Jupyter notebook or on a Python script, the first thing to do is to import the ``gdas`` package that contain all the modules present in the GNOME software. That can be done easily by doing the following::
 
