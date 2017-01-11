@@ -1,0 +1,6 @@
+gdas.epower.create_xml
+======================
+
+.. currentmodule:: gdas.epower
+
+.. autofunction:: create_xml

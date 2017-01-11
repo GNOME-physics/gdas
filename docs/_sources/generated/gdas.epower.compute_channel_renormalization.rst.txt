@@ -1,0 +1,6 @@
+gdas.epower.compute_channel_renormalization
+===========================================
+
+.. currentmodule:: gdas.epower
+
+.. autofunction:: compute_channel_renormalization

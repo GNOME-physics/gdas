@@ -1,0 +1,6 @@
+gdas.epower.check_filtering_settings
+====================================
+
+.. currentmodule:: gdas.epower
+
+.. autofunction:: check_filtering_settings

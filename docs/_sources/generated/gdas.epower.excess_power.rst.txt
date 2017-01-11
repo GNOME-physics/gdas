@@ -1,0 +1,6 @@
+gdas.epower.excess_power
+========================
+
+.. currentmodule:: gdas.epower
+
+.. autofunction:: excess_power

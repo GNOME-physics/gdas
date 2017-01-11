@@ -1,0 +1,6 @@
+gdas.epower.measure_hrss
+========================
+
+.. currentmodule:: gdas.epower
+
+.. autofunction:: measure_hrss

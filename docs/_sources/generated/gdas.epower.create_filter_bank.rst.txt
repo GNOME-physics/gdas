@@ -1,0 +1,6 @@
+gdas.epower.create_filter_bank
+==============================
+
+.. currentmodule:: gdas.epower
+
+.. autofunction:: create_filter_bank

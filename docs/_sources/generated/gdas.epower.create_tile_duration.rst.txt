@@ -1,0 +1,6 @@
+gdas.epower.create_tile_duration
+================================
+
+.. currentmodule:: gdas.epower
+
+.. autofunction:: create_tile_duration

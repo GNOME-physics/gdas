@@ -1,0 +1,6 @@
+gdas.plots.plot_triggers
+========================
+
+.. currentmodule:: gdas.plots
+
+.. autofunction:: plot_triggers
