@@ -46,12 +46,24 @@
       <div class="content">
         
         
-  <div class="toctree-wrapper compound">
+  <div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>This package contains functions useful for magnetic field signal processing, with a focus on Excess Power search analysis and application on the data for the GNOME collaboration, see <a class="reference external" href="https://arxiv.org/abs/1303.5524">Pustelny et al. (2013)</a>. This documentation details all the available functions and tasks available through this software. Here are some example tasks that can (or will soon to) be handled:</p>
+<ul class="simple">
+<li>Plot usual time series and spectrogram of magnetic field data.</li>
+<li>Perform excess power analysis and plot detected triggers in time-frequency map.</li>
+<li>Create artificial data for testing data analysis.</li>
+<li>Inject fake signal of different bandwidth and durations.</li>
+<li>Cross-correlation of continuous sine wave signals.</li>
+<li>Perform Allan Standard deviation.</li>
+</ul>
+<a href="https://github.com/GNOME-physics/gdas"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a><div class="toctree-wrapper compound">
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul class="simple">
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="#installation">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ligo-tools">LIGO tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#lalsuite-tools">LALsuite tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#main-program">Main Program</a></li>
 </ul>
 </li>
@@ -64,26 +76,12 @@
 </li>
 </ul>
 </div>
-<div class="section" id="introduction">
-<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
-<p>This package contains functions useful for magnetic field signal processing, with a focus on Excess Power search analysis and application on the data for the GNOME collaboration, see <a class="reference external" href="https://arxiv.org/abs/1303.5524">Pustelny et al. (2013)</a>. This documentation details all the available functions and tasks available through this software. Here are some example tasks that can (or will soon to) be handled:</p>
-<ul class="simple">
-<li>Plot usual time series and spectrogram of magnetic field data.</li>
-<li>Perform excess power analysis and plot detected triggers in time-frequency map.</li>
-<li>Create artificial data for testing data analysis.</li>
-<li>Inject fake signal of different bandwidth and durations.</li>
-<li>Cross-correlation of continuous sine wave signals.</li>
-<li>Perform Allan Standard deviation.</li>
-</ul>
-<a href="https://github.com/GNOME-physics/gdas"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a></div>
+</div>
 <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="dependencies">
-<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
 <p>The program requires the following general packages to run: <a class="reference external" href="http://numpy.scipy.org/">Numpy</a>, <a class="reference external" href="http://matplotlib.sourceforge.net/">Matplotlib</a>, <a class="reference external" href="http://www.scipy.org/">Scipy</a> and <a class="reference external" href="http://www.astropy.org/">Astropy</a>. The following LIGO-related packages are also required for full functionality: <a class="reference external" href="https://www.lsc-group.phys.uwm.edu/daswg/projects/glue.html">Glue</a>, <a class="reference external" href="https://gwpy.github.io/">Gwpy</a>, <a class="reference external" href="https://github.com/ligo-cbc/pycbc">PyCBC</a>, <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lal/index.html">lal</a>, <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lalburst/index.html">lalburst</a> and <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lalsimulation/index.html">LALsimulation</a></p>
-</div>
-<div class="section" id="ligo-tools">
-<h2>LIGO tools<a class="headerlink" href="#ligo-tools" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="lalsuite-tools">
+<h2>LALsuite tools<a class="headerlink" href="#lalsuite-tools" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="through-macports">
 <h3>Through MacPorts<a class="headerlink" href="#through-macports" title="Permalink to this headline">¶</a></h3>
 </div>
