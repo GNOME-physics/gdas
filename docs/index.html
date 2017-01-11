@@ -150,6 +150,44 @@ The development version can be downloaded from <a class="reference external" hre
 </div>
 <div class="section" id="getting-started">
 <h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>Either on your own computer or on the server, on a Jupyter notebook or on a Python script, the first thing to do is to import the <code class="docutils literal"><span class="pre">gdas</span></code> package that contain all the modules present in the GNOME software. That can be done easily by doing the following:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gdas</span>
+</pre></div>
+</div>
+<p>In order to retrieve a specific chunk of data to be analyzed for a particular station, the name of the station along with the start and end dates should be specified:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">station</span>    <span class="o">=</span> <span class="s1">&#39;fribourg01&#39;</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="s1">&#39;2016-11-03-04&#39;</span>
+<span class="n">end_time</span>   <span class="o">=</span> <span class="s1">&#39;2016-11-03-04-2&#39;</span>
+</pre></div>
+</div>
+<p>where the start and end times should always have at least the year, month and day specified, and with the values separated by a dash symbol. Hour and minute can also be specified.</p>
+<p>If you are not working on the server and the data are located in a different repository than <code class="docutils literal"><span class="pre">/GNOMEDrive/gnome/serverdata/</span></code>, a custom path can be defined. For instance:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">datapath</span> <span class="o">=</span> <span class="s1">&#39;/Users/vincent/data/GNOMEDrive/gnome/serverdata/&#39;</span>
+</pre></div>
+</div>
+<p>The magnetic field data can then be retrieve as follows:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ts_data</span><span class="p">,</span><span class="n">ts_list</span><span class="p">,</span><span class="n">activity</span> <span class="o">=</span> <span class="n">gdas</span><span class="o">.</span><span class="n">magfield</span><span class="p">(</span><span class="n">station</span><span class="p">,</span><span class="n">start_time</span><span class="p">,</span><span class="n">end_time</span><span class="p">,</span><span class="n">rep</span><span class="o">=</span><span class="n">datapath</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">gdas.magfield</span></code> method will return 3 arrays of data that can then be used to produce different plots:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">gdas</span><span class="o">.</span><span class="n">plot_activity</span><span class="p">(</span><span class="n">activity</span><span class="p">)</span>
+<span class="n">gdas</span><span class="o">.</span><span class="n">plot_time_series</span><span class="p">(</span><span class="n">station</span><span class="p">,</span><span class="n">ts_list</span><span class="p">,</span><span class="n">seglist</span><span class="o">=</span><span class="n">activity</span><span class="p">)</span>
+<span class="n">gdas</span><span class="o">.</span><span class="n">plot_asd</span><span class="p">(</span><span class="n">station</span><span class="p">,</span><span class="n">ts_list</span><span class="p">)</span>
+<span class="n">gdas</span><span class="o">.</span><span class="n">plot_whitening</span><span class="p">(</span><span class="n">station</span><span class="p">,</span><span class="n">ts_list</span><span class="p">,</span><span class="n">activity</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is a script to do Excess Power analysis:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">psd_segment_length</span> <span class="o">=</span> <span class="mi">60</span>
+<span class="n">psd_segment_stride</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">psd_estimation</span>     <span class="o">=</span> <span class="s1">&#39;median-mean&#39;</span>
+<span class="n">window_fraction</span>    <span class="o">=</span> <span class="mi">0</span>
+<span class="n">tile_fap</span>           <span class="o">=</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">5</span>
+<span class="n">channels</span>           <span class="o">=</span> <span class="mi">250</span>
+
+<span class="n">gdas</span><span class="o">.</span><span class="n">excess_power</span><span class="p">(</span><span class="n">ts_data</span><span class="p">,</span><span class="n">psd_segment_length</span><span class="p">,</span><span class="n">psd_segment_stride</span><span class="p">,</span><span class="n">psd_estimation</span><span class="p">,</span><span class="n">window_fraction</span><span class="p">,</span><span class="n">tile_fap</span><span class="p">,</span><span class="n">station</span><span class="p">,</span><span class="n">nchans</span><span class="o">=</span><span class="n">channels</span><span class="p">)</span>
+<span class="n">gdas</span><span class="o">.</span><span class="n">plot_triggers</span><span class="p">()</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="functionalities">
