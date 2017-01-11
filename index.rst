@@ -1,8 +1,3 @@
-.. toctree::
-   :maxdepth: 2
-
-   index.rst
-
 Introduction
 ============
 
@@ -19,16 +14,18 @@ This package contains functions useful for magnetic field signal processing, wit
 
  <a href="https://github.com/GNOME-physics/gdas"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
   
+.. toctree::
+   :maxdepth: 2
+
+   index.rst
+
 Installation
 ============
 
-Dependencies
-------------
-
 The program requires the following general packages to run: `Numpy <http://numpy.scipy.org/>`_, `Matplotlib <http://matplotlib.sourceforge.net/>`_, `Scipy <http://www.scipy.org/>`_ and `Astropy <http://www.astropy.org/>`_. The following LIGO-related packages are also required for full functionality: `Glue <https://www.lsc-group.phys.uwm.edu/daswg/projects/glue.html>`_, `Gwpy <https://gwpy.github.io/>`_, `PyCBC <https://github.com/ligo-cbc/pycbc>`_, `lal <http://software.ligo.org/docs/lalsuite/lal/index.html>`_, `lalburst <http://software.ligo.org/docs/lalsuite/lalburst/index.html>`_ and `LALsimulation <http://software.ligo.org/docs/lalsuite/lalsimulation/index.html>`_
 
-LIGO tools
-----------
+LALsuite tools
+--------------
 
 Through MacPorts
 ~~~~~~~~~~~~~~~~
