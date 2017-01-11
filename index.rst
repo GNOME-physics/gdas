@@ -13,7 +13,10 @@ This package contains functions useful for magnetic field signal processing, wit
 .. raw:: html
 
  <a href="https://github.com/GNOME-physics/gdas"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
-  
+
+Contents
+========
+ 
 .. toctree::
    :maxdepth: 2
 
@@ -83,8 +86,12 @@ Multi-user Server and Analysis Tutorial
 Server Access
 -------------
 
-A GNOME JupyterHub, or multi-user server has been created to allow each member to access the entire available dataset. The server can be accessed at the following link: https://budker.uni-mainz.de:8000/hub/login
+A GNOME JupyterHub, or multi-user server has been created to allow each member to access the entire available dataset. The server can be accessed in two ways, either by acceding the `server's webpage <https://budker.uni-mainz.de:8000/hub/login>`_, or from your terminal through SSH::
 
+  ssh -X username@budker.uni-mainz.de -p 8022
+
+Although you can also open a terminal in the server's webpage, I recommend to use the webpage to work on Jupyter notebook only.
+ 
 Member who do not have access to the server but wish to access it should send a request to Dr. Sam Afach. Member who are not part of the GNOME collaboration will not be granted access to the dataset but are free to use our software on their own data.
 
 Getting Started

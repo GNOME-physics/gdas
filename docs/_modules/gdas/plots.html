@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gdas.plots &#8212; gdas 0.2.6 documentation</title>
+    <title>gdas.plots &#8212; gdas 0.2.8 documentation</title>
     
     <link rel="stylesheet" href="../../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.2.6',
+        VERSION:     '0.2.8',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -30,7 +30,7 @@
   </head>
   <body role="document">
       <div class="header" role="banner"><h1 class="heading"><a href="../../index.html">
-          <span>gdas 0.2.6 documentation</span></a></h1>
+          <span>gdas 0.2.8 documentation</span></a></h1>
         <h2 class="heading"><span>gdas.plots</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
@@ -45,8 +45,15 @@
         
   <h1>Source code for gdas.plots</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">matplotlib</span><span class="o">,</span><span class="nn">numpy</span>
-<span class="kn">from</span> <span class="nn">astropy.units</span> <span class="k">import</span> <span class="n">Quantity</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span>    <span class="k">import</span> <span class="n">pyplot</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;Agg&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">astropy.units</span>        <span class="k">import</span> <span class="n">Quantity</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span>           <span class="k">import</span> <span class="n">pyplot</span>
+<span class="kn">from</span> <span class="nn">gwpy.plotter</span>         <span class="k">import</span> <span class="n">SegmentPlot</span><span class="p">,</span><span class="n">TimeSeriesPlot</span><span class="p">,</span><span class="n">SpectrumPlot</span><span class="p">,</span><span class="n">SpectrogramPlot</span>
+<span class="kn">from</span> <span class="nn">gwpy.segments</span>        <span class="k">import</span> <span class="n">SegmentList</span>
+<span class="kn">from</span> <span class="nn">gwpy.spectrum</span>        <span class="k">import</span> <span class="n">Spectrum</span>
+<span class="kn">from</span> <span class="nn">gwpy.spectrogram</span>     <span class="k">import</span> <span class="n">Spectrogram</span>
+<span class="kn">from</span> <span class="nn">gwpy.table.lsctables</span> <span class="k">import</span> <span class="n">SnglBurstTable</span>
+<span class="kn">from</span> <span class="nn">gwpy.timeseries</span>      <span class="k">import</span> <span class="n">TimeSeries</span>
 
 <div class="viewcode-block" id="plot_activity"><a class="viewcode-back" href="../../generated/gdas.plots.plot_activity.html#gdas.plots.plot_activity">[docs]</a><span class="k">def</span> <span class="nf">plot_activity</span><span class="p">(</span><span class="n">full_seglist</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -57,7 +64,6 @@
 <span class="sd">    full_seglist : dictionary</span>
 <span class="sd">      Continuous list of available data in the selected time period</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">gwpy.plotter</span> <span class="k">import</span> <span class="n">SegmentPlot</span>
     <span class="c1"># Import gwpy tools</span>
     <span class="n">plot</span> <span class="o">=</span> <span class="n">SegmentPlot</span><span class="p">()</span>
     <span class="c1"># Initialize plotting figure</span>
@@ -71,8 +77,6 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a plot of the whole data time series</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">gwpy.plotter</span>  <span class="k">import</span> <span class="n">TimeSeriesPlot</span>
-    <span class="kn">from</span> <span class="nn">gwpy.segments</span> <span class="k">import</span> <span class="n">SegmentList</span>
     <span class="n">plot</span> <span class="o">=</span> <span class="n">TimeSeriesPlot</span><span class="p">()</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
     <span class="c1"># Loop over all the time series </span>
@@ -98,7 +102,6 @@
 <span class="sd">    with large numbers of points. And we somehow invoke precision issues</span>
 <span class="sd">    that need to be ameliorated.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">gwpy.plotter</span> <span class="k">import</span> <span class="n">SpectrumPlot</span>
     <span class="k">if</span> <span class="n">station</span><span class="o">!=</span><span class="s1">&#39;fake&#39;</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">ts_list</span><span class="p">:</span>
             <span class="n">d</span><span class="o">.</span><span class="n">x0</span> <span class="o">=</span> <span class="n">Quantity</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">x0</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="mi">500</span><span class="p">),</span> <span class="n">d</span><span class="o">.</span><span class="n">xunit</span><span class="p">)</span>
@@ -131,7 +134,6 @@
 <span class="sd">    Generate a spectrogram plot and normalized spectrogram</span>
 <span class="sd">    norm: \sqrt{S(f,t)} / \sqrt{\overbar{S(f)}}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">gwpy.plotter</span> <span class="k">import</span> <span class="n">SpectrogramPlot</span>
     <span class="n">stride</span><span class="p">,</span><span class="n">fftlength</span><span class="p">,</span><span class="n">overlap</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span>
     <span class="n">plot</span> <span class="o">=</span> <span class="n">SpectrogramPlot</span><span class="p">()</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
@@ -183,8 +185,6 @@
     <span class="n">pyplot</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     
 <div class="viewcode-block" id="plot_ts"><a class="viewcode-back" href="../../generated/gdas.plots.plot_ts.html#gdas.plots.plot_ts">[docs]</a><span class="k">def</span> <span class="nf">plot_ts</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">fname</span><span class="o">=</span><span class="s2">&quot;ts.png&quot;</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">gwpy.plotter</span>    <span class="k">import</span> <span class="n">TimeSeriesPlot</span>
-    <span class="kn">from</span> <span class="nn">gwpy.timeseries</span> <span class="k">import</span> <span class="n">TimeSeries</span>
     <span class="n">plot</span> <span class="o">=</span> <span class="n">TimeSeriesPlot</span><span class="p">()</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">TimeSeries</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">sample_rate</span><span class="o">=</span><span class="mf">1.0</span><span class="o">/</span><span class="n">ts</span><span class="o">.</span><span class="n">delta_t</span><span class="p">,</span> <span class="n">epoch</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">start_time</span><span class="p">))</span>
@@ -193,8 +193,6 @@
     <span class="n">pyplot</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="plot_spectrum"><a class="viewcode-back" href="../../generated/gdas.plots.plot_spectrum.html#gdas.plots.plot_spectrum">[docs]</a><span class="k">def</span> <span class="nf">plot_spectrum</span><span class="p">(</span><span class="n">fd_psd</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">gwpy.plotter</span>  <span class="k">import</span> <span class="n">SpectrumPlot</span>
-    <span class="kn">from</span> <span class="nn">gwpy.spectrum</span> <span class="k">import</span> <span class="n">Spectrum</span>
     <span class="n">plot</span> <span class="o">=</span> <span class="n">SpectrumPlot</span><span class="p">()</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Spectrum</span><span class="p">(</span><span class="n">fd_psd</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="n">fd_psd</span><span class="o">.</span><span class="n">delta_f</span><span class="p">))</span>
@@ -205,8 +203,6 @@
     <span class="n">pyplot</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="plot_spectrogram"><a class="viewcode-back" href="../../generated/gdas.plots.plot_spectrogram.html#gdas.plots.plot_spectrogram">[docs]</a><span class="k">def</span> <span class="nf">plot_spectrogram</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span><span class="n">dt</span><span class="p">,</span><span class="n">df</span><span class="p">,</span><span class="n">sample_rate</span><span class="p">,</span><span class="n">start_time</span><span class="p">,</span><span class="n">end_time</span><span class="p">,</span><span class="n">fname</span><span class="o">=</span><span class="s2">&quot;specgram.png&quot;</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">gwpy.plotter</span>     <span class="k">import</span> <span class="n">SpectrogramPlot</span>
-    <span class="kn">from</span> <span class="nn">gwpy.spectrogram</span> <span class="k">import</span> <span class="n">Spectrogram</span>
     <span class="n">plot</span> <span class="o">=</span> <span class="n">SpectrogramPlot</span><span class="p">()</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Spectrogram</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span><span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span><span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span><span class="n">epoch</span><span class="o">=</span><span class="n">start_time</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
@@ -217,8 +213,6 @@
     <span class="n">pyplot</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="plot_spectrogram_from_ts"><a class="viewcode-back" href="../../generated/gdas.plots.plot_spectrogram_from_ts.html#gdas.plots.plot_spectrogram_from_ts">[docs]</a><span class="k">def</span> <span class="nf">plot_spectrogram_from_ts</span><span class="p">(</span><span class="n">ts</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">gwpy.plotter</span>     <span class="k">import</span> <span class="n">SpectrogramPlot</span>
-    <span class="kn">from</span> <span class="nn">gwpy.spectrogram</span> <span class="k">import</span> <span class="n">Spectrogram</span>
     <span class="n">plot</span> <span class="o">=</span> <span class="n">SpectrogramPlot</span><span class="p">()</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Spectrogram</span><span class="p">(</span><span class="n">spec</span><span class="p">))</span>
@@ -229,7 +223,6 @@
     <span class="n">pyplot</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="plot_triggers"><a class="viewcode-back" href="../../generated/gdas.plots.plot_triggers.html#gdas.plots.plot_triggers">[docs]</a><span class="k">def</span> <span class="nf">plot_triggers</span><span class="p">():</span>
-    <span class="kn">from</span> <span class="nn">gwpy.table.lsctables</span> <span class="k">import</span> <span class="n">SnglBurstTable</span>
     <span class="n">events</span> <span class="o">=</span> <span class="n">SnglBurstTable</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;excesspower.xml.gz&#39;</span><span class="p">)</span>
     <span class="c1">#plot = events.plot(&#39;time&#39;, &#39;central_freq&#39;, &quot;duration&quot;, &quot;bandwidth&quot;, color=&#39;snr&#39;)</span>
     <span class="n">plot</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span><span class="s1">&#39;central_freq&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;snr&#39;</span><span class="p">,</span><span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
@@ -242,7 +235,6 @@
     <span class="n">pyplot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;triggers.png&quot;</span><span class="p">,</span><span class="n">dpi</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span></div>
 
 <span class="k">def</span> <span class="nf">plot_tiles</span><span class="p">():</span>    
-    <span class="kn">from</span> <span class="nn">gwpy.timeseries</span> <span class="k">import</span> <span class="n">TimeSeries</span>
     <span class="n">bins</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
     <span class="n">cnt</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">bins</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tdf</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tdb</span><span class="p">[:</span><span class="n">nchans</span><span class="p">]):</span>

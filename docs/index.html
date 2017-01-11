@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>GNOME Data Analysis Software &#8212; gdas 0.2.6 documentation</title>
+    <title>GNOME Data Analysis Software &#8212; gdas 0.2.8 documentation</title>
     
     <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.6',
+        VERSION:     '0.2.8',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -31,7 +31,7 @@
   </head>
   <body role="document">
       <div class="header" role="banner"><h1 class="heading"><a href="#">
-          <span>gdas 0.2.6 documentation</span></a></h1>
+          <span>gdas 0.2.8 documentation</span></a></h1>
         <h2 class="heading"><span>GNOME Data Analysis Software</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
@@ -57,9 +57,13 @@
 <li>Cross-correlation of continuous sine wave signals.</li>
 <li>Perform Allan Standard deviation.</li>
 </ul>
-<a href="https://github.com/GNOME-physics/gdas"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a><div class="toctree-wrapper compound">
+<a href="https://github.com/GNOME-physics/gdas"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a></div>
+<div class="section" id="contents">
+<h1>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">GNOME Data Analysis Software</a><ul class="simple">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">GNOME Data Analysis Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#contents">Contents</a><ul class="simple">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="#installation">Installation</a><ul>
@@ -67,7 +71,11 @@
 <li class="toctree-l2"><a class="reference internal" href="#main-program">Main Program</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#server-access-and-usage">Server access and usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#multi-user-server-and-analysis-tutorial">Multi-user Server and Analysis Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#server-access">Server Access</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="#functionalities">Functionalities</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#extract-magnetic-field-data">Extract Magnetic Field Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#plotting-routines">Plotting routines</a></li>
@@ -129,10 +137,20 @@ method allows for easy uninstallation.</p>
 The development version can be downloaded from <a class="reference external" href="https://github.com/GNOME-physics/gdas">here</a>.</p>
 </div>
 </div>
-<div class="section" id="server-access-and-usage">
-<h1>Server access and usage<a class="headerlink" href="#server-access-and-usage" title="Permalink to this headline">¶</a></h1>
-<p>A GNOME JupyterHub, or multi-user server has been created to allow each member to access the entire available dataset. The server can be accessed at the following link:</p>
-<p><a class="reference external" href="https://budker.uni-mainz.de:8000/hub/login">https://budker.uni-mainz.de:8000/hub/login</a></p>
+<div class="section" id="multi-user-server-and-analysis-tutorial">
+<h1>Multi-user Server and Analysis Tutorial<a class="headerlink" href="#multi-user-server-and-analysis-tutorial" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="server-access">
+<h2>Server Access<a class="headerlink" href="#server-access" title="Permalink to this headline">¶</a></h2>
+<p>A GNOME JupyterHub, or multi-user server has been created to allow each member to access the entire available dataset. The server can be accessed in two ways, either by acceding the <a class="reference external" href="https://budker.uni-mainz.de:8000/hub/login">server&#8217;s webpage</a>, or from your terminal through SSH:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="o">-</span><span class="n">X</span> <span class="n">username</span><span class="nd">@budker</span><span class="o">.</span><span class="n">uni</span><span class="o">-</span><span class="n">mainz</span><span class="o">.</span><span class="n">de</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8022</span>
+</pre></div>
+</div>
+<p>Although you can also open a terminal in the server&#8217;s webpage, I recommend to use the webpage to work on Jupyter notebook only.</p>
+<p>Member who do not have access to the server but wish to access it should send a request to Dr. Sam Afach. Member who are not part of the GNOME collaboration will not be granted access to the dataset but are free to use our software on their own data.</p>
+</div>
+<div class="section" id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+</div>
 </div>
 <div class="section" id="functionalities">
 <h1>Functionalities<a class="headerlink" href="#functionalities" title="Permalink to this headline">¶</a></h1>

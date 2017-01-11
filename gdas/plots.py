@@ -1,7 +1,13 @@
 import matplotlib,numpy
 matplotlib.use('Agg')
-from astropy.units import Quantity
-from matplotlib    import pyplot
+from astropy.units        import Quantity
+from matplotlib           import pyplot
+from gwpy.plotter         import SegmentPlot,TimeSeriesPlot,SpectrumPlot,SpectrogramPlot
+from gwpy.segments        import SegmentList
+from gwpy.spectrum        import Spectrum
+from gwpy.spectrogram     import Spectrogram
+from gwpy.table.lsctables import SnglBurstTable
+from gwpy.timeseries      import TimeSeries
 
 def plot_activity(full_seglist):
     """
@@ -12,7 +18,6 @@ def plot_activity(full_seglist):
     full_seglist : dictionary
       Continuous list of available data in the selected time period
     """
-    from gwpy.plotter import SegmentPlot
     # Import gwpy tools
     plot = SegmentPlot()
     # Initialize plotting figure
@@ -26,8 +31,6 @@ def plot_time_series(station,ts_list,seglist=None,hp=None):
     """
     Generate a plot of the whole data time series
     """
-    from gwpy.plotter  import TimeSeriesPlot
-    from gwpy.segments import SegmentList
     plot = TimeSeriesPlot()
     ax = plot.gca()
     # Loop over all the time series 
@@ -53,7 +56,6 @@ def plot_asd(station,ts_list):
     with large numbers of points. And we somehow invoke precision issues
     that need to be ameliorated.
     """
-    from gwpy.plotter import SpectrumPlot
     if station!='fake':
         for d in ts_list:
             d.x0 = Quantity(int(d.x0.value * 500), d.xunit)
@@ -86,7 +88,6 @@ def plot_whitening(station,ts_list,seglist=None):
     Generate a spectrogram plot and normalized spectrogram
     norm: \sqrt{S(f,t)} / \sqrt{\overbar{S(f)}}
     """
-    from gwpy.plotter import SpectrogramPlot
     stride,fftlength,overlap = 20,6,3
     plot = SpectrogramPlot()
     ax = plot.gca()
@@ -138,8 +139,6 @@ def plot_filters(tdb,flow,band):
     pyplot.close()
     
 def plot_ts(ts, fname="ts.png"):
-    from gwpy.plotter    import TimeSeriesPlot
-    from gwpy.timeseries import TimeSeries
     plot = TimeSeriesPlot()
     ax = plot.gca()
     ax.plot(TimeSeries(ts, sample_rate=1.0/ts.delta_t, epoch=ts.start_time))
@@ -148,8 +147,6 @@ def plot_ts(ts, fname="ts.png"):
     pyplot.close()
 
 def plot_spectrum(fd_psd):
-    from gwpy.plotter  import SpectrumPlot
-    from gwpy.spectrum import Spectrum
     plot = SpectrumPlot()
     ax = plot.gca()
     ax.plot(Spectrum(fd_psd, df=fd_psd.delta_f))
@@ -160,8 +157,6 @@ def plot_spectrum(fd_psd):
     pyplot.close()
 
 def plot_spectrogram(spec,dt,df,sample_rate,start_time,end_time,fname="specgram.png"):
-    from gwpy.plotter     import SpectrogramPlot
-    from gwpy.spectrogram import Spectrogram
     plot = SpectrogramPlot()
     ax = plot.gca()
     ax.plot(Spectrogram(spec,dt=dt,df=df,epoch=start_time), cmap='viridis')
@@ -172,8 +167,6 @@ def plot_spectrogram(spec,dt,df,sample_rate,start_time,end_time,fname="specgram.
     pyplot.close()
 
 def plot_spectrogram_from_ts(ts):
-    from gwpy.plotter     import SpectrogramPlot
-    from gwpy.spectrogram import Spectrogram
     plot = SpectrogramPlot()
     ax = plot.gca()
     ax.plot(Spectrogram(spec))
@@ -184,7 +177,6 @@ def plot_spectrogram_from_ts(ts):
     pyplot.close()
 
 def plot_triggers():
-    from gwpy.table.lsctables import SnglBurstTable
     events = SnglBurstTable.read('excesspower.xml.gz')
     #plot = events.plot('time', 'central_freq', "duration", "bandwidth", color='snr')
     plot = events.plot('time','central_freq',color='snr',edgecolor='none')
@@ -197,7 +189,6 @@ def plot_triggers():
     pyplot.savefig("triggers.png",dpi=400)
 
 def plot_tiles():    
-    from gwpy.timeseries import TimeSeries
     bins = numpy.linspace(0, 40, 100)
     cnt = numpy.zeros(bins.shape[0]-1)
     for i, tdf in enumerate(tdb[:nchans]):
