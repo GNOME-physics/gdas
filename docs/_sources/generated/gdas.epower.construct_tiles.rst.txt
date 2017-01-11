@@ -1,6 +1,0 @@
-gdas.epower.construct_tiles
-===========================
-
-.. currentmodule:: gdas.epower
-
-.. autofunction:: construct_tiles

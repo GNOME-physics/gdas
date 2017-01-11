@@ -1,6 +1,0 @@
-gdas.epower.trigger_list_from_map
-=================================
-
-.. currentmodule:: gdas.epower
-
-.. autofunction:: trigger_list_from_map

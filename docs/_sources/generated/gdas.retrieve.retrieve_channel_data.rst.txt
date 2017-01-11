@@ -1,6 +1,0 @@
-gdas.retrieve.retrieve_channel_data
-===================================
-
-.. currentmodule:: gdas.retrieve
-
-.. autofunction:: retrieve_channel_data

@@ -1,7 +1,7 @@
-GNOME Data Analysis Software
-============================
+Introduction
+============
 
-This package contains functions useful for magnetic field signal processing, with a focus on Excess Power search analysis and application on the data for the GNOME collaboration, see `Pustelny et al. (2013) <https://arxiv.org/abs/1303.5524>`_. This documentation details all the available functions and tasks available through this software. Here are some example tasks that can be handled:
+This package contains functions useful for magnetic field signal processing, with a focus on Excess Power search analysis and application on the data for the GNOME collaboration, see `Pustelny et al. (2013) <https://arxiv.org/abs/1303.5524>`_. This documentation details all the available functions and tasks available through this software. Here are some example tasks that can (or will soon to) be handled:
 
 * Plot usual time series and spectrogram of magnetic field data.
 * Perform excess power analysis and plot detected triggers in time-frequency map.
@@ -38,6 +38,14 @@ The development version can be downloaded from `here <https://github.com/GNOME-p
 
    index.rst
 
+Installation
+============
+
+
+   
+Functionalities
+===============
+   
 Extract Magnetic Field Data
 ---------------------------
 

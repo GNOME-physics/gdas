@@ -542,9 +542,10 @@ def make_indp_tiles(tf_map, nc_sum, mu_sq):
     indices, we can save ourselves individual sums at wider frequency
     resolutions.
     Caveats:
-      1.  We have to keep track of where we're storing things
-      2.  We have to do it from the finest resolution (for *all* t0s) and work our way up
-    In the end, I think this is a Haar wavelet transform. Look into it
+    1. We have to keep track of where we're storing things
+    2. We have to do it from the finest resolution (for *all* t0s)
+    and work our way up
+    In the end, I think this is a Haar wavelet transform. Look into it.
     """
     tiles = tf_map.copy()
     # Here's the deal: we're going to keep only the valid output and

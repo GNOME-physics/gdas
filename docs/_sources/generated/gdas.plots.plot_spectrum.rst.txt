@@ -1,6 +1,0 @@
-gdas.plots.plot_spectrum
-========================
-
-.. currentmodule:: gdas.plots
-
-.. autofunction:: plot_spectrum
