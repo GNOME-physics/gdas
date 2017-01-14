@@ -3,6 +3,10 @@
 import os,glob,h5py,astropy,numpy,astropy
 from astropy.time    import Time
 from datetime        import datetime,timedelta
+from glue.segments   import segment,segmentlist
+from gwpy.segments   import DataQualityDict,DataQualityFlag
+from gwpy.timeseries import TimeSeries,TimeSeriesList
+from pycbc           import types
 
 def magfield(station,starttime,endtime,activity=False,rep='/GNOMEDrive/gnome/serverdata/'):
     """
@@ -23,8 +27,6 @@ def magfield(station,starttime,endtime,activity=False,rep='/GNOMEDrive/gnome/ser
       Time series data for selected time period, list of time series
       for each segment, sampling rate of the retrieved data
     """
-    from glue.segments import segmentlist
-    from pycbc         import types
     setname = "MagneticFields"
     dstr    = ['%Y','%m','%d','%H','%M']
     dsplit  = '-'.join(dstr[:starttime.count('-')+1])
@@ -34,9 +36,8 @@ def magfield(station,starttime,endtime,activity=False,rep='/GNOMEDrive/gnome/ser
     dataset = []
     for date in numpy.arange(start,end,timedelta(minutes=1)):
         date = date.astype(datetime)
-        year,month,day,hour,minute = date.year,date.month,date.day,date.hour,date.minute
-        path1 = "%s%s/%s/%02i/%02i/"%(rep,station,year,month,day)
-        path2 = "%s_%s%02i%02i_%02i%02i*.hdf5"%(station,year,month,day,hour,minute)
+        path1 = rep+station+'/'+date.strftime("%Y/%m/%d/")
+        path2 = station+'_'+date.strftime("%Y%m%d_%H%M*.hdf5")
         fullpath = os.path.join(path1,path2)
         dataset += glob.glob(fullpath)
     file_order,data_order = {},{}
@@ -74,7 +75,6 @@ def file_to_segment(hfile,segname):
     segname : str
       Attribute name of the metadata to extract.
     """
-    from glue.segments import segment
     attrs = hfile[segname].attrs
     dstr, t0, t1 = attrs["Date"], attrs["t0"], attrs["t1"]
     start_utc = construct_utc_from_metadata(dstr, t0)
@@ -111,7 +111,6 @@ def generate_timeseries(data_list, setname="MagneticFields"):
     -------
     full_data : Array of segment's name
     """
-    from gwpy.timeseries import TimeSeriesList
     full_data = TimeSeriesList()
     for seg in sorted(data_list):
         hfile = h5py.File(data_list[seg], "r")
@@ -135,8 +134,6 @@ def create_activity_list(station,data_order):
     full_seglist : dictionary
       Ordered list of segment
     """
-    from glue.segments import segmentlist
-    from gwpy.segments import DataQualityDict,DataQualityFlag
     # Generate an ASCII representation of the GPS timestamped segments of time covered by the input data
     seglist = segmentlist(data_order.keys())
     # Sort the segment list
@@ -162,7 +159,6 @@ def retrieve_data_timeseries(hfile, setname):
     setname : string
       Attribute of the channel to retrieve data from
     """
-    from gwpy.timeseries import TimeSeries
     dset = hfile[setname]
     sample_rate = dset.attrs["SamplingRate(Hz)"]
     gps_epoch = construct_utc_from_metadata(dset.attrs["Date"], dset.attrs["t0"])
