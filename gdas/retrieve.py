@@ -40,6 +40,9 @@ def magfield(station,starttime,endtime,activity=False,rep='/GNOMEDrive/gnome/ser
         path2 = station+'_'+date.strftime("%Y%m%d_%H%M*.hdf5")
         fullpath = os.path.join(path1,path2)
         dataset += glob.glob(fullpath)
+    if len(dataset)==0:
+        print "ERROR: No data files were found..."
+        quit()
     file_order,data_order = {},{}
     for fname in dataset:
         hfile = h5py.File(fname, "r")
@@ -66,7 +69,14 @@ def magfield(station,starttime,endtime,activity=False,rep='/GNOMEDrive/gnome/ser
 
 def file_to_segment(hfile,segname):
     """
-    Define length of data segment
+    Define length of data segment. The starting and ending UTC times
+    for a specific HDF5 file are determined by using the ``Date``,
+    ``t0`` and ``t1`` attributes from the metadata. The
+    :ref:`construct_utc_from_metadata <construct_utc_from_metadata>`
+    function is then used to calculate the UTC time. Finally, the
+    `segment <http://software.ligo.org/docs/glue/glue.__segments.segment-class.html>`_
+    module from the ``glue.segments`` library is used to represent
+    the range of times in a semi-open interval.
     
     Parameters
     ----------
@@ -75,14 +85,21 @@ def file_to_segment(hfile,segname):
     segname : str
       Attribute name of the metadata to extract.
     """
+    # Extract all atributes from the data
     attrs = hfile[segname].attrs
+    # Define each attribute
     dstr, t0, t1 = attrs["Date"], attrs["t0"], attrs["t1"]
+    # Construct GPS starting time from data
     start_utc = construct_utc_from_metadata(dstr, t0)
+    # Construct GPS ending time from data
     end_utc = construct_utc_from_metadata(dstr, t1)
+    # Represent the range of times in the semi-open interval
     return segment(start_utc,end_utc)
 
 def construct_utc_from_metadata(datestr, t0str):
     """
+    .. _construct_utc_from_metadata:
+
     Constructing UTC timestamp from metadata
     
     Parameters
@@ -163,6 +180,7 @@ def retrieve_data_timeseries(hfile, setname):
     sample_rate = dset.attrs["SamplingRate(Hz)"]
     gps_epoch = construct_utc_from_metadata(dset.attrs["Date"], dset.attrs["t0"])
     data = retrieve_channel_data(hfile, setname)
+    print sample_rate,gps_epoch,dset.attrs["Date"],dset.attrs["t0"],dset.attrs["t1"]
     ts_data = TimeSeries(data, sample_rate=sample_rate, epoch=gps_epoch)
     return ts_data
 

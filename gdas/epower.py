@@ -16,6 +16,10 @@ from glue.segments                    import segment
 def excess_power(ts_data,psd_segment_length,psd_segment_stride,psd_estimation,window_fraction,tile_fap,station,nchans=None,band=None,fmin=0,fmax=None,max_duration=None):
     """
     Perform excess-power search analysis on magnetic field data.
+    This method will produce a bunch of time-frequency plots for every
+    tile duration and bandwidth analysed as well as a XML file identifying
+    all the triggers found in the selected data within the user-defined
+    time range.
 
     Parameters
     ----------
@@ -39,17 +43,12 @@ def excess_power(ts_data,psd_segment_length,psd_segment_stride,psd_estimation,wi
       Lowest frequency of the filter bank.
     fmax : float
       Highest frequency of the filter bank
-
-    Notes
-    -----
-    This method will produce a bunch of time-frequency plots for every
-    tile duration and bandwidth analysed as well as a XML file identifying
-    all the triggers found in the selected data within the user-defined
-    time range.
     """
     #print strain.insert_strain_option_group.__dict__
     #print psd.insert_psd_option_group.__dict__
     sample_rate = ts_data.sample_rate
+    print sample_rate
+    quit()
     nchans,band,flow = check_filtering_settings(sample_rate,nchans,band,fmin,fmax)
     seg_len,fd_psd,lal_psd = calculate_psd(ts_data,sample_rate,psd_segment_length,psd_segment_stride,psd_estimation)
     window, spec_corr = calculate_spectral_correlation(seg_len,'tukey',window_fraction=window_fraction)

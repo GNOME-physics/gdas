@@ -54,7 +54,14 @@
 <dl class="function">
 <dt id="gdas.retrieve.file_to_segment">
 <code class="descclassname">gdas.retrieve.</code><code class="descname">file_to_segment</code><span class="sig-paren">(</span><em>hfile</em>, <em>segname</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gdas/retrieve.html#file_to_segment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gdas.retrieve.file_to_segment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Define length of data segment</p>
+<dd><p>Define length of data segment. The starting and ending UTC times
+for a specific HDF5 file are determined by using the <code class="docutils literal"><span class="pre">Date</span></code>,
+<code class="docutils literal"><span class="pre">t0</span></code> and <code class="docutils literal"><span class="pre">t1</span></code> attributes from the metadata. The
+<a class="reference internal" href="../index.html#construct-utc-from-metadata"><span class="std std-ref">construct_utc_from_metadata</span></a>
+function is then used to calculate the UTC time. Finally, the
+<a class="reference external" href="http://software.ligo.org/docs/glue/glue.__segments.segment-class.html">segment</a>
+module from the <code class="docutils literal"><span class="pre">glue.segments</span></code> library is used to represent
+the range of times in a semi-open interval.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

@@ -62,6 +62,10 @@
 <div class="viewcode-block" id="excess_power"><a class="viewcode-back" href="../../generated/gdas.epower.excess_power.html#gdas.epower.excess_power">[docs]</a><span class="k">def</span> <span class="nf">excess_power</span><span class="p">(</span><span class="n">ts_data</span><span class="p">,</span><span class="n">psd_segment_length</span><span class="p">,</span><span class="n">psd_segment_stride</span><span class="p">,</span><span class="n">psd_estimation</span><span class="p">,</span><span class="n">window_fraction</span><span class="p">,</span><span class="n">tile_fap</span><span class="p">,</span><span class="n">station</span><span class="p">,</span><span class="n">nchans</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">band</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">fmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">fmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">max_duration</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Perform excess-power search analysis on magnetic field data.</span>
+<span class="sd">    This method will produce a bunch of time-frequency plots for every</span>
+<span class="sd">    tile duration and bandwidth analysed as well as a XML file identifying</span>
+<span class="sd">    all the triggers found in the selected data within the user-defined</span>
+<span class="sd">    time range.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -85,17 +89,12 @@
 <span class="sd">      Lowest frequency of the filter bank.</span>
 <span class="sd">    fmax : float</span>
 <span class="sd">      Highest frequency of the filter bank</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    This method will produce a bunch of time-frequency plots for every</span>
-<span class="sd">    tile duration and bandwidth analysed as well as a XML file identifying</span>
-<span class="sd">    all the triggers found in the selected data within the user-defined</span>
-<span class="sd">    time range.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1">#print strain.insert_strain_option_group.__dict__</span>
     <span class="c1">#print psd.insert_psd_option_group.__dict__</span>
     <span class="n">sample_rate</span> <span class="o">=</span> <span class="n">ts_data</span><span class="o">.</span><span class="n">sample_rate</span>
+    <span class="nb">print</span> <span class="n">sample_rate</span>
+    <span class="n">quit</span><span class="p">()</span>
     <span class="n">nchans</span><span class="p">,</span><span class="n">band</span><span class="p">,</span><span class="n">flow</span> <span class="o">=</span> <span class="n">check_filtering_settings</span><span class="p">(</span><span class="n">sample_rate</span><span class="p">,</span><span class="n">nchans</span><span class="p">,</span><span class="n">band</span><span class="p">,</span><span class="n">fmin</span><span class="p">,</span><span class="n">fmax</span><span class="p">)</span>
     <span class="n">seg_len</span><span class="p">,</span><span class="n">fd_psd</span><span class="p">,</span><span class="n">lal_psd</span> <span class="o">=</span> <span class="n">calculate_psd</span><span class="p">(</span><span class="n">ts_data</span><span class="p">,</span><span class="n">sample_rate</span><span class="p">,</span><span class="n">psd_segment_length</span><span class="p">,</span><span class="n">psd_segment_stride</span><span class="p">,</span><span class="n">psd_estimation</span><span class="p">)</span>
     <span class="n">window</span><span class="p">,</span> <span class="n">spec_corr</span> <span class="o">=</span> <span class="n">calculate_spectral_correlation</span><span class="p">(</span><span class="n">seg_len</span><span class="p">,</span><span class="s1">&#39;tukey&#39;</span><span class="p">,</span><span class="n">window_fraction</span><span class="o">=</span><span class="n">window_fraction</span><span class="p">)</span>

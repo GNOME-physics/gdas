@@ -25,6 +25,7 @@ setup(
     requires=["numpy","matplotlib","scipy","astropy","gwpy","pycbc"],
     package_data = {'gdas' : get_data_names('gdas/ligo')},
     include_package_data=True,
+    scripts = glob('scripts/*'),
     url="https://gnome-physics.github.io/gdas",
     description="GNOME Data Analysis package",
     install_requires=[]

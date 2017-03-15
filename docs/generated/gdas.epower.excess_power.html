@@ -54,7 +54,11 @@
 <dl class="function">
 <dt id="gdas.epower.excess_power">
 <code class="descclassname">gdas.epower.</code><code class="descname">excess_power</code><span class="sig-paren">(</span><em>ts_data</em>, <em>psd_segment_length</em>, <em>psd_segment_stride</em>, <em>psd_estimation</em>, <em>window_fraction</em>, <em>tile_fap</em>, <em>station</em>, <em>nchans=None</em>, <em>band=None</em>, <em>fmin=0</em>, <em>fmax=None</em>, <em>max_duration=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gdas/epower.html#excess_power"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gdas.epower.excess_power" title="Permalink to this definition">¶</a></dt>
-<dd><p>Perform excess-power search analysis on magnetic field data.</p>
+<dd><p>Perform excess-power search analysis on magnetic field data.
+This method will produce a bunch of time-frequency plots for every
+tile duration and bandwidth analysed as well as a XML file identifying
+all the triggers found in the selected data within the user-defined
+time range.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -103,11 +107,6 @@
 </tr>
 </tbody>
 </table>
-<p class="rubric">Notes</p>
-<p>This method will produce a bunch of time-frequency plots for every
-tile duration and bandwidth analysed as well as a XML file identifying
-all the triggers found in the selected data within the user-defined
-time range.</p>
 </dd></dl>
 
 </div>
