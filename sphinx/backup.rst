@@ -1,6 +1,16 @@
 GNOME Data Analysis Software
 ============================
 
+* :ref:`test2`
+
+  .. _test2:
+
+.. toctree::
+   :maxdepth: 2
+   :caption: People & By-laws
+
+   test
+
 .. toctree::
    :maxdepth: 2
 
@@ -466,7 +476,7 @@ We present below a step-by-step procedure followed during the Excess Power searc
 
 - :ref:`Exploring tiles with different duration <tileduration>`
 
-   For each given tile's bandwidth, one can investigate different tile's duration. This can be done by exploring different number of degrees of freedom, :math:`d$, which can be calculated as follows: :math:`d=2BT` where :math:`B` and :math:`T` are respectively the bandwidth and duration of the tile. Section 2.2.5 of `Brady et al. <http://www.lsc-group.phys.uwm.edu/~siemens/power.pdf>`_ gives a great description of how to interpret the number of degrees of freedom. Therefore, by changing the :math:`d$, one can explore multiple tile's duration for different bandwidth.
+   For each given tile's bandwidth, one can investigate different tile's duration. This can be done by exploring different number of degrees of freedom, :math:`d`, which can be calculated as follows: :math:`d=2BT` where :math:`B` and :math:`T` are respectively the bandwidth and duration of the tile. Section 2.2.5 of `Brady et al. <http://www.lsc-group.phys.uwm.edu/~siemens/power.pdf>`_ gives a great description of how to interpret the number of degrees of freedom. Therefore, by changing the :math:`d`, one can explore multiple tile's duration for different bandwidth.
 
 - :ref:`Define triggering signal <triggerfinding>`
 
@@ -516,7 +526,7 @@ One can display the power measurements, frequency array and frequency between co
   print 'Display the frequency separation between bins'
   print fd_psd.delta_f
 
-$\Delta f` corresponds to the inverse of a segment's length which is the smallest frequency (i.e. highest period) of detectable signals in each segment. The frequency range spans from 0 to the Nyquist frequency, i.e. half de the sampling rate.
+:math:`\Delta f` corresponds to the inverse of a segment's length which is the smallest frequency (i.e. highest period) of detectable signals in each segment. The frequency range spans from 0 to the Nyquist frequency, i.e. half de the sampling rate.
 
 Checking filtering settings
 ---------------------------
@@ -777,7 +787,7 @@ The undersampling rate for this tile can be calculated using the channel frequen
 Explore multiple tile durations
 -------------------------------
 
-Now that we create a tile with a specific bandwidth, we can start exploring different durations for the tile. We will start checking if the user manually defined a value for the longest duration tile to compute, which can be done using the =--max-duration= argument. If not, the value will be set to 32. ::
+Now that we create a tile with a specific bandwidth, we can start exploring different durations for the tile. We will start checking if the user manually defined a value for the longest duration tile to compute, which can be done using the ``--max-duration`` argument. If not, the value will be set to 32. ::
 
           if args.max_duration is not None:
               max_dof = 2 * args.max_duration * (band * (nc_sum+1))

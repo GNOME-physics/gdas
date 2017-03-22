@@ -47,8 +47,6 @@ def excess_power(ts_data,psd_segment_length,psd_segment_stride,psd_estimation,wi
     #print strain.insert_strain_option_group.__dict__
     #print psd.insert_psd_option_group.__dict__
     sample_rate = ts_data.sample_rate
-    print sample_rate
-    quit()
     nchans,band,flow = check_filtering_settings(sample_rate,nchans,band,fmin,fmax)
     seg_len,fd_psd,lal_psd = calculate_psd(ts_data,sample_rate,psd_segment_length,psd_segment_stride,psd_estimation)
     window, spec_corr = calculate_spectral_correlation(seg_len,'tukey',window_fraction=window_fraction)
@@ -414,7 +412,7 @@ def measure_hrss(z_j_b, uw_ss_ii, uw_ss_ij, w_ss_ij, delta_f, delta_t, filter_le
     s_j_nb_avg = uw_ss_ii.sum() / 2 + uw_ss_ij.sum()
     s_j_nb_avg *= delta_f
     s_j_nb_denom = s_j_b_avg.sum() + 2 * 2 / filter_len * \
-        numpy.sum(numpy.sqrt(s_j_b_avg[:-1] * s_j_b_avg[1:]) * w_ss_ij)
+                   numpy.sum(numpy.sqrt(s_j_b_avg[:-1] * s_j_b_avg[1:]) * w_ss_ij)
     # eqn. 62
     uw_ups_ratio = s_j_nb_avg / s_j_nb_denom
     # eqn. 63 -- approximation of unwhitened signal energy time series

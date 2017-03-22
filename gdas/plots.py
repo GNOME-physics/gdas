@@ -1,4 +1,4 @@
-import matplotlib,numpy
+import matplotlib,numpy,mlpy
 matplotlib.use('Agg')
 from astropy.units        import Quantity
 from matplotlib           import pyplot
@@ -8,6 +8,8 @@ from gwpy.spectrum        import Spectrum
 from gwpy.spectrogram     import Spectrogram
 from gwpy.table.lsctables import SnglBurstTable
 from gwpy.timeseries      import TimeSeries
+from pylab                import *
+from scipy                import signal
 
 def plot_activity(full_seglist):
     """
@@ -208,3 +210,48 @@ def plot_tiles():
         cnt += tmp
     plot_spectrogram(dof_tiles.T,fname='%s/tf_%ichans_%02idof.png'%(segfolder,nc_sum+1,2*j))
     plot.savefig("%s/bands.png"%(segfolder))
+
+def wavelet(ts_data):
+    z = numpy.array([float(i) for i in ts_data])
+    t = numpy.array([float(i) for i in ts_data.sample_times])
+    # Decimate magnetic field data to 1 sample/second
+    rate = [5,10,10] if ts_data.sample_rate==500 else [8,8,8]
+    for i in rate:
+        z = signal.decimate(z,i,zero_phase=True)
+    # Extract time every 500 sample
+    t = [t[n*ts_data.sample_rate] for n in range(len(t)/ts_data.sample_rate)]
+    # Convert every timing points to scale (hr,min,sec) units
+    s = 60.
+    t = [(t[i]-t[0])/s for i in range(len(t))]
+    # Do wavelet analysis
+    omega0 = 6
+    fct    = "morlet"
+    scales = mlpy.wavelet.autoscales(N=len(z),dt=1,dj=0.05,wf=fct,p=omega0)
+    spec   = mlpy.wavelet.cwt(z,dt=1,scales=scales,wf=fct,p=omega0)
+    freq   = (omega0 + numpy.sqrt(2.0 + omega0 ** 2)) / (4 * numpy.pi * scales[1:]) * 1000
+    idxs   = numpy.where(numpy.logical_or(freq<0.1,1000<freq))[0]
+    spec   = numpy.delete(spec,idxs,0)
+    freq   = numpy.delete(freq,idxs,0)
+    # Initialise axis
+    fig = figure(figsize=(12,8))
+    plt.subplots_adjust(left=0.1, right=1, bottom=0.1, top=0.94, hspace=0, wspace=0)
+    ax1 = fig.add_axes([0.10,0.75,0.70,0.20])
+    ax2 = fig.add_axes([0.10,0.10,0.70,0.60], sharex=ax1)
+    ax3 = fig.add_axes([0.83,0.10,0.03,0.60])
+    # Plot time series
+    ax1.plot(t,abs(z)-numpy.average(abs(z)),'k')
+    ax1.set_ylabel('Magnetic Fields [uT]')
+    # Set up axis range for spectrogram
+    twin_ax = ax2.twinx()
+    twin_ax.set_yscale('log')
+    twin_ax.set_xlim(t[0], t[-1])
+    twin_ax.set_ylim(freq[-1], freq[0])
+    twin_ax.tick_params(which='both', labelleft=True, left=True, labelright=False)
+    # Plot spectrogram
+    img = ax2.imshow(numpy.abs(spec)**2,extent=[t[0],t[-1],freq[-1],freq[0]],
+                     aspect='auto',interpolation='nearest',cmap=cm.jet,norm=mpl.colors.LogNorm()) # cm.cubehelix
+    ax2.tick_params(which='both', labelleft=False, left=False)
+    ax2.set_xlabel('Time [mins]')
+    ax2.set_ylabel('Frequency [mHz]',labelpad=50)
+    fig.colorbar(img, cax=ax3)
+    plt.savefig('wavelet.png')

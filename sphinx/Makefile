@@ -46,7 +46,7 @@ help:
 
 .PHONY: clean
 clean:
-	rm -rf ./docs/
+	rm -rf ../docs/
 
 .PHONY: html
 html:
@@ -54,7 +54,7 @@ html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
-	cp -r ./_build/html/ ./docs/
+	cp -r ./_build/html/ ../docs/
 	rm -rf generated _build *~
 
 .PHONY: dirhtml

@@ -5,3 +5,7 @@ gdas/epower.py
 gdas/plots.py
 gdas/retrieve.py
 gdas/utils.py
+scripts/fake_trigger_generator
+scripts/gdas_test
+scripts/ligolw_tisi
+scripts/ligolw_tisi~

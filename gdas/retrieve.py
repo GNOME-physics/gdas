@@ -1,6 +1,6 @@
 """ Retrieving magnetic field data.""" 
 
-import os,glob,h5py,astropy,numpy,astropy
+import os,glob,h5py,astropy,numpy,astropy,scipy
 from astropy.time    import Time
 from datetime        import datetime,timedelta
 from glue.segments   import segment,segmentlist
@@ -8,7 +8,7 @@ from gwpy.segments   import DataQualityDict,DataQualityFlag
 from gwpy.timeseries import TimeSeries,TimeSeriesList
 from pycbc           import types
 
-def magfield(station,starttime,endtime,activity=False,rep='/GNOMEDrive/gnome/serverdata/'):
+def magfield(station,starttime,endtime,activity=False,rep='/GNOMEDrive/gnome/serverdata/',resample=None):
     """
     Glob all files withing user-defined period and extract data.
     
@@ -61,8 +61,11 @@ def magfield(station,starttime,endtime,activity=False,rep='/GNOMEDrive/gnome/ser
     ts_list = generate_timeseries(file_order,setname)
     # Retrieve channel data for all the segments
     full_data = numpy.hstack([retrieve_channel_data(data_order[seg],setname) for seg in seglist])
+    new_sample_rate = sample_rate if resample==None else resample
+    new_data_length = len(full_data)/float(sample_rate)*new_sample_rate
+    full_data = scipy.signal.resample(full_data,int(new_data_length))
     # Models a time series consisting of uniformly sampled scalar values
-    ts_data = types.TimeSeries(full_data,delta_t=1/sample_rate,epoch=seglist[0][0])
+    ts_data = types.TimeSeries(full_data,delta_t=1./new_sample_rate,epoch=seglist[0][0])
     for v in data_order.values():
         v.close()        
     return ts_data,ts_list,activity
@@ -180,7 +183,6 @@ def retrieve_data_timeseries(hfile, setname):
     sample_rate = dset.attrs["SamplingRate(Hz)"]
     gps_epoch = construct_utc_from_metadata(dset.attrs["Date"], dset.attrs["t0"])
     data = retrieve_channel_data(hfile, setname)
-    print sample_rate,gps_epoch,dset.attrs["Date"],dset.attrs["t0"],dset.attrs["t1"]
     ts_data = TimeSeries(data, sample_rate=sample_rate, epoch=gps_epoch)
     return ts_data
 

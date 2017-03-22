@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Excess Power - Step 5: Normalization of virtual channel &#8212; gdas 0.2.9 documentation</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="gdas.epower.compute_channel_renormalization" href="generated/gdas.epower.compute_channel_renormalization.html" />
+    <link rel="prev" title="gdas.epower.create_filter_bank" href="generated/gdas.epower.create_filter_bank.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="index.html">
+          <span>gdas 0.2.9 documentation</span></a></h1>
+        <h2 class="heading"><span>Excess Power - Step 5: Normalization of virtual channel</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        «&#160;&#160;<a href="generated/gdas.epower.create_filter_bank.html">gdas.epower.create_filter_bank</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="generated/gdas.epower.compute_channel_renormalization.html">gdas.epower.compute_channel_renormalization</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="excess-power-step-5-normalization-of-virtual-channel">
+<h1>Excess Power - Step 5: Normalization of virtual channel<a class="headerlink" href="#excess-power-step-5-normalization-of-virtual-channel" title="Permalink to this headline">¶</a></h1>
+<p>The virtual channels will be used during the excesspower analysis to explore different frequency ranges around each PSD segments and look for possible triggers. Each channel is renormalized using the <span class="xref std std-ref">compute_channel_renomalization</span> internal function.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Initialise dictionary</span>
+<span class="n">mu_sq_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="c1"># nc_sum additional channel adds</span>
+<span class="k">for</span> <span class="n">nc_sum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">nchans</span><span class="p">,</span> <span class="mi">2</span><span class="p">))):</span>
+    <span class="n">min_band</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">filter_bank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">filter_bank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">deltaF</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="nb">print</span> <span class="n">tprint</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">t1</span><span class="p">),</span><span class="s2">&quot;Calculation for </span><span class="si">%d</span><span class="s2"> </span><span class="si">%d</span><span class="s2"> Hz channels&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">nc_sum</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">min_band</span><span class="p">)</span>
+    <span class="n">nc_sum</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="n">nc_sum</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">mu_sq_dict</span><span class="p">[</span><span class="n">nc_sum</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_channel_renomalization</span><span class="p">(</span><span class="n">nc_sum</span><span class="p">,</span> <span class="n">filter_bank</span><span class="p">,</span> <span class="n">spec_corr</span><span class="p">,</span> <span class="n">nchans</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="code-access">
+<h2>Code access<a class="headerlink" href="#code-access" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.compute_channel_renormalization.html#gdas.epower.compute_channel_renormalization" title="gdas.epower.compute_channel_renormalization"><code class="xref py py-obj docutils literal"><span class="pre">compute_channel_renormalization</span></code></a>(filter_bank,&nbsp;...)</td>
+<td>Compute the renormalization for the base filters up to a given bandwidth.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        «&#160;&#160;<a href="generated/gdas.epower.create_filter_bank.html">gdas.epower.create_filter_bank</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="generated/gdas.epower.compute_channel_renormalization.html">gdas.epower.compute_channel_renormalization</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Vincent Dumont.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+    </div>
+  </body>
+</html>

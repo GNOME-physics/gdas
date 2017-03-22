@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Excess Power - Step 3: Two point spectral correlation &#8212; gdas 0.2.9 documentation</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="gdas.epower.calculate_spectral_correlation" href="generated/gdas.epower.calculate_spectral_correlation.html" />
+    <link rel="prev" title="gdas.epower.calculate_psd" href="generated/gdas.epower.calculate_psd.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="index.html">
+          <span>gdas 0.2.9 documentation</span></a></h1>
+        <h2 class="heading"><span>Excess Power - Step 3: Two point spectral correlation</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        «&#160;&#160;<a href="generated/gdas.epower.calculate_psd.html">gdas.epower.calculate_psd</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="generated/gdas.epower.calculate_spectral_correlation.html">gdas.epower.calculate_spectral_correlation</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="excess-power-step-3-two-point-spectral-correlation">
+<h1>Excess Power - Step 3: Two point spectral correlation<a class="headerlink" href="#excess-power-step-3-two-point-spectral-correlation" title="Permalink to this headline">¶</a></h1>
+<p>This part determines how much data on either side of the tukey window is to be discarded. Nominally, this means that one will lose <code class="docutils literal"><span class="pre">window_fraction</span></code> * <code class="docutils literal"><span class="pre">args.psd_segment_length</span></code> to corruption from the window, i.e. this is simply discarded. This is tuned to give an integer offset when used with <code class="docutils literal"><span class="pre">args.psd_segment_length</span></code> equal to 8, smaller windows will have fractions of integers, but larger powers of two will still preseve this (probably not a big deal in the end).</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">window_fraction</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>The two point spectral correlation is then done with the <span class="xref std std-ref">calculate_spectral_correlation</span> function which will return both the Tukey window applied to the original time series data and the actual two-point spectral correlation function for the whitened frequency series from the applied whitening window.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Do two point spectral correlation</span>
+<span class="n">window</span><span class="p">,</span> <span class="n">spec_corr</span> <span class="o">=</span> <span class="n">calculate_spectral_correlation</span><span class="p">(</span><span class="n">seg_len</span><span class="p">,</span><span class="s1">&#39;tukey&#39;</span><span class="p">,</span><span class="n">window_fraction</span><span class="o">=</span><span class="n">window_fraction</span><span class="p">)</span>
+<span class="n">window</span> <span class="o">=</span> <span class="n">window</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data</span>
+<span class="n">window_sigma_sq</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">window</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1"># Pre scale the window by its root mean squared -- see eqn 11 of EP document</span>
+<span class="c1">#window /= numpy.sqrt(window_sigma_sq)</span>
+</pre></div>
+</div>
+<div class="section" id="code-access">
+<h2>Code access<a class="headerlink" href="#code-access" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.calculate_spectral_correlation.html#gdas.epower.calculate_spectral_correlation" title="gdas.epower.calculate_spectral_correlation"><code class="xref py py-obj docutils literal"><span class="pre">calculate_spectral_correlation</span></code></a>(fft_window_len)</td>
+<td>Calculate the two point spectral correlation introduced by windowing the data before transforming to the frequency domain &#8211; valid choices are &#8216;hann&#8217; and &#8216;tukey&#8217;.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        «&#160;&#160;<a href="generated/gdas.epower.calculate_psd.html">gdas.epower.calculate_psd</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="generated/gdas.epower.calculate_spectral_correlation.html">gdas.epower.calculate_spectral_correlation</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Vincent Dumont.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+    </div>
+  </body>
+</html>
