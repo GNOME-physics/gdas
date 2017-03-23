@@ -50,10 +50,6 @@ def excess_power(ts_data,psd_segment_length,psd_segment_stride,psd_estimation,wi
     nchans,band,flow = check_filtering_settings(sample_rate,nchans,band,fmin,fmax)
     seg_len,fd_psd,lal_psd = calculate_psd(ts_data,sample_rate,psd_segment_length,psd_segment_stride,psd_estimation)
     window, spec_corr = calculate_spectral_correlation(seg_len,'tukey',window_fraction=window_fraction)
-    window = window.data.data
-    window_sigma_sq = numpy.mean(window**2)
-    # Pre scale the window by its root mean squared -- see eqn 11 of EP document
-    #window /= numpy.sqrt(window_sigma_sq)
     filter_bank, fdb = create_filter_bank(fd_psd.delta_f,flow+band/2,band,nchans,fd_psd,spec_corr,fmin,fmax)
     # This is necessary to compute the mu^2 normalizations
     #white_filter_ip = compute_filter_ips_self(filter_bank, spec_corr, None)
@@ -221,6 +217,10 @@ def calculate_spectral_correlation(fft_window_len,wtype='hann',window_fraction=N
     else:
         raise ValueError("Can't handle window type %s" % wtype)
     fft_plan = lal.CreateForwardREAL8FFTPlan(len(window.data.data), 1)
+    window = window.data.data
+    window_sigma_sq = numpy.mean(window**2)
+    # Pre scale the window by its root mean squared -- see eqn 11 of EP document
+    #window /= numpy.sqrt(window_sigma_sq)
     return window, lal.REAL8WindowTwoPointSpectralCorrelation(window, fft_plan)
 
 def create_filter_bank(delta_f,flow,band,nchan,psd,spec_corr,fmin=0,fmax=None):

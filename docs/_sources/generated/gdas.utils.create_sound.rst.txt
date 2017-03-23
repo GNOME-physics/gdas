@@ -1,6 +1,0 @@
-gdas.utils.create_sound
-=======================
-
-.. currentmodule:: gdas.utils
-
-.. autofunction:: create_sound

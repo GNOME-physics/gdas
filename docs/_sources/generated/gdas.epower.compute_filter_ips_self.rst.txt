@@ -1,6 +1,0 @@
-gdas.epower.compute_filter_ips_self
-===================================
-
-.. currentmodule:: gdas.epower
-
-.. autofunction:: compute_filter_ips_self

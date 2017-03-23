@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Extracting GPS time range &#8212; gdas 0.3.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Explore multiple tile durations" href="explore_duration.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="index.html">
+          <span>gdas 0.3.0 documentation</span></a></h1>
+        <h2 class="heading"><span>Extracting GPS time range</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        «&#160;&#160;<a href="explore_duration.html">Explore multiple tile durations</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="extracting-gps-time-range">
+<h1>Extracting GPS time range<a class="headerlink" href="#extracting-gps-time-range" title="Permalink to this headline">¶</a></h1>
+<p>We use the <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lal/group___l_a_l_datatypes.html#ss_LIGOTimeGPS">LIGOTimeGPS</a> structure from the =glue.lal= package to /store the starting and ending time in the dataset to nanosecond precision and synchronized to the Global Positioning System time reference/. Once both times are defined, the range of value is stored in a semi-open interval using the <a class="reference external" href="http://software.ligo.org/docs/glue/glue.__segments.segment-class.html">segment</a> module from the =glue.segments= package.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Starting epoch relative to GPS starting epoch</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">LIGOTimeGPS</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">analysis_start_time</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">gps_start_time</span><span class="p">)</span>
+<span class="c1"># Ending epoch relative to GPS ending epoch</span>
+<span class="n">end_time</span> <span class="o">=</span> <span class="n">LIGOTimeGPS</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">analysis_end_time</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">gps_end_time</span><span class="p">)</span>
+<span class="c1"># Represent the range of values in the semi-open interval</span>
+<span class="n">inseg</span> <span class="o">=</span> <span class="n">segment</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span><span class="n">end_time</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="prepare-output-file-for-given-time-range">
+<h1>Prepare output file for given time range<a class="headerlink" href="#prepare-output-file-for-given-time-range" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">xmldoc</span> <span class="o">=</span> <span class="n">ligolw</span><span class="o">.</span><span class="n">Document</span><span class="p">()</span>
+<span class="n">xmldoc</span><span class="o">.</span><span class="n">appendChild</span><span class="p">(</span><span class="n">ligolw</span><span class="o">.</span><span class="n">LIGO_LW</span><span class="p">())</span>
+
+<span class="n">ifo</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">channel_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">proc_row</span> <span class="o">=</span> <span class="n">register_to_xmldoc</span><span class="p">(</span><span class="n">xmldoc</span><span class="p">,</span> <span class="n">__program__</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">__dict__</span><span class="p">,</span> <span class="n">ifos</span><span class="o">=</span><span class="p">[</span><span class="n">ifo</span><span class="p">],</span><span class="n">version</span><span class="o">=</span><span class="n">glue</span><span class="o">.</span><span class="n">git_version</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">cvs_repository</span><span class="o">=</span><span class="n">glue</span><span class="o">.</span><span class="n">git_version</span><span class="o">.</span><span class="n">branch</span><span class="p">,</span> <span class="n">cvs_entry_time</span><span class="o">=</span><span class="n">glue</span><span class="o">.</span><span class="n">git_version</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
+
+<span class="c1"># Figure out the data we actually analyzed</span>
+<span class="n">outseg</span> <span class="o">=</span> <span class="n">determine_output_segment</span><span class="p">(</span><span class="n">inseg</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">psd_segment_length</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">,</span> <span class="n">window_fraction</span><span class="p">)</span>
+
+<span class="n">ss</span> <span class="o">=</span> <span class="n">append_search_summary</span><span class="p">(</span><span class="n">xmldoc</span><span class="p">,</span> <span class="n">proc_row</span><span class="p">,</span> <span class="n">ifos</span><span class="o">=</span><span class="p">(</span><span class="n">station</span><span class="p">,),</span> <span class="n">inseg</span><span class="o">=</span><span class="n">inseg</span><span class="p">,</span> <span class="n">outseg</span><span class="o">=</span><span class="n">outseg</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">sb</span> <span class="ow">in</span> <span class="n">event_list</span><span class="p">:</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">process_id</span> <span class="o">=</span> <span class="n">proc_row</span><span class="o">.</span><span class="n">process_id</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">search</span> <span class="o">=</span> <span class="n">proc_row</span><span class="o">.</span><span class="n">program</span>
+    <span class="c1">#sb.ifo, sb.channel = args.channel_name.split(&quot;:&quot;)</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">ifo</span><span class="p">,</span> <span class="n">sb</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="n">station</span><span class="p">,</span> <span class="n">setname</span>
+
+<span class="n">xmldoc</span><span class="o">.</span><span class="n">childNodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">appendChild</span><span class="p">(</span><span class="n">event_list</span><span class="p">)</span>
+<span class="n">fname</span> <span class="o">=</span> <span class="n">make_filename</span><span class="p">(</span><span class="n">station</span><span class="p">,</span> <span class="n">inseg</span><span class="p">)</span>
+
+<span class="n">utils</span><span class="o">.</span><span class="n">write_filename</span><span class="p">(</span><span class="n">xmldoc</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="n">gz</span><span class="o">=</span><span class="n">fname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;gz&quot;</span><span class="p">),</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="plot-trigger-results">
+<h1>Plot trigger results<a class="headerlink" href="#plot-trigger-results" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">events</span> <span class="o">=</span> <span class="n">SnglBurstTable</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">fname</span><span class="o">+</span><span class="s1">&#39;.gz&#39;</span><span class="p">)</span>
+<span class="c1">#del events[10000:]</span>
+<span class="n">plot</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;central_freq&#39;</span><span class="p">,</span> <span class="s2">&quot;duration&quot;</span><span class="p">,</span> <span class="s2">&quot;bandwidth&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;snr&quot;</span><span class="p">)</span>
+<span class="c1">#plot = events.plot(&#39;time&#39;, &#39;central_freq&#39;, color=&#39;snr&#39;)</span>
+<span class="c1">#plot.set_yscale(&quot;log&quot;)</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">0</span><span class="p">,</span> <span class="mi">250</span><span class="p">)</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="mi">1153742417</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">t0</span> <span class="o">+</span> <span class="mi">0</span><span class="o">*</span><span class="mi">60</span><span class="p">,</span> <span class="n">t0</span> <span class="o">+</span> <span class="mi">1</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+<span class="c1">#plot.set_xlim(t0 + 28, t0 + 32)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">t0</span> <span class="o">+</span> <span class="mi">30</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">cb</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">add_colorbar</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;triggers.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        «&#160;&#160;<a href="explore_duration.html">Explore multiple tile durations</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Vincent Dumont.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+    </div>
+  </body>
+</html>

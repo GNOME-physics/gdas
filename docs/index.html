@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Welcome! &#8212; gdas 0.2.9 documentation</title>
+    <title>Welcome! &#8212; gdas 0.3.0 documentation</title>
     
     <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.9',
+        VERSION:     '0.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -31,7 +31,7 @@
   </head>
   <body role="document">
       <div class="header" role="banner"><h1 class="heading"><a href="#">
-          <span>gdas 0.2.9 documentation</span></a></h1>
+          <span>gdas 0.3.0 documentation</span></a></h1>
         <h2 class="heading"><span>Welcome!</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
@@ -62,11 +62,7 @@
 <h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#lalsuite-tools">LALsuite tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#main-program">Main Program</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="server.html">Multi-user Server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example.html">Working Example</a></li>
 </ul>
@@ -76,13 +72,42 @@
 <h2>Excess Power Search Analysis<a class="headerlink" href="#excess-power-search-analysis" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="epower_overview.html">Excess Power - Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="epower_step1_checkfilt.html">Excess Power - Step 1: Checking filtering settings</a></li>
-<li class="toctree-l1"><a class="reference internal" href="epower_step2_psd.html">Excess Power - Step 2: Estimate Power Spectral Density (PSD)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="epower_step3_speccor.html">Excess Power - Step 3: Two point spectral correlation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="epower_step4_filterbank.html">Excess Power - Step 4: Computing the filter bank</a></li>
-<li class="toctree-l1"><a class="reference internal" href="epower_step5_normalization.html">Excess Power - Step 5: Normalization of virtual channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="excess_power.html">Excess Power Overview</a></li>
 </ul>
+</div>
+<div class="section" id="pre-calculations-and-initialization">
+<h3>Pre-calculations and initialization<a class="headerlink" href="#pre-calculations-and-initialization" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="check_filtering_settings.html">Checking filtering settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="calculate_psd.html">Calculate Power Spectral Density (PSD)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="calculate_spectral_correlation.html">Two point spectral correlation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_filter_bank.html">Computing the filter bank</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compute_channel_renormalization.html">Normalization of virtual channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="initialization.html">Initialise event list and determine stride boundaries</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="looping-over-each-block">
+<h3>Looping over each block<a class="headerlink" href="#looping-over-each-block" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="identify_block.html">Define analysing blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_tf_plane.html">Create time-frequency map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="construct_tiles.html">Constructing tiles of different bandwidth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explore_duration.html">Explore multiple tile durations</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="save-results">
+<h3>Save results<a class="headerlink" href="#save-results" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="create_xml.html">Extracting GPS time range</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_xml.html#prepare-output-file-for-given-time-range">Prepare output file for given time range</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_xml.html#plot-trigger-results">Plot trigger results</a></li>
+</ul>
+</div>
 </div>
 </div>
 </div>

@@ -1,0 +1,1138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>GNOME Data Analysis Software &#8212; gdas 0.3.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
+          <span>gdas 0.3.0 documentation</span></a></h1>
+        <h2 class="heading"><span>GNOME Data Analysis Software</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="gnome-data-analysis-software">
+<h1>GNOME Data Analysis Software<a class="headerlink" href="#gnome-data-analysis-software" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><span class="xref std std-ref">test2</span></li>
+</ul>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>This package contains functions useful for magnetic field signal processing, with a focus on Excess Power search analysis and application on the data for the GNOME collaboration, see <a class="reference external" href="https://arxiv.org/abs/1303.5524">Pustelny et al. (2013)</a>. This documentation details all the available functions and tasks available through this software. Here are some example tasks that can (or will soon to) be handled:</p>
+<ul class="simple">
+<li>Plot usual time series and spectrogram of magnetic field data.</li>
+<li>Perform excess power analysis and plot detected triggers in time-frequency map.</li>
+<li>Create artificial data for testing data analysis.</li>
+<li>Inject fake signal of different bandwidth and durations.</li>
+<li>Cross-correlation of continuous sine wave signals.</li>
+<li>Perform Allan Standard deviation.</li>
+</ul>
+<a href="https://github.com/GNOME-physics/gdas"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a></div>
+<div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>The program requires the following general packages to run: <a class="reference external" href="http://numpy.scipy.org/">Numpy</a>, <a class="reference external" href="http://matplotlib.sourceforge.net/">Matplotlib</a>, <a class="reference external" href="http://www.scipy.org/">Scipy</a> and <a class="reference external" href="http://www.astropy.org/">Astropy</a>. The following LIGO-related packages are also required for full functionality: <a class="reference external" href="https://gwpy.github.io/">Gwpy</a>, <a class="reference external" href="https://github.com/ligo-cbc/pycbc">PyCBC</a>, <a class="reference external" href="https://www.lsc-group.phys.uwm.edu/daswg/projects/glue.html">Glue</a>, <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lal/index.html">LAL</a>, <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lalburst/index.html">LALburst</a> and <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lalsimulation/index.html">LALsimulation</a>.</p>
+<p>While most of the packages can be installed automatically using <a class="reference external" href="http://www.pip-installer.org/en/latest/index.html">pip</a>, some LIGO packages (Glue, LAL, LALburst and LALsimulation) must be installed separately beforehand as they contain several C routines that need specific compilation. However, these packages are already included in a bigger package called <a class="reference external" href="https://wiki.ligo.org/DASWG/LALSuite">LALsuite</a> which can be installed fairly easily on Debian (Linux) and Mac OS machines.</p>
+<div class="section" id="lalsuite-tools">
+<h2>LALsuite tools<a class="headerlink" href="#lalsuite-tools" title="Permalink to this headline">¶</a></h2>
+<p>Some useful pages on how to download and install the LIGO software can be found <a class="reference external" href="https://wiki.ligo.org/DASWG/HowToDocs">here</a>.</p>
+<div class="section" id="macports-mac">
+<h3>MacPorts (Mac)<a class="headerlink" href="#macports-mac" title="Permalink to this headline">¶</a></h3>
+<p>For Mac users, the installation is pretty easy, detailed information can be found on <a class="reference external" href="https://wiki.ligo.org/DASWG/MacPorts">this page</a>. You need to have <a class="reference external" href="https://www.macports.org/install.php">MacPorts</a> installed. The following commands should suffice to install the LALsuite package on your machine:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">port</span> <span class="n">install</span> <span class="n">lscsoft</span><span class="o">-</span><span class="n">deps</span>
+<span class="n">sudo</span> <span class="n">port</span> <span class="n">install</span> <span class="n">glue</span>
+<span class="n">sudo</span> <span class="n">port</span> <span class="n">install</span> <span class="n">lalapps</span>
+</pre></div>
+</div>
+<p>The first command will install all the dependencies needed for the LIGO software to be installed. The following 2 commands will install the actual packages.</p>
+</div>
+<div class="section" id="apt-get-debian">
+<h3>apt-get (Debian)<a class="headerlink" href="#apt-get-debian" title="Permalink to this headline">¶</a></h3>
+<p>Since the LIGO software is not a default package in the apt package manager system on Debian machine, additional steps will be needed. The first step is to add the following links to the source list located at <code class="docutils literal"><span class="pre">/etc/apt/sources.list</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">deb</span> <span class="p">[</span><span class="n">arch</span><span class="o">=</span><span class="n">amd64</span><span class="p">]</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">software</span><span class="o">.</span><span class="n">ligo</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">lscsoft</span><span class="o">/</span><span class="n">debian</span> <span class="n">jessie</span> <span class="n">contrib</span>
+<span class="n">deb</span><span class="o">-</span><span class="n">src</span> <span class="p">[</span><span class="n">arch</span><span class="o">=</span><span class="n">amd64</span><span class="p">]</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">software</span><span class="o">.</span><span class="n">ligo</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">lscsoft</span><span class="o">/</span><span class="n">debian</span> <span class="n">jessie</span> <span class="n">contrib</span>
+</pre></div>
+</div>
+<p>Note that the <code class="docutils literal"><span class="pre">[arch=amd64]</span></code> is needed to fix the architecture problem in case it tries to install i386 version on 64-bit Debian. Once the sources have been added, you must first install all the dependencies as follows:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">build</span><span class="o">-</span><span class="n">essential</span> <span class="n">automake</span> <span class="n">autoconf</span> <span class="n">libtool</span> <span class="n">devscripts</span>
+</pre></div>
+</div>
+<p>The LIGO software can finally be installed using the following command:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">lscsoft</span><span class="o">-</span><span class="nb">all</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="main-program">
+<h2>Main Program<a class="headerlink" href="#main-program" title="Permalink to this headline">¶</a></h2>
+<p>The best way to install the GNOME software along with the rest of the dependencies is by using <cite>pip</cite>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">gdas</span>
+</pre></div>
+</div>
+<p>(You may need to put a <code class="docutils literal"><span class="pre">sudo</span></code> in front of this). For this to work
+you need to have <a class="reference external" href="http://www.pip-installer.org/en/latest/index.html">pip</a> installed. This
+method allows for easy uninstallation.</p>
+<p>You can also simply download the tarball from the PyPI website, unpack it and then do:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
+</pre></div>
+</div>
+<p>The latest stable package can be downloaded from PyPI: <a class="reference external" href="https://pypi.python.org/pypi/gdas">https://pypi.python.org/pypi/gdas</a>.
+The development version can be downloaded from <a class="reference external" href="https://github.com/GNOME-physics/gdas">here</a>.</p>
+</div>
+</div>
+<div class="section" id="multi-user-server">
+<h1>Multi-user Server<a class="headerlink" href="#multi-user-server" title="Permalink to this headline">¶</a></h1>
+<p>A GNOME JupyterHub, or multi-user server has been created to allow each member to access the entire available dataset. Member who do not have access to the server but wish to access it should send a request to Dr. Sam Afach. Member who are not part of the GNOME collaboration will not be granted access to the dataset but are free to use our software on their own data.</p>
+<p>The server can be accessed in two ways, either by acceding the <a class="reference external" href="https://budker.uni-mainz.de:8000/hub/login">server&#8217;s webpage</a>, or from your terminal through SSH:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="o">-</span><span class="n">X</span> <span class="n">username</span><span class="nd">@budker</span><span class="o">.</span><span class="n">uni</span><span class="o">-</span><span class="n">mainz</span><span class="o">.</span><span class="n">de</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8022</span>
+</pre></div>
+</div>
+<p>While SSH is very handy for people using UNIX-like operating systems, this can become more complicated for those working on Windows machines. Fortunately, access to a terminal is also possible through the webpage, which means directly from your internet browser! This can be done by clicking on the New tab after login and select Terminal:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="backup/img/jupyter1.png"><img alt="backup/img/jupyter1.png" src="backup/img/jupyter1.png" style="width: 70%;" /></a>
+</div>
+<p>You can then use the terminal window to access files and create new Python scripts for your analysis.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="backup/img/jupyter2.png"><img alt="backup/img/jupyter2.png" src="backup/img/jupyter2.png" style="width: 70%;" /></a>
+</div>
+</div>
+<div class="section" id="working-example">
+<h1>Working Example<a class="headerlink" href="#working-example" title="Permalink to this headline">¶</a></h1>
+<p>Either on your own computer or on the server, on a Jupyter notebook or on a Python script, the first thing to do is to import the <code class="docutils literal"><span class="pre">gdas</span></code> package that contain all the modules present in the GNOME software. That can be done easily by doing the following:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gdas</span>
+</pre></div>
+</div>
+<p>In order to retrieve a specific chunk of data to be analyzed for a particular station, the name of the station along with the start and end dates should be specified:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">station</span>    <span class="o">=</span> <span class="s1">&#39;fribourg01&#39;</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="s1">&#39;2016-11-03-04&#39;</span>
+<span class="n">end_time</span>   <span class="o">=</span> <span class="s1">&#39;2016-11-03-04-2&#39;</span>
+</pre></div>
+</div>
+<p>where the start and end times should always have at least the year, month and day specified, and with the values separated by a dash symbol. Hour and minute can also be specified.</p>
+<p>If you are not working on the server and the data are located in a different repository than <code class="docutils literal"><span class="pre">/GNOMEDrive/gnome/serverdata/</span></code>, a custom path can be defined. For instance:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">datapath</span> <span class="o">=</span> <span class="s1">&#39;/Users/vincent/data/GNOMEDrive/gnome/serverdata/&#39;</span>
+</pre></div>
+</div>
+<p>The magnetic field data can then be retrieve as follows:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ts_data</span><span class="p">,</span><span class="n">ts_list</span><span class="p">,</span><span class="n">activity</span> <span class="o">=</span> <span class="n">gdas</span><span class="o">.</span><span class="n">magfield</span><span class="p">(</span><span class="n">station</span><span class="p">,</span><span class="n">start_time</span><span class="p">,</span><span class="n">end_time</span><span class="p">,</span><span class="n">rep</span><span class="o">=</span><span class="n">datapath</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">gdas.magfield</span></code> method will return 3 arrays of data that can then be used to produce different plots:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">gdas</span><span class="o">.</span><span class="n">plot_activity</span><span class="p">(</span><span class="n">activity</span><span class="p">)</span>
+<span class="n">gdas</span><span class="o">.</span><span class="n">plot_time_series</span><span class="p">(</span><span class="n">station</span><span class="p">,</span><span class="n">ts_list</span><span class="p">,</span><span class="n">seglist</span><span class="o">=</span><span class="n">activity</span><span class="p">)</span>
+<span class="n">gdas</span><span class="o">.</span><span class="n">plot_asd</span><span class="p">(</span><span class="n">station</span><span class="p">,</span><span class="n">ts_list</span><span class="p">)</span>
+<span class="n">gdas</span><span class="o">.</span><span class="n">plot_whitening</span><span class="p">(</span><span class="n">station</span><span class="p">,</span><span class="n">ts_list</span><span class="p">,</span><span class="n">activity</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is a script to do Excess Power analysis:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">psd_segment_length</span> <span class="o">=</span> <span class="mi">60</span>
+<span class="n">psd_segment_stride</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">psd_estimation</span>     <span class="o">=</span> <span class="s1">&#39;median-mean&#39;</span>
+<span class="n">window_fraction</span>    <span class="o">=</span> <span class="mi">0</span>
+<span class="n">tile_fap</span>           <span class="o">=</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">5</span>
+<span class="n">channels</span>           <span class="o">=</span> <span class="mi">250</span>
+
+<span class="n">gdas</span><span class="o">.</span><span class="n">excess_power</span><span class="p">(</span><span class="n">ts_data</span><span class="p">,</span><span class="n">psd_segment_length</span><span class="p">,</span><span class="n">psd_segment_stride</span><span class="p">,</span><span class="n">psd_estimation</span><span class="p">,</span><span class="n">window_fraction</span><span class="p">,</span><span class="n">tile_fap</span><span class="p">,</span><span class="n">station</span><span class="p">,</span><span class="n">nchans</span><span class="o">=</span><span class="n">channels</span><span class="p">)</span>
+<span class="n">gdas</span><span class="o">.</span><span class="n">plot_triggers</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="data-extraction">
+<h1>Data extraction<a class="headerlink" href="#data-extraction" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="extracting-real-data">
+<h2>Extracting real data<a class="headerlink" href="#extracting-real-data" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="retrieve-metadata">
+<h3>Retrieve metadata<a class="headerlink" href="#retrieve-metadata" title="Permalink to this headline">¶</a></h3>
+<p>The first step is to define some variables related to which data we want to study and their location. The <code class="docutils literal"><span class="pre">os.path.join</span></code> method will join that different paths called as arguments (i.e. in the parenthesis):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Set name of the channel to extract</span>
+<span class="n">setname</span> <span class="o">=</span> <span class="s2">&quot;MagneticFields&quot;</span>
+<span class="c1"># Define station name and map</span>
+<span class="n">station</span> <span class="o">=</span> <span class="s2">&quot;fribourg01&quot;</span>
+<span class="c1"># Define year, month and day</span>
+<span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span> <span class="o">=</span> <span class="s1">&#39;2016&#39;</span><span class="p">,</span><span class="s1">&#39;11&#39;</span><span class="p">,</span><span class="s1">&#39;03&#39;</span>
+<span class="c1"># Define path to main data repository</span>
+<span class="n">path1</span> <span class="o">=</span> <span class="s1">&#39;/Users/vincent/ASTRO/data/GNOMEDrive/gnome/serverdata/&#39;</span>
+<span class="c1"># Define path to day repository</span>
+<span class="n">path2</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">/&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">station</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">)</span>
+<span class="c1"># Define generic hdf5 filenames</span>
+<span class="n">path3</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s%s%s</span><span class="s2">_*.hdf5&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">station</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">)</span>
+<span class="c1"># Define full generic path name</span>
+<span class="n">fullpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path1</span><span class="p">,</span><span class="n">path2</span><span class="p">,</span><span class="n">path3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We then use the <a class="reference external" href="https://docs.python.org/2/library/glob.html">glob</a> module to list all the files that satisfy the full path name and loop over each HDF5 file and do the following:</p>
+<ul class="simple">
+<li>Extract its metadata using the <a class="reference external" href="http://www.h5py.org/">h5py</a> package;</li>
+<li>Calculate the segment in time for which the data corresponds to using the <a class="reference internal" href="excess_power.html#file-to-segment"><span class="std std-ref">file_to_segment</span></a> function;</li>
+<li>Store each filename and metadata on two different dictionary variables <code class="docutils literal"><span class="pre">file_order</span></code> and <code class="docutils literal"><span class="pre">file_order</span></code>.</li>
+</ul>
+<p>Finally, we extract the sampling rate from one of the file which will be use later in the analysis. The sampling rate is the same for all the data files:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Initialising dictionary for data</span>
+<span class="n">file_order</span><span class="p">,</span><span class="n">data_order</span> <span class="o">=</span> <span class="p">{},{}</span>
+<span class="c1"># Loop over all existing data files</span>
+<span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">fullpath</span><span class="p">):</span>
+    <span class="c1"># Read hdf5 file</span>
+    <span class="n">hfile</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+    <span class="c1"># Extract segment information from file</span>
+    <span class="n">segfile</span> <span class="o">=</span> <span class="n">file_to_segment</span><span class="p">(</span><span class="n">hfile</span><span class="p">,</span><span class="n">setname</span><span class="p">)</span>
+    <span class="c1"># Associate file in dictionary with association to segment data</span>
+    <span class="n">file_order</span><span class="p">[</span><span class="n">segfile</span><span class="p">]</span> <span class="o">=</span> <span class="n">fname</span>
+    <span class="n">data_order</span><span class="p">[</span><span class="n">segfile</span><span class="p">]</span> <span class="o">=</span> <span class="n">hfile</span>
+<span class="c1"># Retrieve sampling rate from last read file</span>
+<span class="n">sample_rate</span> <span class="o">=</span> <span class="n">hfile</span><span class="p">[</span><span class="n">setname</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;SamplingRate(Hz)&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-segment-lists">
+<h3>Creating segment lists<a class="headerlink" href="#creating-segment-lists" title="Permalink to this headline">¶</a></h3>
+<p>This section will create a continuous list of all the data segments available. We use the following modules in order to create the list properly:</p>
+<ul class="simple">
+<li>The <a class="reference external" href="http://software.ligo.org/docs/glue/glue.__segments.segmentlist-class.html">segmentlist</a> module from the <code class="docutils literal"><span class="pre">glue.segments</span></code> library defines the list of segments. The =coalesce()= method is then used to put all the segments in coalesced state.</li>
+<li>The <a class="reference external" href="https://gwpy.github.io/docs/stable/segments/index.html#gwpy.segments.DataQualityDict">DataQualityDict</a> module from the <code class="docutils literal"><span class="pre">gwpy.segments</span></code> library allows to store all the data segments in an ordered dictionary.</li>
+<li>The <a class="reference external" href="https://gwpy.github.io/docs/stable/segments/index.html#gwpy.segments.DataQualityFlag">DataQualityFlag</a> module from the <code class="docutils literal"><span class="pre">gwpy.segments</span></code> library allows to <em>record times during which the instrument was operating outside of its nominal condition</em>.</li>
+</ul>
+<p>The script is as follows:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Generate an ASCII representation of the GPS timestamped segments of time covered by the input data</span>
+<span class="n">seglist</span> <span class="o">=</span> <span class="n">segmentlist</span><span class="p">(</span><span class="n">data_order</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="c1"># Sort the segment list</span>
+<span class="n">seglist</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="c1"># Initialise dictionary for segment information</span>
+<span class="n">full_seglist</span> <span class="o">=</span> <span class="n">DataQualityDict</span><span class="p">()</span>
+<span class="c1"># Save time span for each segment in ASCII file</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;segments.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fout</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="n">seglist</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="o">&gt;&gt;</span><span class="n">fout</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%10.9f</span><span class="s2"> </span><span class="si">%10.9f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">seg</span>
+<span class="c1"># FIXME: Active should be masked from the sanity channel</span>
+<span class="n">full_seglist</span><span class="p">[</span><span class="n">station</span><span class="p">]</span> <span class="o">=</span> <span class="n">DataQualityFlag</span><span class="p">(</span><span class="n">station</span><span class="p">,</span><span class="n">active</span><span class="o">=</span><span class="n">seglist</span><span class="o">.</span><span class="n">coalesce</span><span class="p">(),</span><span class="n">known</span><span class="o">=</span><span class="n">seglist</span><span class="o">.</span><span class="n">coalesce</span><span class="p">())</span>
+<span class="c1"># Define start and end time of entire dataset</span>
+<span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">full_seglist</span><span class="p">[</span><span class="n">station</span><span class="p">]</span><span class="o">.</span><span class="n">active</span><span class="o">.</span><span class="n">extent</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="establishing-active-times">
+<h3>Establishing active times<a class="headerlink" href="#establishing-active-times" title="Permalink to this headline">¶</a></h3>
+<p>Here&#8217;s the script:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Generate an ASCII representation of the GPS timestamped segments of time covered by the input data</span>
+<span class="n">seglist</span> <span class="o">=</span> <span class="n">segmentlist</span><span class="p">(</span><span class="n">data_order</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="c1"># Sort the segment list</span>
+<span class="n">seglist</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="c1"># Import gwpy tools</span>
+<span class="n">plot</span> <span class="o">=</span> <span class="n">SegmentPlot</span><span class="p">()</span>
+<span class="c1"># Initialize plotting figure</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+<span class="c1"># Plot all segment in figure</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">full_seglist</span><span class="p">)</span>
+<span class="c1"># Save figure</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;activity.png&quot;</span><span class="p">,</span><span class="n">dpi</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="retrieve-and-concatenate-the-data">
+<h3>Retrieve and concatenate the data.<a class="headerlink" href="#retrieve-and-concatenate-the-data" title="Permalink to this headline">¶</a></h3>
+<p>Here&#8217;s the script:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Generate time series for the ensemble of data</span>
+<span class="n">data_list</span> <span class="o">=</span> <span class="n">generate_timeseries</span><span class="p">(</span><span class="n">file_order</span><span class="p">,</span><span class="n">setname</span><span class="p">)</span>
+<span class="c1"># Retrieve channel data for all the segments</span>
+<span class="n">full_data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">retrieve_channel_data</span><span class="p">(</span><span class="n">data_order</span><span class="p">[</span><span class="n">seg</span><span class="p">],</span><span class="n">setname</span><span class="p">)</span> <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="n">seglist</span><span class="p">])</span>
+<span class="c1"># Define log base 2 of the total time length of the full data</span>
+<span class="n">loglength</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">full_data</span><span class="p">)</span><span class="o">/</span><span class="n">sample_rate</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="c1"># Define zero padding</span>
+<span class="n">zpad</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">loglength</span><span class="p">)</span>
+<span class="n">zpad</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">zpad</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">full_data</span><span class="p">)</span><span class="o">/</span><span class="n">sample_rate</span>
+<span class="n">zpad</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">zpad</span><span class="o">*</span><span class="n">sample_rate</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">))</span>
+<span class="c1"># Include padding next to the data</span>
+<span class="n">full_data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">zpad</span><span class="p">,</span> <span class="n">full_data</span><span class="p">,</span> <span class="n">zpad</span><span class="p">))</span>
+<span class="c1"># Models a time series consisting of uniformly sampled scalar values</span>
+<span class="n">ts_data</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">TimeSeries</span><span class="p">(</span><span class="n">full_data</span><span class="p">,</span><span class="n">delta_t</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="n">sample_rate</span><span class="p">,</span><span class="n">epoch</span><span class="o">=</span><span class="n">seglist</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="c1"># Loop over all the elements in the dictionary</span>
+<span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data_order</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+    <span class="c1"># Close the element</span>
+    <span class="n">v</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="producing-fake-data">
+<h2>Producing fake data<a class="headerlink" href="#producing-fake-data" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="create-simulated-time-series-data">
+<h3>Create simulated time series data<a class="headerlink" href="#create-simulated-time-series-data" title="Permalink to this headline">¶</a></h3>
+<p>It is easy to create fake data, one can use the <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.normal.html">numpy.random.normal</a> method from the Numpy library to draw random samples from a normal Gaussian distribution with mean of 0, standard deviation of 1, and a length equal to the sampling rate (<code class="docutils literal"><span class="pre">args.sample_rate</span></code>) times the length in seconds of individual segments (<code class="docutils literal"><span class="pre">args.psd_segment_length</span></code>) times the number of segment the user wish to produce. After defining the starting UTC time, one can then create a time series of the data using the <a class="reference external" href="https://gwpy.github.io/docs/stable/timeseries/#gwpy.timeseries.TimeSeries">TimeSeries</a> module from the <code class="docutils literal"><span class="pre">gwpy.timeseries</span></code> library.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="s2">&quot;Create fake data...&quot;</span>
+<span class="n">start</span> <span class="o">=</span> <span class="mf">1153742437.0</span>
+<span class="n">end</span>   <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">psd_segment_length</span> <span class="o">*</span> <span class="mi">16</span>
+<span class="n">station</span> <span class="o">=</span> <span class="s2">&quot;gaussian-noise&quot;</span>
+<span class="n">setname</span> <span class="o">=</span> <span class="s2">&quot;MagneticFields&quot;</span>
+<span class="n">full_data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">psd_segment_length</span> <span class="o">*</span> <span class="mi">16</span><span class="p">))</span>
+<span class="n">ts_data</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">full_data</span><span class="p">,</span> <span class="n">sample_rate</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">,</span><span class="n">epoch</span><span class="o">=</span><span class="n">start</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="produce-and-plot-fake-signal">
+<h3>Produce and plot fake signal<a class="headerlink" href="#produce-and-plot-fake-signal" title="Permalink to this headline">¶</a></h3>
+<p>Here&#8217;s the script:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">delta_t</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span>
+<span class="n">filter_band</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="c1">#q = math.sqrt(2)*f_0/filter_band * 2</span>
+<span class="c1">#f_0 = 18</span>
+<span class="n">duration</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">hrss</span> <span class="o">=</span> <span class="mf">0.0275</span>
+<span class="c1">#hp, hx = SimBurstSineGaussian(q * 2, f_0, hrss, 1, 0, data_dt)</span>
+<span class="n">hp</span><span class="p">,</span> <span class="n">hx</span> <span class="o">=</span> <span class="n">SimBurstGaussian</span><span class="p">(</span><span class="n">duration</span><span class="p">,</span> <span class="n">hrss</span><span class="p">,</span> <span class="n">delta_t</span><span class="p">)</span>
+<span class="n">hp</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="o">.</span><span class="n">from_lal</span><span class="p">(</span><span class="n">hp</span><span class="p">)</span>
+<span class="n">hx</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="o">.</span><span class="n">from_lal</span><span class="p">(</span><span class="n">hx</span><span class="p">)</span>
+<span class="c1"># We rescale the amplitude to hide or expose it in the data a bit better</span>
+<span class="n">hp</span> <span class="o">*=</span> <span class="mf">100.</span>
+
+<span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hp</span><span class="o">.</span><span class="n">times</span><span class="p">,</span> <span class="n">hp</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]);</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Magnitude&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;fakesignal.png&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="inject-fake-signal-into-artificial-data">
+<h3>Inject fake signal into artificial data<a class="headerlink" href="#inject-fake-signal-into-artificial-data" title="Permalink to this headline">¶</a></h3>
+<p>Here&#8217;s the script:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">random_time</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">start</span><span class="o">+</span><span class="n">end</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span>
+<span class="n">st</span> <span class="o">=</span> <span class="p">(</span><span class="n">random_time</span><span class="o">-</span><span class="n">start</span><span class="p">)</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">hp</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">en</span> <span class="o">=</span> <span class="n">st</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">hp</span><span class="p">)</span>
+<span class="n">hp</span><span class="o">.</span><span class="n">epoch</span> <span class="o">=</span> <span class="n">random_time</span>
+<span class="n">ts_data</span><span class="p">[</span><span class="n">st</span><span class="p">:</span><span class="n">en</span><span class="p">]</span> <span class="o">+=</span> <span class="n">hp</span>
+<span class="n">data_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">ts_data</span><span class="p">]</span>
+<span class="n">ts_data</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">TimeSeries</span><span class="p">(</span><span class="n">ts_data</span><span class="o">.</span><span class="n">value</span><span class="p">,</span><span class="n">delta_t</span><span class="o">=</span><span class="mf">1.0</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">,</span><span class="n">epoch</span><span class="o">=</span><span class="n">start</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="plotting-data">
+<h1>Plotting Data<a class="headerlink" href="#plotting-data" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="generate-a-plot-of-the-data-time-series">
+<h2>Generate a plot of the data time series<a class="headerlink" href="#generate-a-plot-of-the-data-time-series" title="Permalink to this headline">¶</a></h2>
+<p>Here&#8217;s the script:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Include time series element in dictionary</span>
+<span class="n">plot</span> <span class="o">=</span> <span class="n">TimeSeriesPlot</span><span class="p">()</span>
+<span class="c1"># Create axis in plot</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+<span class="c1"># Loop over all the time series</span>
+<span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">:</span>
+    <span class="c1"># Plot time series for each segment</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="c1"># Display title</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">station</span><span class="p">)</span>
+<span class="c1"># Plot activity segments</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">add_state_segments</span><span class="p">(</span><span class="n">SegmentList</span><span class="p">(</span><span class="n">full_seglist</span><span class="p">[</span><span class="n">station</span><span class="p">]</span><span class="o">.</span><span class="n">active</span><span class="p">),</span><span class="n">plotargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span><span class="s1">&#39;data present&#39;</span><span class="p">,</span><span class="s1">&#39;facecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="s1">&#39;edgecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;k&#39;</span><span class="p">})</span>
+<span class="c1"># Define edges of the x axis</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+<span class="c1"># Save figure</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;time_series.png&#39;</span><span class="p">,</span><span class="n">dpi</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-sound-based-on-the-data">
+<h2>Create sound based on the data<a class="headerlink" href="#create-sound-based-on-the-data" title="Permalink to this headline">¶</a></h2>
+<p>Here&#8217;s the script:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">wout</span> <span class="o">=</span> <span class="n">wave</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;pure_tone.wav&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="n">wout</span><span class="o">.</span><span class="n">setnchannels</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># mono</span>
+<span class="n">wout</span><span class="o">.</span><span class="n">setsampwidth</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># 32 bit audio</span>
+<span class="n">wout</span><span class="o">.</span><span class="n">setframerate</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">wout</span><span class="o">.</span><span class="n">writeframes</span><span class="p">(</span><span class="n">ts</span><span class="p">[:])</span>
+<span class="n">wout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="invoking-precision-issues">
+<h2>Invoking precision issues<a class="headerlink" href="#invoking-precision-issues" title="Permalink to this headline">¶</a></h2>
+<p>AGG complexity starts to complain with large numbers of points and we somehow invoke precision issues that need to be ameliorated:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">:</span>
+    <span class="n">d</span><span class="o">.</span><span class="n">x0</span> <span class="o">=</span> <span class="n">Quantity</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">x0</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="mi">500</span><span class="p">),</span> <span class="n">d</span><span class="o">.</span><span class="n">xunit</span><span class="p">)</span>
+    <span class="n">d</span><span class="o">.</span><span class="n">dx</span> <span class="o">=</span> <span class="n">Quantity</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">xunit</span><span class="p">)</span>
+<span class="n">data_list</span><span class="o">.</span><span class="n">coalesce</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">:</span>
+    <span class="n">d</span><span class="o">.</span><span class="n">x0</span> <span class="o">=</span> <span class="n">Quantity</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">x0</span><span class="o">.</span><span class="n">value</span> <span class="o">/</span> <span class="mi">500</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">xunit</span><span class="p">)</span>
+    <span class="n">d</span><span class="o">.</span><span class="n">dx</span> <span class="o">=</span> <span class="n">Quantity</span><span class="p">(</span><span class="mf">0.002</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">xunit</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="amplitude-spectral-density-asd">
+<h2>Amplitude Spectral Density (ASD)<a class="headerlink" href="#amplitude-spectral-density-asd" title="Permalink to this headline">¶</a></h2>
+<p>Here&#8217;s the script:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Initialize plotting functionality</span>
+<span class="n">plot</span> <span class="o">=</span> <span class="n">SpectrumPlot</span><span class="p">()</span>
+<span class="c1"># Loop over all the time series</span>
+<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">:</span>
+    <span class="c1"># Generate 8 seconds per FFT with 4 second (50%) overlap</span>
+    <span class="n">spectrum</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">asd</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="c1"># Create plotting axis</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+    <span class="c1"># Plot square root of the spectrum</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">spectrum</span><span class="p">))</span>
+<span class="c1"># Set x axis to log scale</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="c1"># Set y axis to log scale</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="c1"># Set x axis limits</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="c1"># Save figure</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;asd.png&quot;</span><span class="p">,</span><span class="n">dpi</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="un-normalized-spectrograms">
+<h2>(Un)normalized Spectrograms<a class="headerlink" href="#un-normalized-spectrograms" title="Permalink to this headline">¶</a></h2>
+<p>The first thing to do is to initialise the plotting axis for both figure as well as some display settings specific to spectrogram and which can be loaded using the <a class="reference external" href="https://gwpy.github.io/docs/stable/plotter/api.html#gwpy.plotter.SpectrogramPlot">SpectrogramPlot()</a> module from the <code class="docutils literal"><span class="pre">gwpy.plotter</span></code> library:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">plot</span> <span class="o">=</span> <span class="n">SpectrogramPlot</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+<span class="n">white_plot</span> <span class="o">=</span> <span class="n">SpectrogramPlot</span><span class="p">()</span>
+<span class="n">wax</span> <span class="o">=</span> <span class="n">white_plot</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The spectrogram is then created using the <a class="reference external" href="https://gwpy.github.io/docs/v0.1/timeseries/index.html#gwpy.timeseries.TimeSeries.spectrogram">spectrogram</a> function from the <code class="docutils literal"><span class="pre">gwpy.timeseries.TimeSeries</span></code> package. This will <em>calculate the average power spectrogram of this TimeSeries using the specified average spectrum method</em> (default being the Welch&#8217;s method). We define the 3 following variables that will be used to construct the spectrogram:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">stride</span></code>: number of seconds in single PSD (column of spectrogram), default 20;</li>
+<li><code class="docutils literal"><span class="pre">fftlength</span></code>: number of seconds in single FFT, default 6;</li>
+<li><code class="docutils literal"><span class="pre">overlap</span></code>: number of seconds between FFTs, default 3.</li>
+</ul>
+<p>We can then loop over all the time series made from each loaded HDF5 data file, and construct the spectrogram for each time series. The whitening of the spectrogram is then done by normalisation it, which can be performed using the <a class="reference external" href="https://gwpy.github.io/docs/v0.1/spectrogram/index.html?highlight=ratio#gwpy.spectrogram.Spectrogram.ratio">ratio</a> method from the <code class="docutils literal"><span class="pre">gwpy.spectrogram.Spectrogram</span></code> library. This will calculate the ratio of the created spectrogram against a specific reference, here we chose the reference to be the median of each spectrum in the given spectrogram:</p>
+<div class="math">
+\[\sqrt{S(f,t)}/\sqrt{\overline{S(f)}}\]</div>
+<p>The script is as follows:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span> <span class="o">*</span> <span class="n">ts</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span><span class="o">.</span><span class="n">value</span> <span class="o">&lt;</span> <span class="n">stride</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="n">spec</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">spectrogram</span><span class="p">(</span><span class="n">stride</span><span class="p">,</span> <span class="n">fftlength</span><span class="o">=</span><span class="n">fftlength</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="n">overlap</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+    <span class="n">wspec</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">ratio</span><span class="p">(</span><span class="s1">&#39;median&#39;</span><span class="p">)</span>
+    <span class="n">wax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wspec</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally, the plot can be completed by including the activity period below each figure:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">station</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">seglist</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">seglist</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">add_colorbar</span><span class="p">(</span><span class="n">log</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">add_state_segments</span><span class="p">(</span><span class="n">SegmentList</span><span class="p">(</span><span class="n">full_seglist</span><span class="p">[</span><span class="n">station</span><span class="p">]</span><span class="o">.</span><span class="n">active</span><span class="p">),</span><span class="n">plotargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span><span class="s1">&#39;data present&#39;</span><span class="p">,</span><span class="s1">&#39;facecolor&#39;</span><span class="p">:</span><span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="s1">&#39;edgecolor&#39;</span><span class="p">:</span><span class="s1">&#39;k&#39;</span><span class="p">})</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;spectrogram.png&quot;</span><span class="p">,</span><span class="n">dpi</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+
+<span class="n">wax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">station</span><span class="p">)</span>
+<span class="n">wax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">seglist</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">seglist</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">wax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="n">wax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">white_plot</span><span class="o">.</span><span class="n">add_colorbar</span><span class="p">(</span><span class="n">log</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">white_plot</span><span class="o">.</span><span class="n">add_state_segments</span><span class="p">(</span><span class="n">SegmentList</span><span class="p">(</span><span class="n">full_seglist</span><span class="p">[</span><span class="n">station</span><span class="p">]</span><span class="o">.</span><span class="n">active</span><span class="p">),</span><span class="n">plotargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span><span class="s1">&#39;data present&#39;</span><span class="p">,</span><span class="s1">&#39;facecolor&#39;</span><span class="p">:</span><span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="s1">&#39;edgecolor&#39;</span><span class="p">:</span><span class="s1">&#39;k&#39;</span><span class="p">})</span>
+<span class="n">white_plot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;whitened_spectrogram.png&quot;</span><span class="p">,</span><span class="n">dpi</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="excess-power-algorithm">
+<h1>Excess-Power algorithm<a class="headerlink" href="#excess-power-algorithm" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="general-overview">
+<h2>General overview<a class="headerlink" href="#general-overview" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>Excess Power method</strong> is known as the <em>optimal detection strategy</em> to search for burst signals for which only the duration and frequency band are known, which is basically the case for GNOME and its search of Axion-Like Particles (ALP). This method was developed and introduced by <a class="reference external" href="https://arxiv.org/pdf/gr-qc/0008066v1.pdf">Anderson et al. (200)</a> and has been extensively used in the detection of burst sources of gravitational radiation. A more technical documentation was written by <a class="reference external" href="http://www.lsc-group.phys.uwm.edu/~siemens/power.pdf">Brady et al. (2007)</a> describing how the algorithm used by the LIGO collaboration works and how the theory is translated into code.</p>
+<p>We present below a step-by-step procedure followed during the Excess Power search analysis. For a better representation of what is happening, the figure at the end shows how the data is being split and analysed to search for multiple signals of different bandwidth and duration in the time-frequency plane.</p>
+<ul>
+<li><p class="first"><a class="reference internal" href="../calculate_psd.html#psdestimate"><span class="std std-ref">Time domain segmentation and PSD estimate</span></a></p>
+<blockquote>
+<div><p>We first estimate the instrument&#8217;s noise Power Spectral Density (PSD) by splitting the time-series data into multiple overlapping segments. A periodogram for each segment is calculated separately and then averaged, which will reduce the variance of the individual power measurements. The result is a frequency series where samples are separated in frequency space by <span class="math">\(\Delta f\)</span> equal to the inverse of a segment’s length and with a high end frequency limit equal to the Nyquist limit. The final power spectrum will help reveal the existence, or the absence, of repetitive patterns and correlation structures in a signal process.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><a class="reference internal" href="../create_filter_bank.html#filterbank"><span class="std std-ref">Comb of frequency channels</span></a></p>
+<blockquote>
+<div><p>We then split the PSD frequency series into multiple channels. For each channel, a frequency domain filter is created with a <span class="math">\(\Delta f\)</span> determined by the PSD and a total extent in Fourier space that is twice the stated bandwidth of a channel. The result is a list of each channel filter&#8217;s frequency series.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><a class="reference internal" href="../identify_block.html#analysingblocks"><span class="std std-ref">Creating analysing blocks</span></a></p>
+<blockquote>
+<div><p>The Excess Power method can lead to moderately-large computational requirements, and it has been found that the computational efficiency of this implementation can be improved upon by considering blocks of data that are much longer than the longest signal time duration. The entire time series is therefore split into separate blocks. We use the length of the segments used for PSD estimate to define the duration of each block. For each block, the time series is c0Aonverted into frequency series which is then filtered by the filter bank throughout all the channels. A time-frequency map is finally created which stores all the filtered frequency series from each channel.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><a class="reference internal" href="../construct_tiles.html#tilebandwidth"><span class="std std-ref">Creating tiles with different bandwidth</span></a></p>
+<blockquote>
+<div><p>We can now construct tiles with different bandwidth by summing multiple channels together.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><a class="reference internal" href="../explore_duration.html#tileduration"><span class="std std-ref">Exploring tiles with different duration</span></a></p>
+<blockquote>
+<div><p>For each given tile&#8217;s bandwidth, one can investigate different tile&#8217;s duration. This can be done by exploring different number of degrees of freedom, <span class="math">\(d\)</span>, which can be calculated as follows: <span class="math">\(d=2BT\)</span> where <span class="math">\(B\)</span> and <span class="math">\(T\)</span> are respectively the bandwidth and duration of the tile. Section 2.2.5 of <a class="reference external" href="http://www.lsc-group.phys.uwm.edu/~siemens/power.pdf">Brady et al.</a> gives a great description of how to interpret the number of degrees of freedom. Therefore, by changing the <span class="math">\(d\)</span>, one can explore multiple tile&#8217;s duration for different bandwidth.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><a class="reference internal" href="excess_power.html#triggerfinding"><span class="std std-ref">Define triggering signal</span></a></p>
+<blockquote>
+<div><p>The energy of each tile in the time-frequency space is calculated and compare to a user-defined threshold value. After defining a tile false alarm probability threshold in Gaussian noise and using the number of degrees of freedom for each tile, one can define a energy threshold value above which a burst trigger can be identified by comparing the energy threshold with the tile&#8217;s energy in the time-frequency map. A tile energy time frequency map plot similar to Figure 5 in <a class="reference external" href="http://budker.berkeley.edu/~vincent/gnome/documentation/2013_pustelny.pdf">Pustelny et al. (2013)</a> can then be made which plots the outlying tile energies present in the data.</p>
+</div></blockquote>
+</li>
+</ul>
+<div class="figure" id="id4">
+<img alt="backup/./img/overview.png" src="backup/./img/overview.png" />
+<p class="caption"><span class="caption-text">Overview of the Excess Power method and difference between segments, channels, tiles and blocks.</span></p>
+</div>
+</div>
+<div class="section" id="estimate-power-spectral-density-psd">
+<span id="psdestimate"></span><h2>Estimate Power Spectral Density (PSD)<a class="headerlink" href="#estimate-power-spectral-density-psd" title="Permalink to this headline">¶</a></h2>
+<p>The instrument&#8217;s noise Power Spectral Density (PSD) will be used to whiten the data and help reveal the existence, or the absence, of repetitive patterns and correlation structures in the signal process. It will also determine the total bandwidth spanned by each of the filters that will subsequently be created. The first thing to do before calculating the PSD is to ensure that the time series data is converted into an array of floating values.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Convert time series as array of float</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">ts_data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The PSD is calculated by splitting up the signal into overlapping segments and scan through each segment to calculate individual periodogram. The periodograms from each segment are then averaged, reducing the variance of the individual power measurements. In order to proceed, we need to define the average method, <code class="docutils literal"><span class="pre">avg_method</span></code>, that will be used to measure the PSD from the data. This can be specified with the <code class="docutils literal"><span class="pre">--psd-estimation</span></code> option.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Average method to measure PSD from the data</span>
+<span class="n">avg_method</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">psd_estimation</span>
+</pre></div>
+</div>
+<p>One also needs to specify the length of each segment, <code class="docutils literal"><span class="pre">seg_len</span></code>, as well as the separation between 2 consecutive segments, <code class="docutils literal"><span class="pre">seg_stride</span></code>. Both parameters can be defined in second units with the <code class="docutils literal"><span class="pre">--psd-segment-length</span></code> and <code class="docutils literal"><span class="pre">--psd-segment-stride</span></code> arguments respectively and can then be converted into sample unit.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># The segment length for PSD estimation in samples</span>
+<span class="n">seg_len</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">psd_segment_length</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">)</span>
+<span class="c1"># The separation between consecutive segments in samples</span>
+<span class="n">seg_stride</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">psd_segment_stride</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We then use the <a class="reference external" href="https://en.wikipedia.org/wiki/Welch%27s_method">Welch&#8217;s method</a> to perform the power spectral density estimate using the <a class="reference external" href="http://ligo-cbc.github.io/pycbc/latest/html/_modules/pycbc/psd/estimate.html#welch">welch</a> module from the <code class="docutils literal"><span class="pre">pycbc.psd</span></code> library. What this will do is to compute the discrete Fourier transform for each PSD segment to produce invidual periodograms, and then compute the squared magnitude of the result. The individual periodograms are then averaged using the user-defined average method, <code class="docutils literal"><span class="pre">avg_method</span></code>, and return the frequency series, <code class="docutils literal"><span class="pre">fd_psd</span></code>, which will store the power measurement for each frequency bin.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Lifted from the psd.from_cli module</span>
+<span class="n">fd_psd</span> <span class="o">=</span> <span class="n">psd</span><span class="o">.</span><span class="n">welch</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">avg_method</span><span class="o">=</span><span class="n">avg_method</span><span class="p">,</span><span class="n">seg_len</span><span class="o">=</span><span class="n">seg_len</span><span class="p">,</span><span class="n">seg_stride</span><span class="o">=</span><span class="n">seg_stride</span><span class="p">)</span>
+<span class="c1"># Plot the power spectral density</span>
+<span class="n">plot_spectrum</span><span class="p">(</span><span class="n">fd_psd</span><span class="p">)</span>
+<span class="c1"># We need this for the SWIG functions</span>
+<span class="n">lal_psd</span> <span class="o">=</span> <span class="n">fd_psd</span><span class="o">.</span><span class="n">lal</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>One can display the power measurements, frequency array and frequency between consecutive samples, <span class="math">\(\Delta f\)</span> in Hertz, by printing the following variables:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="s1">&#39;Display power measurements of the first 10 frequency bins&#39;</span>
+<span class="nb">print</span> <span class="n">fd_psd</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span class="nb">print</span> <span class="s1">&#39;Display central frequency of the first 10 bins&#39;</span>
+<span class="nb">print</span> <span class="n">fd_psd</span><span class="o">.</span><span class="n">sample_frequencies</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span class="nb">print</span> <span class="s1">&#39;Display the frequency separation between bins&#39;</span>
+<span class="nb">print</span> <span class="n">fd_psd</span><span class="o">.</span><span class="n">delta_f</span>
+</pre></div>
+</div>
+<p><span class="math">\(\Delta f\)</span> corresponds to the inverse of a segment&#8217;s length which is the smallest frequency (i.e. highest period) of detectable signals in each segment. The frequency range spans from 0 to the Nyquist frequency, i.e. half de the sampling rate.</p>
+</div>
+<div class="section" id="checking-filtering-settings">
+<h2>Checking filtering settings<a class="headerlink" href="#checking-filtering-settings" title="Permalink to this headline">¶</a></h2>
+<p>The first thing to check is that the frequency of the high-pass filter (if defined) is below the minimum frequency of the filter bank. Indeed, a high-pass filter will only let pass frequency that are higher than the cutoff frequency (here defined by the <code class="docutils literal"><span class="pre">strain_high_pass</span></code> argument). If the high pass frequency is greater from the minimum frequency in the filter bank, the signal with frequencies lower than the cutoff frequency will get attenuated.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">min_frequency</span> <span class="o">&lt;</span> <span class="n">args</span><span class="o">.</span><span class="n">strain_high_pass</span><span class="p">:</span>
+    <span class="nb">print</span> <span class="o">&gt;&gt;</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="s2">&quot;Warning: strain high pass frequency </span><span class="si">%f</span><span class="s2"> is greater than the tile minimum frequency </span><span class="si">%f</span><span class="s2"> --- this is likely to cause strange output below the bandpass frequency&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">strain_high_pass</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">min_frequency</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In case the maximum frequency in the filter bank is not defined, we set it to be equal to the Nyquist frequency, i.e. half the sampling rate, which makes sense as a larger signal will not be able to get easily identifiable.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">max_frequency</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">max_frequency</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span> <span class="o">/</span> <span class="mf">2.0</span>
+</pre></div>
+</div>
+<p>If the bandwidth of the finest filter (<code class="docutils literal"><span class="pre">--tile-bandwidth</span></code> argument, see section <span class="xref std std-ref">construct_args</span> or the number of frequency channels (=&#8211;channels= argument) is not defined but the total spectral band is (<code class="docutils literal"><span class="pre">data_band</span></code>), one can then determined all the filter settings as follows:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">tile_bandwidth</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">channels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="c1"># Exit program with error message</span>
+    <span class="n">exit</span><span class="p">(</span><span class="s2">&quot;Either --tile-bandwidth or --channels must be specified to set up time-frequency plane&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># Define as assert statement that tile maximum frequency larger than its minimum frequency</span>
+    <span class="k">assert</span> <span class="n">args</span><span class="o">.</span><span class="n">max_frequency</span> <span class="o">&gt;=</span> <span class="n">args</span><span class="o">.</span><span class="n">min_frequency</span>
+    <span class="c1"># Define spectral band of data</span>
+    <span class="n">data_band</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">max_frequency</span> <span class="o">-</span> <span class="n">args</span><span class="o">.</span><span class="n">min_frequency</span>
+    <span class="c1"># Check if tile bandwidth or channel is defined</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">tile_bandwidth</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Define number of possible filter bands</span>
+        <span class="n">nchans</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">channels</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data_band</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">tile_bandwidth</span><span class="p">)</span>  <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">channels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Define filter bandwidth</span>
+        <span class="n">band</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">tile_bandwidth</span> <span class="o">=</span> <span class="n">data_band</span> <span class="o">/</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">channels</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">args</span><span class="o">.</span><span class="n">channels</span> <span class="o">&gt;</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>The minimum frequency to be explored can be user-defined by using the <code class="docutils literal"><span class="pre">--min-frequency</span></code> option.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Lowest frequency of the first filter</span>
+<span class="n">flow</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">min_frequency</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="whitening-window-and-spectral-correlation">
+<h2>Whitening window and spectral correlation<a class="headerlink" href="#whitening-window-and-spectral-correlation" title="Permalink to this headline">¶</a></h2>
+<p>This part determines how much data on either side of the tukey window is to be discarded. Nominally, this means that one will lose <code class="docutils literal"><span class="pre">window_fraction</span></code> * <code class="docutils literal"><span class="pre">args.psd_segment_length</span></code> to corruption from the window, i.e. this is simply discarded. This is tuned to give an integer offset when used with <code class="docutils literal"><span class="pre">args.psd_segment_length</span></code> equal to 8, smaller windows will have fractions of integers, but larger powers of two will still preseve this (probably not a big deal in the end).</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">window_fraction</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>The two point spectral correlation is then done with the <span class="xref std std-ref">calculate_spectral_correlation</span> function which will return both the Tukey window applied to the original time series data and the actual two-point spectral correlation function for the whitened frequency series from the applied whitening window.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Do two point spectral correlation</span>
+<span class="n">window</span><span class="p">,</span> <span class="n">spec_corr</span> <span class="o">=</span> <span class="n">calculate_spectral_correlation</span><span class="p">(</span><span class="n">seg_len</span><span class="p">,</span><span class="s1">&#39;tukey&#39;</span><span class="p">,</span><span class="n">window_fraction</span><span class="o">=</span><span class="n">window_fraction</span><span class="p">)</span>
+<span class="n">window</span> <span class="o">=</span> <span class="n">window</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data</span>
+<span class="n">window_sigma_sq</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">window</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1"># Pre scale the window by its root mean squared -- see eqn 11 of EP document</span>
+<span class="c1">#window /= numpy.sqrt(window_sigma_sq)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="computing-the-filter-bank">
+<span id="filterbank"></span><h2>Computing the filter bank<a class="headerlink" href="#computing-the-filter-bank" title="Permalink to this headline">¶</a></h2>
+<p>The filter bank will create band-pass filters for each channel in the PSD frequency domain. The <span class="xref std std-ref">create_filter_bank</span> function will san the bandwidth from the central frequency of the first channel (i.e. flow+band/2) to final frequency of the last channel (i.e. band*nchans) in a increment equal to the frequency band. The filter&#8217;s total extent in Fourier space is actually twice the stated bandwidth (FWHM).</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Define filters</span>
+<span class="n">filter_bank</span><span class="p">,</span> <span class="n">fdb</span> <span class="o">=</span> <span class="n">create_filter_bank</span><span class="p">(</span><span class="n">fd_psd</span><span class="o">.</span><span class="n">delta_f</span><span class="p">,</span> <span class="n">flow</span><span class="o">+</span><span class="n">band</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">band</span><span class="p">,</span> <span class="n">nchans</span><span class="p">,</span> <span class="n">fd_psd</span><span class="p">,</span> <span class="n">spec_corr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This function will returns 2 arrays: the <code class="docutils literal"><span class="pre">filter_bank</span></code> array which is a list of <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lal/struct_c_o_m_p_l_e_x16_frequency_series.html">COMPLEX16FrequencySeries</a> arrays corresponding to each channel&#8217;s filter, and the =fdb= array which provides the time-series from each filter. The length of each array is equal to the total number of channel (i.e. =nchans=). The filter&#8217;s data, <span class="math">\(\Delta f\)</span> value, and first and last frequencies of any channel&#8217;s filter can be displayed as followed:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Print data of first channel&#39;s filter</span>
+<span class="nb">print</span> <span class="n">filter_bank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data</span>
+<span class="c1"># Print frequency separation between 2 values in the first channel&#39;s filter</span>
+<span class="nb">print</span> <span class="n">filter_bank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">deltaF</span>
+<span class="c1"># Print first frequency of the first channel&#39;s filter</span>
+<span class="nb">print</span> <span class="n">filter_bank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">f0</span>
+<span class="c1"># Print last frequency of the first channel&#39;s filter (equal to twice the channel&#39;s bandwidth)</span>
+<span class="nb">print</span> <span class="n">filter_bank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">f0</span><span class="o">+</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">filter_bank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">filter_bank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">deltaF</span>
+</pre></div>
+</div>
+<p>Further in the analysis, the following filters will used:
+1. <code class="docutils literal"><span class="pre">white_filter_ip</span></code>: Whitened filter inner products computed with themselves.
+2. <code class="docutils literal"><span class="pre">unwhite_filter_ip</span></code>: Unwhitened filter inner products computed with themselves.
+3. <code class="docutils literal"><span class="pre">white_ss_ip</span></code>: Whitened filter inner products computed between input adjacent filters.
+4. <code class="docutils literal"><span class="pre">unwhite_ss_ip</span></code>: Unwhitened filter inner products computed between input adjacent filters.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># This is necessary to compute the mu^2 normalizations</span>
+<span class="n">white_filter_ip</span> <span class="o">=</span> <span class="n">compute_filter_ips_self</span><span class="p">(</span><span class="n">filter_bank</span><span class="p">,</span> <span class="n">spec_corr</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">unwhite_filter_ip</span> <span class="o">=</span> <span class="n">compute_filter_ips_self</span><span class="p">(</span><span class="n">filter_bank</span><span class="p">,</span> <span class="n">spec_corr</span><span class="p">,</span> <span class="n">lal_psd</span><span class="p">)</span>
+<span class="c1"># These two are needed for the unwhitened mean square sum (hrss)</span>
+<span class="n">white_ss_ip</span> <span class="o">=</span> <span class="n">compute_filter_ips_adjacent</span><span class="p">(</span><span class="n">filter_bank</span><span class="p">,</span> <span class="n">spec_corr</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">unwhite_ss_ip</span> <span class="o">=</span> <span class="n">compute_filter_ips_adjacent</span><span class="p">(</span><span class="n">filter_bank</span><span class="p">,</span> <span class="n">spec_corr</span><span class="p">,</span> <span class="n">lal_psd</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="normalization-of-virtual-channel">
+<h2>Normalization of virtual channel<a class="headerlink" href="#normalization-of-virtual-channel" title="Permalink to this headline">¶</a></h2>
+<p>The virtual channels will be used during the excesspower analysis to explore different frequency ranges around each PSD segments and look for possible triggers. Each channel is renormalized using the <span class="xref std std-ref">compute_channel_renomalization</span> internal function.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Initialise dictionary</span>
+<span class="n">mu_sq_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="c1"># nc_sum additional channel adds</span>
+<span class="k">for</span> <span class="n">nc_sum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">nchans</span><span class="p">,</span> <span class="mi">2</span><span class="p">))):</span>
+    <span class="n">min_band</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">filter_bank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">filter_bank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">deltaF</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="nb">print</span> <span class="n">tprint</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">t1</span><span class="p">),</span><span class="s2">&quot;Calculation for </span><span class="si">%d</span><span class="s2"> </span><span class="si">%d</span><span class="s2"> Hz channels&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">nc_sum</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">min_band</span><span class="p">)</span>
+    <span class="n">nc_sum</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="n">nc_sum</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">mu_sq_dict</span><span class="p">[</span><span class="n">nc_sum</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_channel_renomalization</span><span class="p">(</span><span class="n">nc_sum</span><span class="p">,</span> <span class="n">filter_bank</span><span class="p">,</span> <span class="n">spec_corr</span><span class="p">,</span> <span class="n">nchans</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="initialise-event-list-and-determine-stride-boundaries">
+<h2>Initialise event list and determine stride boundaries<a class="headerlink" href="#initialise-event-list-and-determine-stride-boundaries" title="Permalink to this headline">¶</a></h2>
+<p>First of all, we create a table similar than the one made by the LIGO Scientific Collaboration (LSC) where all the information will be stored. Such table is commonly know as <code class="docutils literal"><span class="pre">lsctables</span></code>. A pre-defined LSC table can be constructed using <code class="docutils literal"><span class="pre">New</span></code> function from the <a class="reference external" href="https://github.com/ligo-cbc/pycbc-glue/blob/master/glue/ligolw/lsctables.py">glue.ligolw.lsctables</a> module. We use the <code class="docutils literal"><span class="pre">SnglBurstTable</span></code> function for the type of data to be stored and define all the columns we wish to record.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Create event list for single burst table</span>
+<span class="n">event_list</span> <span class="o">=</span> <span class="n">lsctables</span><span class="o">.</span><span class="n">New</span><span class="p">(</span><span class="n">lsctables</span><span class="o">.</span><span class="n">SnglBurstTable</span><span class="p">,</span>
+                           <span class="p">[</span><span class="s1">&#39;start_time&#39;</span><span class="p">,</span><span class="s1">&#39;start_time_ns&#39;</span><span class="p">,</span><span class="s1">&#39;peak_time&#39;</span><span class="p">,</span><span class="s1">&#39;peak_time_ns&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;duration&#39;</span><span class="p">,</span><span class="s1">&#39;bandwidth&#39;</span><span class="p">,</span><span class="s1">&#39;central_freq&#39;</span><span class="p">,</span><span class="s1">&#39;chisq_dof&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;confidence&#39;</span><span class="p">,</span><span class="s1">&#39;snr&#39;</span><span class="p">,</span><span class="s1">&#39;amplitude&#39;</span><span class="p">,</span><span class="s1">&#39;channel&#39;</span><span class="p">,</span><span class="s1">&#39;ifo&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;process_id&#39;</span><span class="p">,</span><span class="s1">&#39;event_id&#39;</span><span class="p">,</span><span class="s1">&#39;search&#39;</span><span class="p">,</span><span class="s1">&#39;stop_time&#39;</span><span class="p">,</span><span class="s1">&#39;stop_time_ns&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>We also need to determine the indexes of both starting and ending times for the first segment to analyse, respectively <code class="docutils literal"><span class="pre">t_idx_min</span></code> and <code class="docutils literal"><span class="pre">t_idx_max</span></code>. The default values are considered to be 0 for the starting index and the segment length in sample unit for the ending time index. Also, if the user defines a different starting time than the one from the loaded data, the offset index in sample unit is determined and added the both starting and ending time indexes.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Determine boundaries of stride in time domain</span>
+<span class="n">t_idx_min</span><span class="p">,</span> <span class="n">t_idx_max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">seg_len</span>
+<span class="c1"># Check if user requested starting time is defined</span>
+<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">analysis_start_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="c1"># Define the time difference in seconds between data and user requested starting times</span>
+    <span class="n">t_idx_off</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">analysis_start_time</span> <span class="o">-</span> <span class="n">ts_data</span><span class="o">.</span><span class="n">start_time</span>
+    <span class="c1"># Calculate the index of the user requested starting point in the data</span>
+    <span class="n">t_idx_off</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">t_idx_off</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># Define index of the starting point as first value in data</span>
+    <span class="n">t_idx_off</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="c1"># Initialise minimum index values as offset starting index</span>
+<span class="n">t_idx_min</span> <span class="o">+=</span> <span class="n">t_idx_off</span>
+<span class="c1"># Initialise maximum index values as offset starting index</span>
+<span class="n">t_idx_max</span> <span class="o">+=</span> <span class="n">t_idx_off</span>
+</pre></div>
+</div>
+<p>Finally, the index for the ending time after all the segments have been analysed can be estimated for the user-defined parameter or is defined as the length of the time series data <code class="docutils literal"><span class="pre">ts_data</span></code>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Check if user requested end time is defined</span>
+<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">analysis_end_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="c1"># Define the time difference between data and user requested ending times</span>
+    <span class="n">t_idx_max_off</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">analysis_end_time</span> <span class="o">-</span> <span class="n">ts_data</span><span class="o">.</span><span class="n">start_time</span>
+    <span class="c1"># Calculate the index of the user requested starting point in the data</span>
+    <span class="n">t_idx_max_off</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">t_idx_max_off</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># Define index of the ending point as the length of data array</span>
+    <span class="n">t_idx_max_off</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ts_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="define-analysing-blocks">
+<span id="analysingblocks"></span><h2>Define analysing blocks<a class="headerlink" href="#define-analysing-blocks" title="Permalink to this headline">¶</a></h2>
+<p>The first thing we do is to calculate the time series for the segment that is covered (<code class="docutils literal"><span class="pre">tmp_ts_data</span></code>) and redefined the metadata, especially the time of the first sample in seconds which is defined by the <code class="docutils literal"><span class="pre">epoch</span></code> argument and is different for every segment. After plotting the time series for that segment, the data are then converted into frequency series (<code class="docutils literal"><span class="pre">fs_data</span></code>) using the <a class="reference external" href="http://ligo-cbc.github.io/pycbc/latest/html/pycbc.types.html#pycbc.types.timeseries.TimeSeries.to_frequencyseries">to_frequencyseries</a> module from the <code class="docutils literal"><span class="pre">pycbc.types.timeseries.TimeSeries</span></code> library. Finally, the frequency data are then whitened.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Loop over each data within the user requested time period</span>
+<span class="k">while</span> <span class="n">t_idx_max</span> <span class="o">&lt;=</span> <span class="n">t_idx_max_off</span><span class="p">:</span>
+    <span class="c1"># Define starting and ending time of the segment in seconds</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">ts_data</span><span class="o">.</span><span class="n">start_time</span> <span class="o">+</span> <span class="n">t_idx_min</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">)</span>
+    <span class="n">end_time</span> <span class="o">=</span> <span class="n">ts_data</span><span class="o">.</span><span class="n">start_time</span> <span class="o">+</span> <span class="n">t_idx_max</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">tprint</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">t1</span><span class="p">),</span><span class="s2">&quot;Analyzing block </span><span class="si">%i</span><span class="s2"> to </span><span class="si">%i</span><span class="s2"> (</span><span class="si">%.2f</span><span class="s2"> percent)&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span><span class="n">end_time</span><span class="p">,</span><span class="mi">100</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">t_idx_max</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">idx_max_off</span><span class="p">))</span>
+    <span class="c1"># Model a withen time series for the block</span>
+    <span class="n">tmp_ts_data</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">TimeSeries</span><span class="p">(</span><span class="n">ts_data</span><span class="p">[</span><span class="n">t_idx_min</span><span class="p">:</span><span class="n">t_idx_max</span><span class="p">]</span><span class="o">*</span><span class="n">window</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">,</span><span class="n">epoch</span><span class="o">=</span><span class="n">start_time</span><span class="p">)</span>
+    <span class="c1"># Save time series in segment repository</span>
+    <span class="n">segfolder</span> <span class="o">=</span> <span class="s1">&#39;segments/</span><span class="si">%i</span><span class="s1">-</span><span class="si">%i</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span><span class="n">end_time</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;mkdir -p &#39;</span><span class="o">+</span><span class="n">segfolder</span><span class="p">)</span>
+    <span class="n">plot_ts</span><span class="p">(</span><span class="n">tmp_ts_data</span><span class="p">,</span><span class="n">fname</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/ts.png&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">segfolder</span><span class="p">))</span>
+    <span class="c1"># Convert times series to frequency series</span>
+    <span class="n">fs_data</span> <span class="o">=</span> <span class="n">tmp_ts_data</span><span class="o">.</span><span class="n">to_frequencyseries</span><span class="p">()</span>
+    <span class="nb">print</span> <span class="n">tprint</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">t1</span><span class="p">),</span><span class="s2">&quot;Frequency series data has variance: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">fs_data</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="o">**</span><span class="mi">2</span>
+    <span class="c1"># Whitening (FIXME: Whiten the filters, not the data)</span>
+    <span class="n">fs_data</span><span class="o">.</span><span class="n">data</span> <span class="o">/=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">fd_psd</span><span class="p">)</span> <span class="o">/</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">fd_psd</span><span class="o">.</span><span class="n">delta_f</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">tprint</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">t1</span><span class="p">),</span><span class="s2">&quot;Whitened frequency series data has variance: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">fs_data</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="o">**</span><span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-time-frequency-map-for-each-block">
+<h2>Create time-frequency map for each block<a class="headerlink" href="#create-time-frequency-map-for-each-block" title="Permalink to this headline">¶</a></h2>
+<p>We initialise a 2D zero array for a time-frequency map (<code class="docutils literal"><span class="pre">tf_map</span></code>) which will be computed for each frequency-domain filter associated to each PSD segment and where the filtered time-series for each frequency channels will be stored. The number of rows corresponds to the total number of frequency channels which is defined by the <code class="docutils literal"><span class="pre">nchans</span></code> variable. The number of columns corresponds to the segment length in samples (i.e. the number of samples covering one segment) which is defined by the <code class="docutils literal"><span class="pre">seg_len</span></code> variable.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Initialise 2D zero array for time-frequency map</span>
+<span class="n">tf_map</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nchans</span><span class="p">,</span> <span class="n">seg_len</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We also initialise a zero vector for a temporary filter bank (<code class="docutils literal"><span class="pre">tmp_filter_bank</span></code>) that will store, for a given channel, the filter&#8217;s values from the original filter bank (<code class="docutils literal"><span class="pre">filter_bank</span></code>) for that channel only. The length of the temporary filter bank is equal to the length of the PSD frequency series (<code class="docutils literal"><span class="pre">fd_psd</span></code>).</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Initialise 1D zero array</span>
+<span class="n">tmp_filter_bank</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fd_psd</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We then loop over all the frequency channels. While in the loop, we first re-initialise the temporary filter bank with zero values everywhere along the frequency series. We then determine the first and last frequency of each channel and re-define the values of the filter in that frequency range based on the values from the original channel&#8217;s filter from the original filter bank.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Loop over all the channels</span>
+<span class="nb">print</span> <span class="n">tprint</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">t1</span><span class="p">),</span><span class="s2">&quot;Filtering all </span><span class="si">%d</span><span class="s2"> channels...&quot;</span> <span class="o">%</span> <span class="n">nchans</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nchans</span><span class="p">):</span>
+    <span class="c1"># Reset filter bank series</span>
+    <span class="n">tmp_filter_bank</span> <span class="o">*=</span> <span class="mf">0.0</span>
+    <span class="c1"># Index of starting frequency</span>
+    <span class="n">f1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">filter_bank</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">f0</span><span class="o">/</span><span class="n">fd_psd</span><span class="o">.</span><span class="n">delta_f</span><span class="p">)</span>
+    <span class="c1"># Index of ending frequency</span>
+    <span class="n">f2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">filter_bank</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">f0</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">band</span><span class="p">)</span><span class="o">/</span><span class="n">fd_psd</span><span class="o">.</span><span class="n">delta_f</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+    <span class="c1"># (FIXME: Why is there a factor of 2 here?)</span>
+    <span class="n">tmp_filter_bank</span><span class="p">[</span><span class="n">f1</span><span class="p">:</span><span class="n">f2</span><span class="p">]</span> <span class="o">=</span> <span class="n">filter_bank</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data</span> <span class="o">*</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p>We then extract the frequency series from the filter bank for that channel, which will be used as a template waveform to filter the actual data from the channel.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Define the template to filter the frequency series with</span>
+<span class="n">template</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">FrequencySeries</span><span class="p">(</span><span class="n">tmp_filter_bank</span><span class="p">,</span> <span class="n">delta_f</span><span class="o">=</span><span class="n">fd_psd</span><span class="o">.</span><span class="n">delta_f</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally, we use the <a class="reference external" href="http://ligo-cbc.github.io/pycbc/latest/html/pycbc.filter.html">matched_filter_core</a> module from the <code class="docutils literal"><span class="pre">pycbc.filter.matchedfilter</span></code> library to filter the frequency series from the channel. This will return both a time series containing the complex signal-to-noise matched filtered against the data, and a frequency series containing the correlation vector.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Create filtered series</span>
+<span class="n">filtered_series</span> <span class="o">=</span> <span class="nb">filter</span><span class="o">.</span><span class="n">matched_filter_core</span><span class="p">(</span><span class="n">template</span><span class="p">,</span><span class="n">fs_data</span><span class="p">,</span><span class="n">h_norm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">psd</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                             <span class="n">low_frequency_cutoff</span><span class="o">=</span><span class="n">filter_bank</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">f0</span><span class="p">,</span>
+                                             <span class="n">high_frequency_cutoff</span><span class="o">=</span><span class="n">filter_bank</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">f0</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">band</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <a class="reference external" href="http://en.wikipedia.org/wiki/Matched_filter">matched filter</a> is the optimal linear filter for maximizing the signal to noise ratio (SNR) in the presence of additive stochastic noise. The filtered time series is stored in the time-frequency map and can be used to produce a spectrogram of the segment of data being analysed.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Include filtered series in the map</span>
+<span class="n">tf_map</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">filtered_series</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The time-frequency map is a 2D array with a length that corresponds to the number of channels and a width equal to the number of sample present in one segment of data, i.e. segment&#8217;s length in seconds times the the sampling rate. The map can finally be plotted with a <span class="math">\(\Delta t\)</span> corresponding to the sampling period of the original dataset (i.e. inverse of the original sampling rate), and <span class="math">\(\Delta f\)</span> is equal to the bandwidth of one channel.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">plot_spectrogram</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tf_map</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">tmp_ts_data</span><span class="o">.</span><span class="n">delta_t</span><span class="p">,</span><span class="n">fd_psd</span><span class="o">.</span><span class="n">delta_f</span><span class="p">,</span><span class="n">ts_data</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">,</span><span class="n">start_time</span><span class="p">,</span><span class="n">end_time</span><span class="p">,</span><span class="n">fname</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/tf.png&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">segfolder</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="constructing-tiles-of-different-bandwidth">
+<span id="tilebandwidth"></span><h2>Constructing tiles of different bandwidth<a class="headerlink" href="#constructing-tiles-of-different-bandwidth" title="Permalink to this headline">¶</a></h2>
+<p>First and foremost, we define a clipping region in the data to be used to remove window corruption, this is non-zero if the <code class="docutils literal"><span class="pre">window_fraction</span></code> variable is set to a non-zero value.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="n">tprint</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">t1</span><span class="p">),</span><span class="s2">&quot;Beginning tile construction...&quot;</span>
+<span class="c1"># Clip the boundaries to remove window corruption</span>
+<span class="n">clip_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">psd_segment_length</span> <span class="o">*</span> <span class="n">window_fraction</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In order to perform a multi-resolution search, tiles of many different bandwidths and durations will be scanned. We first need to setup a loop such that the maximum number of additional channel is equal to the base 2 logarithm of the total number of channels. The number of narrow band channels to be summed (<code class="docutils literal"><span class="pre">nc_sum</span></code>) would therefore be equal to 2 to the power of the current quantity of additional channels.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">nc_sum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">nchans</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span> <span class="c1"># nc_sum additional channel adds</span>
+    <span class="n">nc_sum</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="n">nc_sum</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="nb">print</span> <span class="n">tprint</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">t1</span><span class="p">,</span><span class="n">t2</span><span class="p">),</span><span class="s2">&quot;Summing </span><span class="si">%d</span><span class="s2"> narrow band channels...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">nc_sum</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The undersampling rate for this tile can be calculated using the channel frequency band and the number of narrow band channels to be summed such that the bandwidth of the tile is equal to <code class="docutils literal"><span class="pre">band</span> <span class="pre">*</span> <span class="pre">(nc_sum</span> <span class="pre">+</span> <span class="pre">1)</span></code>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">us_rate</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">band</span><span class="o">*</span><span class="p">(</span><span class="n">nc_sum</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">ts_data</span><span class="o">.</span><span class="n">delta_t</span><span class="p">)))</span>
+<span class="nb">print</span> <span class="o">&gt;&gt;</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="s2">&quot;Undersampling rate for this level: </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span><span class="o">/</span><span class="n">us_rate</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&#8220;Virtual&#8221; wide bandwidth channels are constructed by summing the samples from multiple channels, and correcting for the overlap between adjacent channel filters. We then define the normalised channel at the current level and create a time frequency map for this tile using the <span class="xref std std-ref">make_indp_tiles</span> internal function. In other word, we are constructing multiple sub-tiles for which we can determined the respective energy in the given frequency band.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mu_sq</span> <span class="o">=</span> <span class="n">mu_sq_dict</span><span class="p">[</span><span class="n">nc_sum</span><span class="p">]</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">...calculating tiles...&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">clip_samples</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">tiles</span> <span class="o">=</span> <span class="n">make_indp_tiles</span><span class="p">(</span><span class="n">tf_map</span><span class="p">[:,</span><span class="n">clip_samples</span><span class="p">:</span><span class="o">-</span><span class="n">clip_samples</span><span class="p">:</span><span class="n">us_rate</span><span class="p">],</span> <span class="n">nc_sum</span><span class="p">,</span> <span class="n">mu_sq</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">tiles</span> <span class="o">=</span> <span class="n">make_indp_tiles</span><span class="p">(</span><span class="n">tf_map</span><span class="p">[:,::</span><span class="n">us_rate</span><span class="p">],</span> <span class="n">nc_sum</span><span class="p">,</span> <span class="n">mu_sq</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; TF-plane is </span><span class="si">%d</span><span class="s2">x</span><span class="si">%s</span><span class="s2"> samples... &quot;</span> <span class="o">%</span> <span class="n">tiles</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span> <span class="o">&gt;&gt;</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="s2">&quot; done&quot;</span>
+<span class="nb">print</span> <span class="s2">&quot;Tile energy mean: </span><span class="si">%f</span><span class="s2">, var </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">tiles</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">tiles</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="explore-multiple-tile-durations">
+<span id="tileduration"></span><h2>Explore multiple tile durations<a class="headerlink" href="#explore-multiple-tile-durations" title="Permalink to this headline">¶</a></h2>
+<p>Now that we create a tile with a specific bandwidth, we can start exploring different durations for the tile. We will start checking if the user manually defined a value for the longest duration tile to compute, which can be done using the <code class="docutils literal"><span class="pre">--max-duration</span></code> argument. If not, the value will be set to 32.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">max_duration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">max_dof</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">max_duration</span> <span class="o">*</span> <span class="p">(</span><span class="n">band</span> <span class="o">*</span> <span class="p">(</span><span class="n">nc_sum</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">max_dof</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="k">assert</span> <span class="n">max_dof</span> <span class="o">&gt;=</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p>Since we produce (initially) tiles with 1 degree of freedom, the duration goes as one over twice the bandwidth.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="s2">&quot;</span><span class="se">\t\t</span><span class="s2">...getting longer durations...&quot;</span>
+<span class="c1">#for j in [2**l for l in xrange(1, int(math.log(max_dof, 2))+1)]:</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">2</span><span class="o">**</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">max_dof</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))]:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t\t</span><span class="s2">Summing DOF = </span><span class="si">%d</span><span class="s2"> ...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">j</span><span class="p">))</span>
+    <span class="c1">#tlen = tiles.shape[1] - j + 1</span>
+    <span class="n">tlen</span> <span class="o">=</span> <span class="n">tiles</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">tlen</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="o">&gt;&gt;</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="s2">&quot; ...not enough samples.&quot;</span>
+        <span class="k">continue</span>
+    <span class="n">dof_tiles</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">tiles</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tlen</span><span class="p">))</span>
+    <span class="c1">#:sum_filter = numpy.ones(j)</span>
+    <span class="c1"># FIXME: This is the correct filter for 50% overlap</span>
+    <span class="n">sum_filter</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="c1">#sum_filter = numpy.array([1,0] * int(math.log(j, 2)-1) + [1])</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tiles</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="c1"># Sum and drop correlate tiles</span>
+        <span class="c1"># FIXME: don&#39;t drop correlated tiles</span>
+        <span class="c1">#output = numpy.convolve(tiles[f,:], sum_filter, &#39;valid&#39;)</span>
+        <span class="n">dof_tiles</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">=</span> <span class="n">fftconvolve</span><span class="p">(</span><span class="n">tiles</span><span class="p">[</span><span class="n">f</span><span class="p">],</span> <span class="n">sum_filter</span><span class="p">,</span> <span class="s1">&#39;valid&#39;</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="o">&gt;&gt;</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="s2">&quot; done&quot;</span>
+    <span class="nb">print</span> <span class="s2">&quot;Summed tile energy mean: </span><span class="si">%f</span><span class="s2">, var </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dof_tiles</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">dof_tiles</span><span class="p">))</span>
+    <span class="n">level_tdiff</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">tdiff</span>
+    <span class="nb">print</span> <span class="o">&gt;&gt;</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="s2">&quot;Done with this resolution, total </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">level_tdiff</span>
+</pre></div>
+</div>
+<p>Finally, the bandwidth and duration of the tile can be defined as followed:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Current bandwidth of the time-frequency map tiles</span>
+<span class="n">current_band</span> <span class="o">=</span> <span class="n">band</span> <span class="o">*</span> <span class="p">(</span><span class="n">nc_sum</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="c1"># How much each &quot;step&quot; is in the frequency domain -- almost</span>
+<span class="c1"># assuredly the fundamental bandwidth</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">current_band</span>
+<span class="c1"># How much each &quot;step&quot; is in the time domain -- under sampling rate</span>
+<span class="c1"># FIXME: THis won&#39;t work if the sample rate isn&#39;t a power of 2</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">current_band</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="n">full_band</span> <span class="o">=</span> <span class="mi">250</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="n">current_band</span> <span class="o">/</span> <span class="n">full_band</span> <span class="o">*</span> <span class="n">ts_data</span><span class="o">.</span><span class="n">sample_rate</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">dt</span>
+<span class="c1"># Duration is fixed by the NDOF and bandwidth</span>
+<span class="n">duration</span> <span class="o">=</span> <span class="n">j</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">/</span> <span class="n">current_band</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="trigger-finding">
+<span id="triggerfinding"></span><h2>Trigger finding<a class="headerlink" href="#trigger-finding" title="Permalink to this headline">¶</a></h2>
+<p>In order to find any trigger in the data, we first need to set a false alarm probability threshold in Gaussian noise above which signal will be distinguished from the noise. Such threshold can be determined by using the /inverse survival function/ method from the <a class="reference external" href="https://docs.scipy.org/doc/scipy-0.18.1/reference/generated/scipy.stats.chi2.html">scipy.stats.chi2</a> package.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">threshold</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">chi2</span><span class="o">.</span><span class="n">isf</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">tile_fap</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+<span class="nb">print</span> <span class="s2">&quot;Threshold for this level: </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">threshold</span>
+<span class="c1">#if numpy.any(dof_tiles &gt; threshold):</span>
+    <span class="c1">#plot_spectrogram(dof_tiles.T)</span>
+    <span class="c1">#import pdb; pdb.set_trace()</span>
+</pre></div>
+</div>
+<p>Once the threshold is set, one can then run the <span class="xref std std-ref">trigger_list_from_map</span> function to quickly find the trigger signal from the <code class="docutils literal"><span class="pre">dof_tiles</span></code> array that</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Since we clip the data, the start time needs to be adjusted accordingly</span>
+<span class="n">window_offset_epoch</span> <span class="o">=</span> <span class="n">fs_data</span><span class="o">.</span><span class="n">epoch</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">psd_segment_length</span> <span class="o">*</span> <span class="n">window_fraction</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">trigger_list_from_map</span><span class="p">(</span><span class="n">dof_tiles</span><span class="p">,</span> <span class="n">event_list</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">window_offset_epoch</span><span class="p">,</span> <span class="n">filter_bank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">f0</span> <span class="o">+</span> <span class="n">band</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">current_band</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">event_list</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">amplitude</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="n">etime_min_idx</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">get_start</span><span class="p">())</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">fs_data</span><span class="o">.</span><span class="n">epoch</span><span class="p">)</span>
+    <span class="n">etime_min_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">etime_min_idx</span> <span class="o">/</span> <span class="n">tmp_ts_data</span><span class="o">.</span><span class="n">delta_t</span><span class="p">)</span>
+    <span class="n">etime_max_idx</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">get_start</span><span class="p">())</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">fs_data</span><span class="o">.</span><span class="n">epoch</span><span class="p">)</span> <span class="o">+</span> <span class="n">event</span><span class="o">.</span><span class="n">duration</span>
+    <span class="n">etime_max_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">etime_max_idx</span> <span class="o">/</span> <span class="n">tmp_ts_data</span><span class="o">.</span><span class="n">delta_t</span><span class="p">)</span>
+    <span class="c1"># (band / 2) to account for sin^2 wings from finest filters</span>
+    <span class="n">flow_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">event</span><span class="o">.</span><span class="n">central_freq</span> <span class="o">-</span> <span class="n">event</span><span class="o">.</span><span class="n">bandwidth</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="p">(</span><span class="n">band</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">flow</span><span class="p">)</span> <span class="o">/</span> <span class="n">band</span><span class="p">)</span>
+    <span class="n">fhigh_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">event</span><span class="o">.</span><span class="n">central_freq</span> <span class="o">+</span> <span class="n">event</span><span class="o">.</span><span class="n">bandwidth</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">band</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">flow</span><span class="p">)</span> <span class="o">/</span> <span class="n">band</span><span class="p">)</span>
+    <span class="c1"># TODO: Check that the undersampling rate is always commensurate</span>
+    <span class="c1"># with the indexing: that is to say that</span>
+    <span class="c1"># mod(etime_min_idx, us_rate) == 0 always</span>
+    <span class="n">z_j_b</span> <span class="o">=</span> <span class="n">tf_map</span><span class="p">[</span><span class="n">flow_idx</span><span class="p">:</span><span class="n">fhigh_idx</span><span class="p">,</span><span class="n">etime_min_idx</span><span class="p">:</span><span class="n">etime_max_idx</span><span class="p">:</span><span class="n">us_rate</span><span class="p">]</span>
+    <span class="c1"># FIXME: Deal with negative hrss^2 -- e.g. remove the event</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">amplitude</span> <span class="o">=</span> <span class="n">measure_hrss</span><span class="p">(</span><span class="n">z_j_b</span><span class="p">,</span> <span class="n">unwhite_filter_ip</span><span class="p">[</span><span class="n">flow_idx</span><span class="p">:</span><span class="n">fhigh_idx</span><span class="p">],</span> <span class="n">unwhite_ss_ip</span><span class="p">[</span><span class="n">flow_idx</span><span class="p">:</span><span class="n">fhigh_idx</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">white_ss_ip</span><span class="p">[</span><span class="n">flow_idx</span><span class="p">:</span><span class="n">fhigh_idx</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">fd_psd</span><span class="o">.</span><span class="n">delta_f</span><span class="p">,</span> <span class="n">tmp_ts_data</span><span class="o">.</span><span class="n">delta_t</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">filter_bank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="n">event</span><span class="o">.</span><span class="n">chisq_dof</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">amplitude</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="nb">print</span> <span class="s2">&quot;Total number of events: </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">event_list</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="switch-to-new-block">
+<h2>Switch to new block<a class="headerlink" href="#switch-to-new-block" title="Permalink to this headline">¶</a></h2>
+<p>The following will move the frequency band to the next segment:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">tdiff</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">tdiff</span>
+<span class="nb">print</span> <span class="s2">&quot;Done with this block: total </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">tdiff</span>
+
+<span class="n">t_idx_min</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">seg_len</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">window_fraction</span><span class="p">))</span>
+<span class="n">t_idx_max</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">seg_len</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">window_fraction</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="extracting-gps-time-range">
+<h2>Extracting GPS time range<a class="headerlink" href="#extracting-gps-time-range" title="Permalink to this headline">¶</a></h2>
+<p>We use the <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lal/group___l_a_l_datatypes.html#ss_LIGOTimeGPS">LIGOTimeGPS</a> structure from the =glue.lal= package to /store the starting and ending time in the dataset to nanosecond precision and synchronized to the Global Positioning System time reference/. Once both times are defined, the range of value is stored in a semi-open interval using the <a class="reference external" href="http://software.ligo.org/docs/glue/glue.__segments.segment-class.html">segment</a> module from the =glue.segments= package.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Starting epoch relative to GPS starting epoch</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">LIGOTimeGPS</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">analysis_start_time</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">gps_start_time</span><span class="p">)</span>
+<span class="c1"># Ending epoch relative to GPS ending epoch</span>
+<span class="n">end_time</span> <span class="o">=</span> <span class="n">LIGOTimeGPS</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">analysis_end_time</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">gps_end_time</span><span class="p">)</span>
+<span class="c1"># Represent the range of values in the semi-open interval</span>
+<span class="n">inseg</span> <span class="o">=</span> <span class="n">segment</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span><span class="n">end_time</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="prepare-output-file-for-given-time-range">
+<h2>Prepare output file for given time range<a class="headerlink" href="#prepare-output-file-for-given-time-range" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">xmldoc</span> <span class="o">=</span> <span class="n">ligolw</span><span class="o">.</span><span class="n">Document</span><span class="p">()</span>
+<span class="n">xmldoc</span><span class="o">.</span><span class="n">appendChild</span><span class="p">(</span><span class="n">ligolw</span><span class="o">.</span><span class="n">LIGO_LW</span><span class="p">())</span>
+
+<span class="n">ifo</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">channel_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">proc_row</span> <span class="o">=</span> <span class="n">register_to_xmldoc</span><span class="p">(</span><span class="n">xmldoc</span><span class="p">,</span> <span class="n">__program__</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">__dict__</span><span class="p">,</span> <span class="n">ifos</span><span class="o">=</span><span class="p">[</span><span class="n">ifo</span><span class="p">],</span><span class="n">version</span><span class="o">=</span><span class="n">glue</span><span class="o">.</span><span class="n">git_version</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">cvs_repository</span><span class="o">=</span><span class="n">glue</span><span class="o">.</span><span class="n">git_version</span><span class="o">.</span><span class="n">branch</span><span class="p">,</span> <span class="n">cvs_entry_time</span><span class="o">=</span><span class="n">glue</span><span class="o">.</span><span class="n">git_version</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
+
+<span class="c1"># Figure out the data we actually analyzed</span>
+<span class="n">outseg</span> <span class="o">=</span> <span class="n">determine_output_segment</span><span class="p">(</span><span class="n">inseg</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">psd_segment_length</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">,</span> <span class="n">window_fraction</span><span class="p">)</span>
+
+<span class="n">ss</span> <span class="o">=</span> <span class="n">append_search_summary</span><span class="p">(</span><span class="n">xmldoc</span><span class="p">,</span> <span class="n">proc_row</span><span class="p">,</span> <span class="n">ifos</span><span class="o">=</span><span class="p">(</span><span class="n">station</span><span class="p">,),</span> <span class="n">inseg</span><span class="o">=</span><span class="n">inseg</span><span class="p">,</span> <span class="n">outseg</span><span class="o">=</span><span class="n">outseg</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">sb</span> <span class="ow">in</span> <span class="n">event_list</span><span class="p">:</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">process_id</span> <span class="o">=</span> <span class="n">proc_row</span><span class="o">.</span><span class="n">process_id</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">search</span> <span class="o">=</span> <span class="n">proc_row</span><span class="o">.</span><span class="n">program</span>
+    <span class="c1">#sb.ifo, sb.channel = args.channel_name.split(&quot;:&quot;)</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">ifo</span><span class="p">,</span> <span class="n">sb</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="n">station</span><span class="p">,</span> <span class="n">setname</span>
+
+<span class="n">xmldoc</span><span class="o">.</span><span class="n">childNodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">appendChild</span><span class="p">(</span><span class="n">event_list</span><span class="p">)</span>
+<span class="n">fname</span> <span class="o">=</span> <span class="n">make_filename</span><span class="p">(</span><span class="n">station</span><span class="p">,</span> <span class="n">inseg</span><span class="p">)</span>
+
+<span class="n">utils</span><span class="o">.</span><span class="n">write_filename</span><span class="p">(</span><span class="n">xmldoc</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="n">gz</span><span class="o">=</span><span class="n">fname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;gz&quot;</span><span class="p">),</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="plot-trigger-results">
+<h2>Plot trigger results<a class="headerlink" href="#plot-trigger-results" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">events</span> <span class="o">=</span> <span class="n">SnglBurstTable</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">fname</span><span class="o">+</span><span class="s1">&#39;.gz&#39;</span><span class="p">)</span>
+<span class="c1">#del events[10000:]</span>
+<span class="n">plot</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;central_freq&#39;</span><span class="p">,</span> <span class="s2">&quot;duration&quot;</span><span class="p">,</span> <span class="s2">&quot;bandwidth&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;snr&quot;</span><span class="p">)</span>
+<span class="c1">#plot = events.plot(&#39;time&#39;, &#39;central_freq&#39;, color=&#39;snr&#39;)</span>
+<span class="c1">#plot.set_yscale(&quot;log&quot;)</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">0</span><span class="p">,</span> <span class="mi">250</span><span class="p">)</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="mi">1153742417</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">t0</span> <span class="o">+</span> <span class="mi">0</span><span class="o">*</span><span class="mi">60</span><span class="p">,</span> <span class="n">t0</span> <span class="o">+</span> <span class="mi">1</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+<span class="c1">#plot.set_xlim(t0 + 28, t0 + 32)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">t0</span> <span class="o">+</span> <span class="mi">30</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">cb</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">add_colorbar</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;triggers.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="module-access">
+<h1>Module Access<a class="headerlink" href="#module-access" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="extract-magnetic-field-data">
+<h2>Extract Magnetic Field Data<a class="headerlink" href="#extract-magnetic-field-data" title="Permalink to this headline">¶</a></h2>
+<p>Extract magnetic field data from HDF5 files.</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">magfield</span></code>(station,&nbsp;starttime,&nbsp;endtime[,&nbsp;...])</td>
+<td>Glob all files withing user-defined period and extract data.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">file_to_segment</span></code>(hfile,&nbsp;segname)</td>
+<td>Define length of data segment.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">construct_utc_from_metadata</span></code>(datestr,&nbsp;t0str)</td>
+<td><span class="target" id="construct-utc-from-metadata"></span></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">generate_timeseries</span></code>(data_list[,&nbsp;setname])</td>
+<td>Generate time series using list of HDF5 data file paths</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">create_activity_list</span></code>(station,&nbsp;data_order)</td>
+<td>Create consecutive list of available data segment.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">retrieve_data_timeseries</span></code>(hfile,&nbsp;setname)</td>
+<td>Retrieve data time series from HDF5 data file</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">retrieve_channel_data</span></code>(hfile,&nbsp;setname)</td>
+<td>Retrieve the data from specific channel</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="plotting-routines">
+<h2>Plotting routines<a class="headerlink" href="#plotting-routines" title="Permalink to this headline">¶</a></h2>
+<p>Methods to produce time-frequency plots and others</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">plot_activity</span></code>(full_seglist)</td>
+<td>Plot full activity period for station.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">plot_time_series</span></code>(station,&nbsp;ts_list[,&nbsp;seglist,&nbsp;hp])</td>
+<td>Generate a plot of the whole data time series</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">plot_asd</span></code>(station,&nbsp;ts_list)</td>
+<td>Plot Amplitude Spectral Density.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">plot_whitening</span></code>(station,&nbsp;ts_list[,&nbsp;seglist])</td>
+<td>Generate a spectrogram plot and normalized spectrogram</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">plot_ts</span></code>(ts[,&nbsp;fname])</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">plot_spectrum</span></code>(fd_psd)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">plot_spectrogram</span></code>(spec,&nbsp;dt,&nbsp;df,&nbsp;sample_rate,&nbsp;...)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">plot_spectrogram_from_ts</span></code>(ts)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">plot_triggers</span></code>()</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="excess-power-search-analysis">
+<h2>Excess Power Search Analysis<a class="headerlink" href="#excess-power-search-analysis" title="Permalink to this headline">¶</a></h2>
+<p>Main class to do excess-power search analysis</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="../generated/gdas.epower.excess_power.html#gdas.epower.excess_power" title="gdas.epower.excess_power"><code class="xref py py-obj docutils literal"><span class="pre">excess_power</span></code></a>(ts_data,&nbsp;psd_segment_length,&nbsp;...)</td>
+<td>Perform excess-power search analysis on magnetic field data.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../generated/gdas.epower.check_filtering_settings.html#gdas.epower.check_filtering_settings" title="gdas.epower.check_filtering_settings"><code class="xref py py-obj docutils literal"><span class="pre">check_filtering_settings</span></code></a>(sample_rate,&nbsp;...)</td>
+<td>Check filtering settings and define the total number of channels and bandwidth to use for filter bank.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../generated/gdas.epower.calculate_psd.html#gdas.epower.calculate_psd" title="gdas.epower.calculate_psd"><code class="xref py py-obj docutils literal"><span class="pre">calculate_psd</span></code></a>(ts_data,&nbsp;sample_rate,&nbsp;...)</td>
+<td>Estimate Power Spectral Density (PSD)</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../generated/gdas.epower.calculate_spectral_correlation.html#gdas.epower.calculate_spectral_correlation" title="gdas.epower.calculate_spectral_correlation"><code class="xref py py-obj docutils literal"><span class="pre">calculate_spectral_correlation</span></code></a>(fft_window_len)</td>
+<td>Calculate the two point spectral correlation introduced by windowing the data before transforming to the frequency domain &#8211; valid choices are &#8216;hann&#8217; and &#8216;tukey&#8217;.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../generated/gdas.epower.create_filter_bank.html#gdas.epower.create_filter_bank" title="gdas.epower.create_filter_bank"><code class="xref py py-obj docutils literal"><span class="pre">create_filter_bank</span></code></a>(delta_f,&nbsp;flow,&nbsp;band,&nbsp;...)</td>
+<td>Create filter bank</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">convert_to_time_domain</span></code>(fdb,&nbsp;sample_rate)</td>
+<td>Convert filter bank from frequency to time domain</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">identify_block</span></code>(ts_data,&nbsp;fd_psd,&nbsp;window,&nbsp;...)</td>
+<td>Get frequency series of the current block</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">create_tf_plane</span></code>(fd_psd,&nbsp;nchans,&nbsp;seg_len,&nbsp;...)</td>
+<td>Create time-frequency map</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">compute_filter_ips_self</span></code>(lal_filters,&nbsp;spec_corr)</td>
+<td>Compute a set of inner products of input filters with themselves.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">compute_filter_ips_adjacent</span></code>(lal_filters,&nbsp;...)</td>
+<td>Compute a set of filter inner products between input adjacent filters.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../generated/gdas.epower.compute_channel_renormalization.html#gdas.epower.compute_channel_renormalization" title="gdas.epower.compute_channel_renormalization"><code class="xref py py-obj docutils literal"><span class="pre">compute_channel_renormalization</span></code></a>(filter_bank,&nbsp;...)</td>
+<td>Compute the renormalization for the base filters up to a given bandwidth.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">measure_hrss</span></code>(z_j_b,&nbsp;uw_ss_ii,&nbsp;uw_ss_ij,&nbsp;...)</td>
+<td>Approximation of unwhitened sum of squares signal energy in a given EP tile.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">measure_hrss_slowly</span></code>(z_j_b,&nbsp;lal_filters,&nbsp;...)</td>
+<td>Approximation of unwhitened sum of squares signal energy in a given EP tile.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">measure_hrss_poorly</span></code>(tile_energy,&nbsp;sub_psd)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">trigger_list_from_map</span></code>(tfmap,&nbsp;event_list,&nbsp;...)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">determine_output_segment</span></code>(inseg,&nbsp;dt_stride,&nbsp;...)</td>
+<td>Given an input data stretch segment inseg, a data block stride dt_stride, the data sample rate, and an optional window_fraction, return the amount of data that can be processed without corruption effects from the window.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">make_tiles</span></code>(tf_map,&nbsp;nc_sum,&nbsp;mu_sq)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">make_indp_tiles</span></code>(tf_map,&nbsp;nc_sum,&nbsp;mu_sq)</td>
+<td>Create a time frequency map with resolution of tf_map binning divided by nc_sum + 1.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">make_filename</span></code>(ifo,&nbsp;seg[,&nbsp;tag,&nbsp;ext])</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">construct_tiles</span></code>(nc_sum,&nbsp;mu_sq,&nbsp;band,&nbsp;...)</td>
+<td>Constructing tile and calculate their energy</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">create_tile_duration</span></code>(j,&nbsp;df,&nbsp;duration,&nbsp;tiles)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">create_xml</span></code>(ts_data,&nbsp;psd_segment_length,&nbsp;...)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="utilities">
+<h2>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h2>
+<p>Independent routines to do various other things</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">create_sound</span></code>(ts)</td>
+<td>Create sound based on the data</td>
+</tr>
+</tbody>
+</table>
+<span class="target" id="file-to-segment"></span></div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Vincent Dumont.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+    </div>
+  </body>
+</html>

@@ -1,6 +1,0 @@
-gdas.epower.create_tf_plane
-===========================
-
-.. currentmodule:: gdas.epower
-
-.. autofunction:: create_tf_plane

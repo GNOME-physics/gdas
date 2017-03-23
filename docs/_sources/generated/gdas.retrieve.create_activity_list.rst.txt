@@ -1,6 +1,0 @@
-gdas.retrieve.create_activity_list
-==================================
-
-.. currentmodule:: gdas.retrieve
-
-.. autofunction:: create_activity_list

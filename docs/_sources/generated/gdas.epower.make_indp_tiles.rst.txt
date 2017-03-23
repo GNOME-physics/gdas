@@ -1,6 +1,0 @@
-gdas.epower.make_indp_tiles
-===========================
-
-.. currentmodule:: gdas.epower
-
-.. autofunction:: make_indp_tiles

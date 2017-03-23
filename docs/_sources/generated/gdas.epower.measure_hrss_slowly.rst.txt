@@ -1,6 +1,0 @@
-gdas.epower.measure_hrss_slowly
-===============================
-
-.. currentmodule:: gdas.epower
-
-.. autofunction:: measure_hrss_slowly

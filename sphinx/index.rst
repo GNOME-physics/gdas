@@ -20,23 +20,49 @@ Getting Started
 ---------------
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    installation
    server
    example
 
 Excess Power Search Analysis
--------------------
+----------------------------
 
 .. toctree::
    :maxdepth: 1
 
-   epower_overview
-   epower_step1_checkfilt
-   epower_step2_psd
-   epower_step3_speccor
-   epower_step4_filterbank
-   epower_step5_normalization
-   epower_step6_initialization
+   excess_power
+
+Pre-calculations and initialization
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. toctree::
+   :maxdepth: 1
+
+   check_filtering_settings
+   calculate_psd
+   calculate_spectral_correlation
+   create_filter_bank
+   compute_channel_renormalization
+   initialization
+
+Looping over each block
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. toctree::
+   :maxdepth: 1
+
+   identify_block
+   create_tf_plane
+   construct_tiles
+   explore_duration
    
+Save results
+~~~~~~~~~~~~
+
+.. toctree::
+   :maxdepth: 1
+
+   create_xml
+

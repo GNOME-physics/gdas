@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Constructing tiles of different bandwidth &#8212; gdas 0.3.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Explore multiple tile durations" href="explore_duration.html" />
+    <link rel="prev" title="Create time-frequency map" href="create_tf_plane.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="index.html">
+          <span>gdas 0.3.0 documentation</span></a></h1>
+        <h2 class="heading"><span>Constructing tiles of different bandwidth</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        «&#160;&#160;<a href="create_tf_plane.html">Create time-frequency map</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="explore_duration.html">Explore multiple tile durations</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="constructing-tiles-of-different-bandwidth">
+<span id="tilebandwidth"></span><h1>Constructing tiles of different bandwidth<a class="headerlink" href="#constructing-tiles-of-different-bandwidth" title="Permalink to this headline">¶</a></h1>
+<p>First and foremost, we define a clipping region in the data to be used to remove window corruption, this is non-zero if the <code class="docutils literal"><span class="pre">window_fraction</span></code> variable is set to a non-zero value.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="n">tprint</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">t1</span><span class="p">),</span><span class="s2">&quot;Beginning tile construction...&quot;</span>
+<span class="c1"># Clip the boundaries to remove window corruption</span>
+<span class="n">clip_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">psd_segment_length</span> <span class="o">*</span> <span class="n">window_fraction</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In order to perform a multi-resolution search, tiles of many different bandwidths and durations will be scanned. We first need to setup a loop such that the maximum number of additional channel is equal to the base 2 logarithm of the total number of channels. The number of narrow band channels to be summed (<code class="docutils literal"><span class="pre">nc_sum</span></code>) would therefore be equal to 2 to the power of the current quantity of additional channels.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">nc_sum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">nchans</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span> <span class="c1"># nc_sum additional channel adds</span>
+    <span class="n">nc_sum</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="n">nc_sum</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="nb">print</span> <span class="n">tprint</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">t1</span><span class="p">,</span><span class="n">t2</span><span class="p">),</span><span class="s2">&quot;Summing </span><span class="si">%d</span><span class="s2"> narrow band channels...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">nc_sum</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The undersampling rate for this tile can be calculated using the channel frequency band and the number of narrow band channels to be summed such that the bandwidth of the tile is equal to <code class="docutils literal"><span class="pre">band</span> <span class="pre">*</span> <span class="pre">(nc_sum</span> <span class="pre">+</span> <span class="pre">1)</span></code>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">us_rate</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">band</span><span class="o">*</span><span class="p">(</span><span class="n">nc_sum</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">ts_data</span><span class="o">.</span><span class="n">delta_t</span><span class="p">)))</span>
+<span class="nb">print</span> <span class="o">&gt;&gt;</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="s2">&quot;Undersampling rate for this level: </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span><span class="o">/</span><span class="n">us_rate</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&#8220;Virtual&#8221; wide bandwidth channels are constructed by summing the samples from multiple channels, and correcting for the overlap between adjacent channel filters. We then define the normalised channel at the current level and create a time frequency map for this tile using the <span class="xref std std-ref">make_indp_tiles</span> internal function. In other word, we are constructing multiple sub-tiles for which we can determined the respective energy in the given frequency band.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mu_sq</span> <span class="o">=</span> <span class="n">mu_sq_dict</span><span class="p">[</span><span class="n">nc_sum</span><span class="p">]</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">...calculating tiles...&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">clip_samples</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">tiles</span> <span class="o">=</span> <span class="n">make_indp_tiles</span><span class="p">(</span><span class="n">tf_map</span><span class="p">[:,</span><span class="n">clip_samples</span><span class="p">:</span><span class="o">-</span><span class="n">clip_samples</span><span class="p">:</span><span class="n">us_rate</span><span class="p">],</span> <span class="n">nc_sum</span><span class="p">,</span> <span class="n">mu_sq</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">tiles</span> <span class="o">=</span> <span class="n">make_indp_tiles</span><span class="p">(</span><span class="n">tf_map</span><span class="p">[:,::</span><span class="n">us_rate</span><span class="p">],</span> <span class="n">nc_sum</span><span class="p">,</span> <span class="n">mu_sq</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; TF-plane is </span><span class="si">%d</span><span class="s2">x</span><span class="si">%s</span><span class="s2"> samples... &quot;</span> <span class="o">%</span> <span class="n">tiles</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span> <span class="o">&gt;&gt;</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="s2">&quot; done&quot;</span>
+<span class="nb">print</span> <span class="s2">&quot;Tile energy mean: </span><span class="si">%f</span><span class="s2">, var </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">tiles</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">tiles</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        «&#160;&#160;<a href="create_tf_plane.html">Create time-frequency map</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="explore_duration.html">Explore multiple tile durations</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Vincent Dumont.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+    </div>
+  </body>
+</html>
