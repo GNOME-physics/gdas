@@ -11,13 +11,3 @@ The virtual channels will be used during the excesspower analysis to explore dif
       print tprint(t0,t1),"Calculation for %d %d Hz channels" % (nc_sum+1, min_band)
       nc_sum = 2**nc_sum - 1
       mu_sq_dict[nc_sum] = compute_channel_renomalization(nc_sum, filter_bank, spec_corr, nchans)
-
-Code access
------------
-
-.. currentmodule:: gdas.epower
-
-.. autosummary::
-   :toctree: generated/
-
-   compute_channel_renormalization

@@ -1,6 +1,0 @@
-gdas.epower.calculate_psd
-=========================
-
-.. currentmodule:: gdas.epower
-
-.. autofunction:: calculate_psd

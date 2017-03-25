@@ -1,9 +1,0 @@
-#+TITLE:  README
-#+AUTHOR: Vincent Dumont
-#+EMAIL:  vincentdumont11@gmail.com
-
-A full documentation of the software is provided at the following link:
-
- https://gnome-physics.github.io/gdas
-
-Feel free to [[mailto:vincentdumont11@gmail.com][email me]] if you have any questions.

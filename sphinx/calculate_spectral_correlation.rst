@@ -13,13 +13,3 @@ The two point spectral correlation is then done with the :ref:`calculate_spectra
   window_sigma_sq = numpy.mean(window**2)
   # Pre scale the window by its root mean squared -- see eqn 11 of EP document
   #window /= numpy.sqrt(window_sigma_sq)
-
-Code access
------------
-
-.. currentmodule:: gdas.epower
-
-.. autosummary::
-   :toctree: generated/
-
-   calculate_spectral_correlation

@@ -35,16 +35,3 @@ The minimum frequency to be explored can be user-defined by using the ``--min-fr
 
   # Lowest frequency of the first filter
   flow = args.min_frequency
-
-Code access
------------
-
-.. currentmodule:: gdas.epower
-
-.. autosummary::
-   :toctree: generated/
-
-   check_filtering_settings
-
-
-

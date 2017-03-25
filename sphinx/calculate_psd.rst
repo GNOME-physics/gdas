@@ -39,16 +39,3 @@ One can display the power measurements, frequency array and frequency between co
   print fd_psd.delta_f
 
 :math:`\Delta f` corresponds to the inverse of a segment's length which is the smallest frequency (i.e. highest period) of detectable signals in each segment. The frequency range spans from 0 to the Nyquist frequency, i.e. half de the sampling rate.
-
-Code access
------------
-
-.. currentmodule:: gdas.epower
-
-.. autosummary::
-   :toctree: generated/
-
-   calculate_psd
-
-
-

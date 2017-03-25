@@ -32,16 +32,3 @@ We present below a step-by-step procedure followed during the Excess Power searc
 .. figure:: ./img/overview.png
 
 	    Overview of the Excess Power method and difference between segments, channels, tiles and blocks.
-
-Code access
------------
-
-.. currentmodule:: gdas.epower
-
-.. autosummary::
-   :toctree: generated/
-
-   excess_power
-
-
-

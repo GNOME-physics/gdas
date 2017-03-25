@@ -3,7 +3,7 @@ import gdas
 station    = 'fribourg01'
 start_time = '2016-11-03-17'
 end_time   = '2016-11-03-18'
-datapath   = '/Users/vincent/ASTRO/data/GNOMEDrive/gnome/serverdata/'
+datapath   = '/Volumes/NURI-GNOME/GNOMEDrive/gnome/serverdata/'
 ts_data,ts_list,activity = gdas.magfield(station,start_time,end_time,rep=datapath,resample=512)
 #gdas.wavelet(ts_data)
 #gdas.plot_activity(activity)

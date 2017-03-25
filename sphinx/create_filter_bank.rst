@@ -39,14 +39,3 @@ Some extra plots can also be made ::
    tdb = convert_to_time_domain(fdb,sample_rate)
    plot_bank(fdb)
    plot_filters(tdb,flow,band)
-
-   
-Code access
------------
-
-.. currentmodule:: gdas.epower
-
-.. autosummary::
-   :toctree: generated/
-
-   create_filter_bank
