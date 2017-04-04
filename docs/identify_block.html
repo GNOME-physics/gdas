@@ -1,0 +1,172 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Define analysing blocks &#8212; gdas  documentation</title>
+    
+    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.base.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Create time-frequency map" href="create_tf_plane.html" />
+    <link rel="prev" title="Initialise event list and determine stride boundaries" href="initialization.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="create_tf_plane.html" title="Create time-frequency map"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="initialization.html" title="Initialise event list and determine stride boundaries"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">gdas  documentation</a> &#187;</li>
+ 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="define-analysing-blocks">
+<span id="analysingblocks"></span><h1>Define analysing blocks<a class="headerlink" href="#define-analysing-blocks" title="Permalink to this headline">¶</a></h1>
+<p>The first thing we do is to calculate the time series for the segment that is covered (<code class="docutils literal"><span class="pre">tmp_ts_data</span></code>) and redefined the metadata, especially the time of the first sample in seconds which is defined by the <code class="docutils literal"><span class="pre">epoch</span></code> argument and is different for every segment. After plotting the time series for that segment, the data are then converted into frequency series (<code class="docutils literal"><span class="pre">fs_data</span></code>) using the <a class="reference external" href="http://ligo-cbc.github.io/pycbc/latest/html/pycbc.types.html#pycbc.types.timeseries.TimeSeries.to_frequencyseries">to_frequencyseries</a> module from the <code class="docutils literal"><span class="pre">pycbc.types.timeseries.TimeSeries</span></code> library. Finally, the frequency data are then whitened.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Loop over each data within the user requested time period</span>
+<span class="k">while</span> <span class="n">t_idx_max</span> <span class="o">&lt;=</span> <span class="n">t_idx_max_off</span><span class="p">:</span>
+    <span class="c1"># Define starting and ending time of the segment in seconds</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">ts_data</span><span class="o">.</span><span class="n">start_time</span> <span class="o">+</span> <span class="n">t_idx_min</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">)</span>
+    <span class="n">end_time</span> <span class="o">=</span> <span class="n">ts_data</span><span class="o">.</span><span class="n">start_time</span> <span class="o">+</span> <span class="n">t_idx_max</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">tprint</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">t1</span><span class="p">),</span><span class="s2">&quot;Analyzing block </span><span class="si">%i</span><span class="s2"> to </span><span class="si">%i</span><span class="s2"> (</span><span class="si">%.2f</span><span class="s2"> percent)&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span><span class="n">end_time</span><span class="p">,</span><span class="mi">100</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">t_idx_max</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">idx_max_off</span><span class="p">))</span>
+    <span class="c1"># Model a withen time series for the block</span>
+    <span class="n">tmp_ts_data</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">TimeSeries</span><span class="p">(</span><span class="n">ts_data</span><span class="p">[</span><span class="n">t_idx_min</span><span class="p">:</span><span class="n">t_idx_max</span><span class="p">]</span><span class="o">*</span><span class="n">window</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">,</span><span class="n">epoch</span><span class="o">=</span><span class="n">start_time</span><span class="p">)</span>
+    <span class="c1"># Save time series in segment repository</span>
+    <span class="n">segfolder</span> <span class="o">=</span> <span class="s1">&#39;segments/</span><span class="si">%i</span><span class="s1">-</span><span class="si">%i</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span><span class="n">end_time</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;mkdir -p &#39;</span><span class="o">+</span><span class="n">segfolder</span><span class="p">)</span>
+    <span class="n">plot_ts</span><span class="p">(</span><span class="n">tmp_ts_data</span><span class="p">,</span><span class="n">fname</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/ts.png&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">segfolder</span><span class="p">))</span>
+    <span class="c1"># Convert times series to frequency series</span>
+    <span class="n">fs_data</span> <span class="o">=</span> <span class="n">tmp_ts_data</span><span class="o">.</span><span class="n">to_frequencyseries</span><span class="p">()</span>
+    <span class="nb">print</span> <span class="n">tprint</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">t1</span><span class="p">),</span><span class="s2">&quot;Frequency series data has variance: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">fs_data</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="o">**</span><span class="mi">2</span>
+    <span class="c1"># Whitening (FIXME: Whiten the filters, not the data)</span>
+    <span class="n">fs_data</span><span class="o">.</span><span class="n">data</span> <span class="o">/=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">fd_psd</span><span class="p">)</span> <span class="o">/</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">fd_psd</span><span class="o">.</span><span class="n">delta_f</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">tprint</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">t1</span><span class="p">),</span><span class="s2">&quot;Whitened frequency series data has variance: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">fs_data</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="o">**</span><span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="initialization.html"
+                          title="Previous page">&larr; Initialise event list and determine stride boundaries</a></p>
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="create_tf_plane.html"
+                          title="Next page">&rarr; Create time-frequency map</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/identify_block.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="create_tf_plane.html" title="Create time-frequency map"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="initialization.html" title="Initialise event list and determine stride boundaries"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">gdas  documentation</a> &#187;</li>
+ 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Vincent Dumont.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

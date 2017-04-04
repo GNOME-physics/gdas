@@ -1,0 +1,162 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Normalization of virtual channel &#8212; gdas  documentation</title>
+    
+    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.base.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Initialise event list and determine stride boundaries" href="initialization.html" />
+    <link rel="prev" title="Computing the filter bank" href="create_filter_bank.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="initialization.html" title="Initialise event list and determine stride boundaries"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="create_filter_bank.html" title="Computing the filter bank"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">gdas  documentation</a> &#187;</li>
+ 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="normalization-of-virtual-channel">
+<h1>Normalization of virtual channel<a class="headerlink" href="#normalization-of-virtual-channel" title="Permalink to this headline">¶</a></h1>
+<p>The virtual channels will be used during the excesspower analysis to explore different frequency ranges around each PSD segments and look for possible triggers. Each channel is renormalized using the <span class="xref std std-ref">compute_channel_renomalization</span> internal function.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Initialise dictionary</span>
+<span class="n">mu_sq_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="c1"># nc_sum additional channel adds</span>
+<span class="k">for</span> <span class="n">nc_sum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">nchans</span><span class="p">,</span> <span class="mi">2</span><span class="p">))):</span>
+    <span class="n">min_band</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">filter_bank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">filter_bank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">deltaF</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="nb">print</span> <span class="n">tprint</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">t1</span><span class="p">),</span><span class="s2">&quot;Calculation for </span><span class="si">%d</span><span class="s2"> </span><span class="si">%d</span><span class="s2"> Hz channels&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">nc_sum</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">min_band</span><span class="p">)</span>
+    <span class="n">nc_sum</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="n">nc_sum</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">mu_sq_dict</span><span class="p">[</span><span class="n">nc_sum</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_channel_renomalization</span><span class="p">(</span><span class="n">nc_sum</span><span class="p">,</span> <span class="n">filter_bank</span><span class="p">,</span> <span class="n">spec_corr</span><span class="p">,</span> <span class="n">nchans</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="create_filter_bank.html"
+                          title="Previous page">&larr; Computing the filter bank</a></p>
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="initialization.html"
+                          title="Next page">&rarr; Initialise event list and determine stride boundaries</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/compute_channel_renormalization.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="initialization.html" title="Initialise event list and determine stride boundaries"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="create_filter_bank.html" title="Computing the filter bank"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">gdas  documentation</a> &#187;</li>
+ 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Vincent Dumont.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

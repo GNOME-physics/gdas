@@ -1,0 +1,495 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Define analysing blocks &#8212; gdas  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../_static/cloud.base.js"></script>
+    <script type="text/javascript" src="../_static/cloud.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+    <li><a href="../index.html">gdas  documentation</a> &#187;</li>
+ 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="define-analysing-blocks">
+<span id="analysingblocks"></span><h1>Define analysing blocks<a class="headerlink" href="#define-analysing-blocks" title="Permalink to this headline">¶</a></h1>
+<p>The first thing we do is to calculate the time series for the segment that is covered (<code class="docutils literal"><span class="pre">tmp_ts_data</span></code>) and redefined the metadata, especially the time of the first sample in seconds which is defined by the <code class="docutils literal"><span class="pre">epoch</span></code> argument and is different for every segment. After plotting the time series for that segment, the data are then converted into frequency series (<code class="docutils literal"><span class="pre">fs_data</span></code>) using the <a class="reference external" href="http://ligo-cbc.github.io/pycbc/latest/html/pycbc.types.html#pycbc.types.timeseries.TimeSeries.to_frequencyseries">to_frequencyseries</a> module from the <code class="docutils literal"><span class="pre">pycbc.types.timeseries.TimeSeries</span></code> library. Finally, the frequency data are then whitened.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Loop over each data within the user requested time period</span>
+<span class="k">while</span> <span class="n">t_idx_max</span> <span class="o">&lt;=</span> <span class="n">t_idx_max_off</span><span class="p">:</span>
+    <span class="c1"># Define starting and ending time of the segment in seconds</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">ts_data</span><span class="o">.</span><span class="n">start_time</span> <span class="o">+</span> <span class="n">t_idx_min</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">)</span>
+    <span class="n">end_time</span> <span class="o">=</span> <span class="n">ts_data</span><span class="o">.</span><span class="n">start_time</span> <span class="o">+</span> <span class="n">t_idx_max</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">tprint</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">t1</span><span class="p">),</span><span class="s2">&quot;Analyzing block </span><span class="si">%i</span><span class="s2"> to </span><span class="si">%i</span><span class="s2"> (</span><span class="si">%.2f</span><span class="s2"> percent)&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span><span class="n">end_time</span><span class="p">,</span><span class="mi">100</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">t_idx_max</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">idx_max_off</span><span class="p">))</span>
+    <span class="c1"># Model a withen time series for the block</span>
+    <span class="n">tmp_ts_data</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">TimeSeries</span><span class="p">(</span><span class="n">ts_data</span><span class="p">[</span><span class="n">t_idx_min</span><span class="p">:</span><span class="n">t_idx_max</span><span class="p">]</span><span class="o">*</span><span class="n">window</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">,</span><span class="n">epoch</span><span class="o">=</span><span class="n">start_time</span><span class="p">)</span>
+    <span class="c1"># Save time series in segment repository</span>
+    <span class="n">segfolder</span> <span class="o">=</span> <span class="s1">&#39;segments/</span><span class="si">%i</span><span class="s1">-</span><span class="si">%i</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span><span class="n">end_time</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;mkdir -p &#39;</span><span class="o">+</span><span class="n">segfolder</span><span class="p">)</span>
+    <span class="n">plot_ts</span><span class="p">(</span><span class="n">tmp_ts_data</span><span class="p">,</span><span class="n">fname</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/ts.png&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">segfolder</span><span class="p">))</span>
+    <span class="c1"># Convert times series to frequency series</span>
+    <span class="n">fs_data</span> <span class="o">=</span> <span class="n">tmp_ts_data</span><span class="o">.</span><span class="n">to_frequencyseries</span><span class="p">()</span>
+    <span class="nb">print</span> <span class="n">tprint</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">t1</span><span class="p">),</span><span class="s2">&quot;Frequency series data has variance: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">fs_data</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="o">**</span><span class="mi">2</span>
+    <span class="c1"># Whitening (FIXME: Whiten the filters, not the data)</span>
+    <span class="n">fs_data</span><span class="o">.</span><span class="n">data</span> <span class="o">/=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">fd_psd</span><span class="p">)</span> <span class="o">/</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">fd_psd</span><span class="o">.</span><span class="n">delta_f</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">tprint</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">t1</span><span class="p">),</span><span class="s2">&quot;Whitened frequency series data has variance: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">fs_data</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="o">**</span><span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-time-frequency-map-for-each-block">
+<h1>Create time-frequency map for each block<a class="headerlink" href="#create-time-frequency-map-for-each-block" title="Permalink to this headline">¶</a></h1>
+<p>We initialise a 2D zero array for a time-frequency map (<code class="docutils literal"><span class="pre">tf_map</span></code>) which will be computed for each frequency-domain filter associated to each PSD segment and where the filtered time-series for each frequency channels will be stored. The number of rows corresponds to the total number of frequency channels which is defined by the <code class="docutils literal"><span class="pre">nchans</span></code> variable. The number of columns corresponds to the segment length in samples (i.e. the number of samples covering one segment) which is defined by the <code class="docutils literal"><span class="pre">seg_len</span></code> variable.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Initialise 2D zero array for time-frequency map</span>
+<span class="n">tf_map</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nchans</span><span class="p">,</span> <span class="n">seg_len</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We also initialise a zero vector for a temporary filter bank (<code class="docutils literal"><span class="pre">tmp_filter_bank</span></code>) that will store, for a given channel, the filter&#8217;s values from the original filter bank (<code class="docutils literal"><span class="pre">filter_bank</span></code>) for that channel only. The length of the temporary filter bank is equal to the length of the PSD frequency series (<code class="docutils literal"><span class="pre">fd_psd</span></code>).</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Initialise 1D zero array</span>
+<span class="n">tmp_filter_bank</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fd_psd</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We then loop over all the frequency channels. While in the loop, we first re-initialise the temporary filter bank with zero values everywhere along the frequency series. We then determine the first and last frequency of each channel and re-define the values of the filter in that frequency range based on the values from the original channel&#8217;s filter from the original filter bank.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Loop over all the channels</span>
+<span class="nb">print</span> <span class="n">tprint</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">t1</span><span class="p">),</span><span class="s2">&quot;Filtering all </span><span class="si">%d</span><span class="s2"> channels...&quot;</span> <span class="o">%</span> <span class="n">nchans</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nchans</span><span class="p">):</span>
+    <span class="c1"># Reset filter bank series</span>
+    <span class="n">tmp_filter_bank</span> <span class="o">*=</span> <span class="mf">0.0</span>
+    <span class="c1"># Index of starting frequency</span>
+    <span class="n">f1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">filter_bank</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">f0</span><span class="o">/</span><span class="n">fd_psd</span><span class="o">.</span><span class="n">delta_f</span><span class="p">)</span>
+    <span class="c1"># Index of ending frequency</span>
+    <span class="n">f2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">filter_bank</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">f0</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">band</span><span class="p">)</span><span class="o">/</span><span class="n">fd_psd</span><span class="o">.</span><span class="n">delta_f</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+    <span class="c1"># (FIXME: Why is there a factor of 2 here?)</span>
+    <span class="n">tmp_filter_bank</span><span class="p">[</span><span class="n">f1</span><span class="p">:</span><span class="n">f2</span><span class="p">]</span> <span class="o">=</span> <span class="n">filter_bank</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data</span> <span class="o">*</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p>We then extract the frequency series from the filter bank for that channel, which will be used as a template waveform to filter the actual data from the channel.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Define the template to filter the frequency series with</span>
+<span class="n">template</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">FrequencySeries</span><span class="p">(</span><span class="n">tmp_filter_bank</span><span class="p">,</span> <span class="n">delta_f</span><span class="o">=</span><span class="n">fd_psd</span><span class="o">.</span><span class="n">delta_f</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally, we use the <a class="reference external" href="http://ligo-cbc.github.io/pycbc/latest/html/pycbc.filter.html">matched_filter_core</a> module from the <code class="docutils literal"><span class="pre">pycbc.filter.matchedfilter</span></code> library to filter the frequency series from the channel. This will return both a time series containing the complex signal-to-noise matched filtered against the data, and a frequency series containing the correlation vector.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Create filtered series</span>
+<span class="n">filtered_series</span> <span class="o">=</span> <span class="nb">filter</span><span class="o">.</span><span class="n">matched_filter_core</span><span class="p">(</span><span class="n">template</span><span class="p">,</span><span class="n">fs_data</span><span class="p">,</span><span class="n">h_norm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">psd</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                             <span class="n">low_frequency_cutoff</span><span class="o">=</span><span class="n">filter_bank</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">f0</span><span class="p">,</span>
+                                             <span class="n">high_frequency_cutoff</span><span class="o">=</span><span class="n">filter_bank</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">f0</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">band</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <a class="reference external" href="http://en.wikipedia.org/wiki/Matched_filter">matched filter</a> is the optimal linear filter for maximizing the signal to noise ratio (SNR) in the presence of additive stochastic noise. The filtered time series is stored in the time-frequency map and can be used to produce a spectrogram of the segment of data being analysed.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Include filtered series in the map</span>
+<span class="n">tf_map</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">filtered_series</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The time-frequency map is a 2D array with a length that corresponds to the number of channels and a width equal to the number of sample present in one segment of data, i.e. segment&#8217;s length in seconds times the the sampling rate. The map can finally be plotted with a <span class="math">\(\Delta t\)</span> corresponding to the sampling period of the original dataset (i.e. inverse of the original sampling rate), and <span class="math">\(\Delta f\)</span> is equal to the bandwidth of one channel.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">plot_spectrogram</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tf_map</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">tmp_ts_data</span><span class="o">.</span><span class="n">delta_t</span><span class="p">,</span><span class="n">fd_psd</span><span class="o">.</span><span class="n">delta_f</span><span class="p">,</span><span class="n">ts_data</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">,</span><span class="n">start_time</span><span class="p">,</span><span class="n">end_time</span><span class="p">,</span><span class="n">fname</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/tf.png&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">segfolder</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="constructing-tiles-of-different-bandwidth">
+<span id="tilebandwidth"></span><h1>Constructing tiles of different bandwidth<a class="headerlink" href="#constructing-tiles-of-different-bandwidth" title="Permalink to this headline">¶</a></h1>
+<p>First and foremost, we define a clipping region in the data to be used to remove window corruption, this is non-zero if the <code class="docutils literal"><span class="pre">window_fraction</span></code> variable is set to a non-zero value.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="n">tprint</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">t1</span><span class="p">),</span><span class="s2">&quot;Beginning tile construction...&quot;</span>
+<span class="c1"># Clip the boundaries to remove window corruption</span>
+<span class="n">clip_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">psd_segment_length</span> <span class="o">*</span> <span class="n">window_fraction</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In order to perform a multi-resolution search, tiles of many different bandwidths and durations will be scanned. We first need to setup a loop such that the maximum number of additional channel is equal to the base 2 logarithm of the total number of channels. The number of narrow band channels to be summed (<code class="docutils literal"><span class="pre">nc_sum</span></code>) would therefore be equal to 2 to the power of the current quantity of additional channels.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">nc_sum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">nchans</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span> <span class="c1"># nc_sum additional channel adds</span>
+    <span class="n">nc_sum</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="n">nc_sum</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="nb">print</span> <span class="n">tprint</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">t1</span><span class="p">,</span><span class="n">t2</span><span class="p">),</span><span class="s2">&quot;Summing </span><span class="si">%d</span><span class="s2"> narrow band channels...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">nc_sum</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The undersampling rate for this tile can be calculated using the channel frequency band and the number of narrow band channels to be summed such that the bandwidth of the tile is equal to <code class="docutils literal"><span class="pre">band</span> <span class="pre">*</span> <span class="pre">(nc_sum</span> <span class="pre">+</span> <span class="pre">1)</span></code>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">us_rate</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">band</span><span class="o">*</span><span class="p">(</span><span class="n">nc_sum</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">ts_data</span><span class="o">.</span><span class="n">delta_t</span><span class="p">)))</span>
+<span class="nb">print</span> <span class="o">&gt;&gt;</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="s2">&quot;Undersampling rate for this level: </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span><span class="o">/</span><span class="n">us_rate</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&#8220;Virtual&#8221; wide bandwidth channels are constructed by summing the samples from multiple channels, and correcting for the overlap between adjacent channel filters. We then define the normalised channel at the current level and create a time frequency map for this tile using the <span class="xref std std-ref">make_indp_tiles</span> internal function. In other word, we are constructing multiple sub-tiles for which we can determined the respective energy in the given frequency band.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mu_sq</span> <span class="o">=</span> <span class="n">mu_sq_dict</span><span class="p">[</span><span class="n">nc_sum</span><span class="p">]</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">...calculating tiles...&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">clip_samples</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">tiles</span> <span class="o">=</span> <span class="n">make_indp_tiles</span><span class="p">(</span><span class="n">tf_map</span><span class="p">[:,</span><span class="n">clip_samples</span><span class="p">:</span><span class="o">-</span><span class="n">clip_samples</span><span class="p">:</span><span class="n">us_rate</span><span class="p">],</span> <span class="n">nc_sum</span><span class="p">,</span> <span class="n">mu_sq</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">tiles</span> <span class="o">=</span> <span class="n">make_indp_tiles</span><span class="p">(</span><span class="n">tf_map</span><span class="p">[:,::</span><span class="n">us_rate</span><span class="p">],</span> <span class="n">nc_sum</span><span class="p">,</span> <span class="n">mu_sq</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; TF-plane is </span><span class="si">%d</span><span class="s2">x</span><span class="si">%s</span><span class="s2"> samples... &quot;</span> <span class="o">%</span> <span class="n">tiles</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span> <span class="o">&gt;&gt;</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="s2">&quot; done&quot;</span>
+<span class="nb">print</span> <span class="s2">&quot;Tile energy mean: </span><span class="si">%f</span><span class="s2">, var </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">tiles</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">tiles</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="explore-multiple-tile-durations">
+<span id="tileduration"></span><h1>Explore multiple tile durations<a class="headerlink" href="#explore-multiple-tile-durations" title="Permalink to this headline">¶</a></h1>
+<p>Now that we create a tile with a specific bandwidth, we can start exploring different durations for the tile. We will start checking if the user manually defined a value for the longest duration tile to compute, which can be done using the <code class="docutils literal"><span class="pre">--max-duration</span></code> argument. If not, the value will be set to 32.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">max_duration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">max_dof</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">args</span><span class="o">.</span><span class="n">max_duration</span> <span class="o">*</span> <span class="p">(</span><span class="n">band</span> <span class="o">*</span> <span class="p">(</span><span class="n">nc_sum</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">max_dof</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="k">assert</span> <span class="n">max_dof</span> <span class="o">&gt;=</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p>Since we produce (initially) tiles with 1 degree of freedom, the duration goes as one over twice the bandwidth.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="s2">&quot;</span><span class="se">\t\t</span><span class="s2">...getting longer durations...&quot;</span>
+<span class="c1">#for j in [2**l for l in xrange(1, int(math.log(max_dof, 2))+1)]:</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">2</span><span class="o">**</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">max_dof</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))]:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t\t</span><span class="s2">Summing DOF = </span><span class="si">%d</span><span class="s2"> ...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">j</span><span class="p">))</span>
+    <span class="c1">#tlen = tiles.shape[1] - j + 1</span>
+    <span class="n">tlen</span> <span class="o">=</span> <span class="n">tiles</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">tlen</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="o">&gt;&gt;</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="s2">&quot; ...not enough samples.&quot;</span>
+        <span class="k">continue</span>
+    <span class="n">dof_tiles</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">tiles</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tlen</span><span class="p">))</span>
+    <span class="c1">#:sum_filter = numpy.ones(j)</span>
+    <span class="c1"># FIXME: This is the correct filter for 50% overlap</span>
+    <span class="n">sum_filter</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="c1">#sum_filter = numpy.array([1,0] * int(math.log(j, 2)-1) + [1])</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tiles</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="c1"># Sum and drop correlate tiles</span>
+        <span class="c1"># FIXME: don&#39;t drop correlated tiles</span>
+        <span class="c1">#output = numpy.convolve(tiles[f,:], sum_filter, &#39;valid&#39;)</span>
+        <span class="n">dof_tiles</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">=</span> <span class="n">fftconvolve</span><span class="p">(</span><span class="n">tiles</span><span class="p">[</span><span class="n">f</span><span class="p">],</span> <span class="n">sum_filter</span><span class="p">,</span> <span class="s1">&#39;valid&#39;</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="o">&gt;&gt;</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="s2">&quot; done&quot;</span>
+    <span class="nb">print</span> <span class="s2">&quot;Summed tile energy mean: </span><span class="si">%f</span><span class="s2">, var </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dof_tiles</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">dof_tiles</span><span class="p">))</span>
+    <span class="n">level_tdiff</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">tdiff</span>
+    <span class="nb">print</span> <span class="o">&gt;&gt;</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="s2">&quot;Done with this resolution, total </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">level_tdiff</span>
+</pre></div>
+</div>
+<p>Finally, the bandwidth and duration of the tile can be defined as followed:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Current bandwidth of the time-frequency map tiles</span>
+<span class="n">current_band</span> <span class="o">=</span> <span class="n">band</span> <span class="o">*</span> <span class="p">(</span><span class="n">nc_sum</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="c1"># How much each &quot;step&quot; is in the frequency domain -- almost</span>
+<span class="c1"># assuredly the fundamental bandwidth</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">current_band</span>
+<span class="c1"># How much each &quot;step&quot; is in the time domain -- under sampling rate</span>
+<span class="c1"># FIXME: THis won&#39;t work if the sample rate isn&#39;t a power of 2</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">current_band</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="n">full_band</span> <span class="o">=</span> <span class="mi">250</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="n">current_band</span> <span class="o">/</span> <span class="n">full_band</span> <span class="o">*</span> <span class="n">ts_data</span><span class="o">.</span><span class="n">sample_rate</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">dt</span>
+<span class="c1"># Duration is fixed by the NDOF and bandwidth</span>
+<span class="n">duration</span> <span class="o">=</span> <span class="n">j</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">/</span> <span class="n">current_band</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="trigger-finding">
+<span id="triggerfinding"></span><h1>Trigger finding<a class="headerlink" href="#trigger-finding" title="Permalink to this headline">¶</a></h1>
+<p>In order to find any trigger in the data, we first need to set a false alarm probability threshold in Gaussian noise above which signal will be distinguished from the noise. Such threshold can be determined by using the /inverse survival function/ method from the <a class="reference external" href="https://docs.scipy.org/doc/scipy-0.18.1/reference/generated/scipy.stats.chi2.html">scipy.stats.chi2</a> package.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">threshold</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">chi2</span><span class="o">.</span><span class="n">isf</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">tile_fap</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+<span class="nb">print</span> <span class="s2">&quot;Threshold for this level: </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">threshold</span>
+<span class="c1">#if numpy.any(dof_tiles &gt; threshold):</span>
+    <span class="c1">#plot_spectrogram(dof_tiles.T)</span>
+    <span class="c1">#import pdb; pdb.set_trace()</span>
+</pre></div>
+</div>
+<p>Once the threshold is set, one can then run the <span class="xref std std-ref">trigger_list_from_map</span> function to quickly find the trigger signal from the <code class="docutils literal"><span class="pre">dof_tiles</span></code> array that</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Since we clip the data, the start time needs to be adjusted accordingly</span>
+<span class="n">window_offset_epoch</span> <span class="o">=</span> <span class="n">fs_data</span><span class="o">.</span><span class="n">epoch</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">psd_segment_length</span> <span class="o">*</span> <span class="n">window_fraction</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">trigger_list_from_map</span><span class="p">(</span><span class="n">dof_tiles</span><span class="p">,</span> <span class="n">event_list</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">window_offset_epoch</span><span class="p">,</span> <span class="n">filter_bank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">f0</span> <span class="o">+</span> <span class="n">band</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">current_band</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">event_list</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">amplitude</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="n">etime_min_idx</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">get_start</span><span class="p">())</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">fs_data</span><span class="o">.</span><span class="n">epoch</span><span class="p">)</span>
+    <span class="n">etime_min_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">etime_min_idx</span> <span class="o">/</span> <span class="n">tmp_ts_data</span><span class="o">.</span><span class="n">delta_t</span><span class="p">)</span>
+    <span class="n">etime_max_idx</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">get_start</span><span class="p">())</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">fs_data</span><span class="o">.</span><span class="n">epoch</span><span class="p">)</span> <span class="o">+</span> <span class="n">event</span><span class="o">.</span><span class="n">duration</span>
+    <span class="n">etime_max_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">etime_max_idx</span> <span class="o">/</span> <span class="n">tmp_ts_data</span><span class="o">.</span><span class="n">delta_t</span><span class="p">)</span>
+    <span class="c1"># (band / 2) to account for sin^2 wings from finest filters</span>
+    <span class="n">flow_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">event</span><span class="o">.</span><span class="n">central_freq</span> <span class="o">-</span> <span class="n">event</span><span class="o">.</span><span class="n">bandwidth</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="p">(</span><span class="n">band</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">flow</span><span class="p">)</span> <span class="o">/</span> <span class="n">band</span><span class="p">)</span>
+    <span class="n">fhigh_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">event</span><span class="o">.</span><span class="n">central_freq</span> <span class="o">+</span> <span class="n">event</span><span class="o">.</span><span class="n">bandwidth</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">band</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">flow</span><span class="p">)</span> <span class="o">/</span> <span class="n">band</span><span class="p">)</span>
+    <span class="c1"># TODO: Check that the undersampling rate is always commensurate</span>
+    <span class="c1"># with the indexing: that is to say that</span>
+    <span class="c1"># mod(etime_min_idx, us_rate) == 0 always</span>
+    <span class="n">z_j_b</span> <span class="o">=</span> <span class="n">tf_map</span><span class="p">[</span><span class="n">flow_idx</span><span class="p">:</span><span class="n">fhigh_idx</span><span class="p">,</span><span class="n">etime_min_idx</span><span class="p">:</span><span class="n">etime_max_idx</span><span class="p">:</span><span class="n">us_rate</span><span class="p">]</span>
+    <span class="c1"># FIXME: Deal with negative hrss^2 -- e.g. remove the event</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">amplitude</span> <span class="o">=</span> <span class="n">measure_hrss</span><span class="p">(</span><span class="n">z_j_b</span><span class="p">,</span> <span class="n">unwhite_filter_ip</span><span class="p">[</span><span class="n">flow_idx</span><span class="p">:</span><span class="n">fhigh_idx</span><span class="p">],</span> <span class="n">unwhite_ss_ip</span><span class="p">[</span><span class="n">flow_idx</span><span class="p">:</span><span class="n">fhigh_idx</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">white_ss_ip</span><span class="p">[</span><span class="n">flow_idx</span><span class="p">:</span><span class="n">fhigh_idx</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">fd_psd</span><span class="o">.</span><span class="n">delta_f</span><span class="p">,</span> <span class="n">tmp_ts_data</span><span class="o">.</span><span class="n">delta_t</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">filter_bank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="n">event</span><span class="o">.</span><span class="n">chisq_dof</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">amplitude</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="nb">print</span> <span class="s2">&quot;Total number of events: </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">event_list</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="switch-to-new-block">
+<h1>Switch to new block<a class="headerlink" href="#switch-to-new-block" title="Permalink to this headline">¶</a></h1>
+<p>The following will move the frequency band to the next segment:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">tdiff</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">tdiff</span>
+<span class="nb">print</span> <span class="s2">&quot;Done with this block: total </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">tdiff</span>
+
+<span class="n">t_idx_min</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">seg_len</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">window_fraction</span><span class="p">))</span>
+<span class="n">t_idx_max</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">seg_len</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">window_fraction</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="extracting-gps-time-range">
+<h1>Extracting GPS time range<a class="headerlink" href="#extracting-gps-time-range" title="Permalink to this headline">¶</a></h1>
+<p>We use the <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lal/group___l_a_l_datatypes.html#ss_LIGOTimeGPS">LIGOTimeGPS</a> structure from the =glue.lal= package to /store the starting and ending time in the dataset to nanosecond precision and synchronized to the Global Positioning System time reference/. Once both times are defined, the range of value is stored in a semi-open interval using the <a class="reference external" href="http://software.ligo.org/docs/glue/glue.__segments.segment-class.html">segment</a> module from the =glue.segments= package.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Starting epoch relative to GPS starting epoch</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">LIGOTimeGPS</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">analysis_start_time</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">gps_start_time</span><span class="p">)</span>
+<span class="c1"># Ending epoch relative to GPS ending epoch</span>
+<span class="n">end_time</span> <span class="o">=</span> <span class="n">LIGOTimeGPS</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">analysis_end_time</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">gps_end_time</span><span class="p">)</span>
+<span class="c1"># Represent the range of values in the semi-open interval</span>
+<span class="n">inseg</span> <span class="o">=</span> <span class="n">segment</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span><span class="n">end_time</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="prepare-output-file-for-given-time-range">
+<h1>Prepare output file for given time range<a class="headerlink" href="#prepare-output-file-for-given-time-range" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">xmldoc</span> <span class="o">=</span> <span class="n">ligolw</span><span class="o">.</span><span class="n">Document</span><span class="p">()</span>
+<span class="n">xmldoc</span><span class="o">.</span><span class="n">appendChild</span><span class="p">(</span><span class="n">ligolw</span><span class="o">.</span><span class="n">LIGO_LW</span><span class="p">())</span>
+
+<span class="n">ifo</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">channel_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">proc_row</span> <span class="o">=</span> <span class="n">register_to_xmldoc</span><span class="p">(</span><span class="n">xmldoc</span><span class="p">,</span> <span class="n">__program__</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">,</span> <span class="n">ifos</span><span class="o">=</span><span class="p">[</span><span class="n">ifo</span><span class="p">],</span><span class="n">version</span><span class="o">=</span><span class="n">glue</span><span class="o">.</span><span class="n">git_version</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">cvs_repository</span><span class="o">=</span><span class="n">glue</span><span class="o">.</span><span class="n">git_version</span><span class="o">.</span><span class="n">branch</span><span class="p">,</span> <span class="n">cvs_entry_time</span><span class="o">=</span><span class="n">glue</span><span class="o">.</span><span class="n">git_version</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
+
+<span class="c1"># Figure out the data we actually analyzed</span>
+<span class="n">outseg</span> <span class="o">=</span> <span class="n">determine_output_segment</span><span class="p">(</span><span class="n">inseg</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">psd_segment_length</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">,</span> <span class="n">window_fraction</span><span class="p">)</span>
+
+<span class="n">ss</span> <span class="o">=</span> <span class="n">append_search_summary</span><span class="p">(</span><span class="n">xmldoc</span><span class="p">,</span> <span class="n">proc_row</span><span class="p">,</span> <span class="n">ifos</span><span class="o">=</span><span class="p">(</span><span class="n">station</span><span class="p">,),</span> <span class="n">inseg</span><span class="o">=</span><span class="n">inseg</span><span class="p">,</span> <span class="n">outseg</span><span class="o">=</span><span class="n">outseg</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">sb</span> <span class="ow">in</span> <span class="n">event_list</span><span class="p">:</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">process_id</span> <span class="o">=</span> <span class="n">proc_row</span><span class="o">.</span><span class="n">process_id</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">search</span> <span class="o">=</span> <span class="n">proc_row</span><span class="o">.</span><span class="n">program</span>
+    <span class="c1">#sb.ifo, sb.channel = args.channel_name.split(&quot;:&quot;)</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">ifo</span><span class="p">,</span> <span class="n">sb</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="n">station</span><span class="p">,</span> <span class="n">setname</span>
+
+<span class="n">xmldoc</span><span class="o">.</span><span class="n">childNodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">appendChild</span><span class="p">(</span><span class="n">event_list</span><span class="p">)</span>
+<span class="n">fname</span> <span class="o">=</span> <span class="n">make_filename</span><span class="p">(</span><span class="n">station</span><span class="p">,</span> <span class="n">inseg</span><span class="p">)</span>
+
+<span class="n">utils</span><span class="o">.</span><span class="n">write_filename</span><span class="p">(</span><span class="n">xmldoc</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="n">gz</span><span class="o">=</span><span class="n">fname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;gz&quot;</span><span class="p">),</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="plot-trigger-results">
+<h1>Plot trigger results<a class="headerlink" href="#plot-trigger-results" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">events</span> <span class="o">=</span> <span class="n">SnglBurstTable</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">fname</span><span class="o">+</span><span class="s1">&#39;.gz&#39;</span><span class="p">)</span>
+<span class="c1">#del events[10000:]</span>
+<span class="n">plot</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;central_freq&#39;</span><span class="p">,</span> <span class="s2">&quot;duration&quot;</span><span class="p">,</span> <span class="s2">&quot;bandwidth&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;snr&quot;</span><span class="p">)</span>
+<span class="c1">#plot = events.plot(&#39;time&#39;, &#39;central_freq&#39;, color=&#39;snr&#39;)</span>
+<span class="c1">#plot.set_yscale(&quot;log&quot;)</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mf">1e-0</span><span class="p">,</span> <span class="mi">250</span><span class="p">)</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="mi">1153742417</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">t0</span> <span class="o">+</span> <span class="mi">0</span><span class="o">*</span><span class="mi">60</span><span class="p">,</span> <span class="n">t0</span> <span class="o">+</span> <span class="mi">1</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+<span class="c1">#plot.set_xlim(t0 + 28, t0 + 32)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">t0</span> <span class="o">+</span> <span class="mi">30</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">cb</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">add_colorbar</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;triggers.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="module-access">
+<h2>Module Access<a class="headerlink" href="#module-access" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+<div class="section" id="extract-magnetic-field-data">
+<h1>Extract Magnetic Field Data<a class="headerlink" href="#extract-magnetic-field-data" title="Permalink to this headline">¶</a></h1>
+<p>Extract magnetic field data from HDF5 files.</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">magfield</span></code></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">file_to_segment</span></code></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">construct_utc_from_metadata</span></code></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">generate_timeseries</span></code></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">create_activity_list</span></code></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">retrieve_data_timeseries</span></code></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">retrieve_channel_data</span></code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="plotting-routines">
+<h1>Plotting routines<a class="headerlink" href="#plotting-routines" title="Permalink to this headline">¶</a></h1>
+<p>Methods to produce time-frequency plots and others</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">plot_activity</span></code></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">plot_time_series</span></code></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">plot_asd</span></code></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">plot_whitening</span></code></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">plot_ts</span></code></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">plot_spectrum</span></code></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">plot_spectrogram</span></code></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">plot_spectrogram_from_ts</span></code></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">plot_triggers</span></code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="utilities">
+<h1>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h1>
+<p>Independent routines to do various other things</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">create_sound</span></code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<span class="target" id="file-to-segment"></span></div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="../index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Define analysing blocks</a></li>
+<li><a class="reference internal" href="#create-time-frequency-map-for-each-block">Create time-frequency map for each block</a></li>
+<li><a class="reference internal" href="#constructing-tiles-of-different-bandwidth">Constructing tiles of different bandwidth</a></li>
+<li><a class="reference internal" href="#explore-multiple-tile-durations">Explore multiple tile durations</a></li>
+<li><a class="reference internal" href="#trigger-finding">Trigger finding</a></li>
+<li><a class="reference internal" href="#switch-to-new-block">Switch to new block</a></li>
+<li><a class="reference internal" href="#extracting-gps-time-range">Extracting GPS time range</a></li>
+<li><a class="reference internal" href="#prepare-output-file-for-given-time-range">Prepare output file for given time range</a></li>
+<li><a class="reference internal" href="#plot-trigger-results">Plot trigger results</a><ul>
+<li><a class="reference internal" href="#module-access">Module Access</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#extract-magnetic-field-data">Extract Magnetic Field Data</a></li>
+<li><a class="reference internal" href="#plotting-routines">Plotting routines</a></li>
+<li><a class="reference internal" href="#utilities">Utilities</a></li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/backup/excess_power.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+    <li><a href="../index.html">gdas  documentation</a> &#187;</li>
+ 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Vincent Dumont.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>
