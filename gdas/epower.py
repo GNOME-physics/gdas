@@ -1,17 +1,16 @@
 import time,math,os,scipy,lal,lalburst
-from plots                            import *
-from pycbc                            import psd,types,filter
-from glue.ligolw                      import lsctables
-from gwpy.spectrum                    import Spectrum
-from gwpy.timeseries                  import TimeSeries
-from scipy.signal                     import fftconvolve
-from utils                            import *
 from glue                             import git_version
 from glue.lal                         import LIGOTimeGPS
-from glue.ligolw                      import ligolw,utils
+from glue.ligolw                      import lsctables,ligolw,utils
 from glue.ligolw.utils.search_summary import append_search_summary
 from glue.ligolw.utils.process        import register_to_xmldoc
 from glue.segments                    import segment
+from gwpy.spectrum                    import Spectrum
+from gwpy.timeseries                  import TimeSeries
+from plots                            import *
+from pycbc                            import psd,types,filter
+from scipy.signal                     import fftconvolve
+from utils                            import *
 
 def excess_power(ts_data,psd_segment_length,psd_segment_stride,psd_estimation,window_fraction,tile_fap,station,nchans=None,band=None,fmin=0,fmax=None,max_duration=None):
     """

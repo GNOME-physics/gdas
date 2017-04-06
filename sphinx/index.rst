@@ -1,5 +1,5 @@
-Welcome!
-========
+GNOME Data Analysis Software
+============================
 
 This package contains functions useful for magnetic field signal processing, with a focus on Excess Power search analysis and application on the data for the GNOME collaboration, see `Pustelny et al. (2013) <https://arxiv.org/abs/1303.5524>`_. This documentation details all the available functions and tasks available through this software. Here are some example tasks that can (or will soon to) be handled:
 
@@ -33,36 +33,4 @@ Excess Power Search Analysis
    :maxdepth: 1
 
    excess_power
-
-Pre-calculations and initialization
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. toctree::
-   :maxdepth: 1
-
-   check_filtering_settings
-   calculate_psd
-   calculate_spectral_correlation
-   create_filter_bank
-   compute_channel_renormalization
-   initialization
-
-Looping over each block
-~~~~~~~~~~~~~~~~~~~~~~~
-
-.. toctree::
-   :maxdepth: 1
-
-   identify_block
-   create_tf_plane
-   construct_tiles
-   explore_duration
-   
-Save results
-~~~~~~~~~~~~
-
-.. toctree::
-   :maxdepth: 1
-
-   create_xml
-
+   excess_power_submodules

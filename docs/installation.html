@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Installation &#8212; gdas  documentation</title>
+    <title>Installation &#8212; gdas 0.3.0 documentation</title>
     
     <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -17,7 +17,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '',
+        VERSION:     '0.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -27,14 +27,14 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="_static/jquery.cookie.js"></script>
     <script type="text/javascript" src="_static/cloud.base.js"></script>
     <script type="text/javascript" src="_static/cloud.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Multi-user Server" href="server.html" />
-    <link rel="prev" title="Welcome!" href="index.html" /> 
+    <link rel="prev" title="GNOME Data Analysis Software" href="index.html" /> 
         <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body role="document">
@@ -50,9 +50,9 @@
           <a href="server.html" title="Multi-user Server"
              accesskey="N">next</a> &nbsp; &nbsp;</li>
         <li class="right" >
-          <a href="index.html" title="Welcome!"
+          <a href="index.html" title="GNOME Data Analysis Software"
              accesskey="P">previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">gdas  documentation</a> &#187;</li>
+    <li><a href="index.html">gdas 0.3.0 documentation</a> &#187;</li>
  
       </ul>
     </div>
@@ -68,6 +68,99 @@
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
 <p>The program requires the following general packages to run: <a class="reference external" href="http://numpy.scipy.org/">Numpy</a>, <a class="reference external" href="http://matplotlib.sourceforge.net/">Matplotlib</a>, <a class="reference external" href="http://www.scipy.org/">Scipy</a> and <a class="reference external" href="http://www.astropy.org/">Astropy</a>. The following LIGO-related packages are also required for full functionality: <a class="reference external" href="https://gwpy.github.io/">Gwpy</a>, <a class="reference external" href="https://github.com/ligo-cbc/pycbc">PyCBC</a>, <a class="reference external" href="https://www.lsc-group.phys.uwm.edu/daswg/projects/glue.html">Glue</a>, <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lal/index.html">LAL</a>, <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lalburst/index.html">LALburst</a> and <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lalsimulation/index.html">LALsimulation</a>.</p>
 <p>While most of the packages can be installed automatically using <a class="reference external" href="http://www.pip-installer.org/en/latest/index.html">pip</a>, some LIGO packages (Glue, LAL, LALburst and LALsimulation) must be installed separately beforehand as they contain several C routines that need specific compilation. However, these packages are already included in a bigger package called <a class="reference external" href="https://wiki.ligo.org/DASWG/LALSuite">LALsuite</a> which can be installed fairly easily on Debian (Linux) and Mac OS machines.</p>
+<div class="section" id="prerequisities">
+<h2>Prerequisities<a class="headerlink" href="#prerequisities" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="workable-versions">
+<h3>Workable versions<a class="headerlink" href="#workable-versions" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="41%" />
+<col width="27%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Package</th>
+<th class="head">Version</th>
+<th class="head">Installer</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>astropy</td>
+<td>1.3.2</td>
+<td>pip</td>
+</tr>
+<tr class="row-odd"><td>gwpy</td>
+<td>0.1</td>
+<td>pip</td>
+</tr>
+<tr class="row-even"><td>h5py</td>
+<td>2.6.0</td>
+<td>pip</td>
+</tr>
+<tr class="row-odd"><td>lal</td>
+<td>6.18.0</td>
+<td>macports</td>
+</tr>
+<tr class="row-even"><td>lalburst</td>
+<td>1.4.4</td>
+<td>macports</td>
+</tr>
+<tr class="row-odd"><td>lalsimulation</td>
+<td>1.7.3</td>
+<td>macports</td>
+</tr>
+<tr class="row-even"><td>matplotlib</td>
+<td>2.0.0</td>
+<td>pip</td>
+</tr>
+<tr class="row-odd"><td>numpy</td>
+<td>1.12.1</td>
+<td>pip</td>
+</tr>
+<tr class="row-even"><td>pycbc</td>
+<td>1.6.8</td>
+<td>pip</td>
+</tr>
+<tr class="row-odd"><td>pycbc-glue</td>
+<td>1.0.1</td>
+<td>pip</td>
+</tr>
+<tr class="row-even"><td>python</td>
+<td>2.7.13</td>
+<td>macports</td>
+</tr>
+<tr class="row-odd"><td>scipy</td>
+<td>0.18.0</td>
+<td>pip</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="troubleshooting">
+<h3>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="scipy-weave">
+<h4>scipy.weave<a class="headerlink" href="#scipy-weave" title="Permalink to this headline">¶</a></h4>
+<p>We note that the Scipy v0.19.0 released in early March 2017 is not compatible
+with the some of the LIGO modules used when the scripts were written. In
+particular, the now deprecated scipy.weave library has been removed. This
+library is used by the pycbc package.</p>
+</div>
+<div class="section" id="gwpy-plotter-spectrumplot">
+<h4>gwpy.plotter.SpectrumPlot<a class="headerlink" href="#gwpy-plotter-spectrumplot" title="Permalink to this headline">¶</a></h4>
+<p>Version newer than 0.1 of the <code class="docutils literal"><span class="pre">gwpy</span></code> package do not have the <code class="docutils literal"><span class="pre">SpectrumPlot</span></code>
+package required to run properly the <code class="docutils literal"><span class="pre">plot_spectrogram</span></code> script. If one
+wants to run the analysis scripts here, one needs to use gwpy-0.1.</p>
+</div>
+<div class="section" id="glue-ligolw-table-comparetablenames">
+<h4>glue.ligolw.table.CompareTableNames<a class="headerlink" href="#glue-ligolw-table-comparetablenames" title="Permalink to this headline">¶</a></h4>
+<p>If you installed the <code class="docutils literal"><span class="pre">glue</span></code> package via Macports, that version will not work
+with the scripts here as the <code class="docutils literal"><span class="pre">CompareTableNames</span></code> module does not exist on this
+version. You will therefore be prompt an ImportError message telling you that
+the module cannot be imported. Instead, install the <code class="docutils literal"><span class="pre">pycbc-glue</span></code> package from
+pip.</p>
+</div>
+</div>
+</div>
 <div class="section" id="lalsuite-tools">
 <h2>LALsuite tools<a class="headerlink" href="#lalsuite-tools" title="Permalink to this headline">¶</a></h2>
 <p>Some useful pages on how to download and install the LIGO software can be found <a class="reference external" href="https://wiki.ligo.org/DASWG/HowToDocs">here</a>.</p>
@@ -125,6 +218,16 @@ The development version can be downloaded from <a class="reference external" hre
     <h3><a href="index.html">Page contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#prerequisities">Prerequisities</a><ul>
+<li><a class="reference internal" href="#workable-versions">Workable versions</a></li>
+<li><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li><a class="reference internal" href="#scipy-weave">scipy.weave</a></li>
+<li><a class="reference internal" href="#gwpy-plotter-spectrumplot">gwpy.plotter.SpectrumPlot</a></li>
+<li><a class="reference internal" href="#glue-ligolw-table-comparetablenames">glue.ligolw.table.CompareTableNames</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><a class="reference internal" href="#lalsuite-tools">LALsuite tools</a><ul>
 <li><a class="reference internal" href="#macports-mac">MacPorts (Mac)</a></li>
 <li><a class="reference internal" href="#apt-get-debian">apt-get (Debian)</a></li>
@@ -139,7 +242,7 @@ The development version can be downloaded from <a class="reference external" hre
   <div class="sphinxprev">
     <h4>Previous page</h4>
     <p class="topless"><a href="index.html"
-                          title="Previous page">&larr; Welcome!</a></p>
+                          title="Previous page">&larr; GNOME Data Analysis Software</a></p>
   </div>
   <div class="sphinxnext">
     <h4>Next page</h4>
@@ -196,9 +299,9 @@ The development version can be downloaded from <a class="reference external" hre
           <a href="server.html" title="Multi-user Server"
              >next</a> &nbsp; &nbsp;</li>
         <li class="right" >
-          <a href="index.html" title="Welcome!"
+          <a href="index.html" title="GNOME Data Analysis Software"
              >previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">gdas  documentation</a> &#187;</li>
+    <li><a href="index.html">gdas 0.3.0 documentation</a> &#187;</li>
  
       </ul>
     </div>
@@ -206,7 +309,7 @@ The development version can be downloaded from <a class="reference external" hre
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016, Vincent Dumont.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
     </div>
     <!-- cloud_sptheme 1.4 -->
   </body>

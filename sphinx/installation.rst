@@ -3,7 +3,57 @@ Installation
 
 The program requires the following general packages to run: `Numpy <http://numpy.scipy.org/>`_, `Matplotlib <http://matplotlib.sourceforge.net/>`_, `Scipy <http://www.scipy.org/>`_ and `Astropy <http://www.astropy.org/>`_. The following LIGO-related packages are also required for full functionality: `Gwpy <https://gwpy.github.io/>`_, `PyCBC <https://github.com/ligo-cbc/pycbc>`_, `Glue <https://www.lsc-group.phys.uwm.edu/daswg/projects/glue.html>`_, `LAL <http://software.ligo.org/docs/lalsuite/lal/index.html>`_, `LALburst <http://software.ligo.org/docs/lalsuite/lalburst/index.html>`_ and `LALsimulation <http://software.ligo.org/docs/lalsuite/lalsimulation/index.html>`_.
 
-While most of the packages can be installed automatically using `pip <http://www.pip-installer.org/en/latest/index.html>`_, some LIGO packages (Glue, LAL, LALburst and LALsimulation) must be installed separately beforehand as they contain several C routines that need specific compilation. However, these packages are already included in a bigger package called `LALsuite <https://wiki.ligo.org/DASWG/LALSuite>`_ which can be installed fairly easily on Debian (Linux) and Mac OS machines.
+While most of the packages can be installed automatically using `pip <http://www.pip-installer.org/en/latest/index.html>`_, some LIGO packages (Glue, LAL, LALburst and LALsimulation) must be installed separately beforehand as they contain several C routines that need specific compilation. However, these packages are already included in a bigger package called `LALsuite <https://wiki.ligo.org/DASWG/LALSuite>`__ which can be installed fairly easily on Debian (Linux) and Mac OS machines.
+
+Prerequisities
+--------------
+
+Workable versions
+~~~~~~~~~~~~~~~~~
+
+=============== ========== ============
+Package         Version    Installer
+=============== ========== ============
+astropy         1.3.2      pip
+gwpy            0.1        pip
+h5py            2.6.0      pip
+lal             6.18.0     macports
+lalburst        1.4.4      macports
+lalsimulation   1.7.3      macports
+matplotlib      2.0.0      pip
+numpy           1.12.1     pip
+pycbc           1.6.8      pip
+pycbc-glue      1.0.1      pip
+python          2.7.13     macports
+scipy           0.18.0     pip
+=============== ========== ============
+
+Troubleshooting
+~~~~~~~~~~~~~~~
+
+scipy.weave
++++++++++++
+
+We note that the Scipy v0.19.0 released in early March 2017 is not compatible
+with the some of the LIGO modules used when the scripts were written. In
+particular, the now deprecated scipy.weave library has been removed. This
+library is used by the pycbc package.
+
+gwpy.plotter.SpectrumPlot
++++++++++++++++++++++++++
+
+Version newer than 0.1 of the ``gwpy`` package do not have the ``SpectrumPlot``
+package required to run properly the ``plot_spectrogram`` script. If one
+wants to run the analysis scripts here, one needs to use gwpy-0.1.
+
+glue.ligolw.table.CompareTableNames
++++++++++++++++++++++++++++++++++++
+
+If you installed the ``glue`` package via Macports, that version will not work
+with the scripts here as the ``CompareTableNames`` module does not exist on this
+version. You will therefore be prompt an ImportError message telling you that
+the module cannot be imported. Instead, install the ``pycbc-glue`` package from
+pip.
 
 LALsuite tools
 --------------
@@ -46,7 +96,7 @@ The best way to install the GNOME software along with the rest of the dependenci
 
 (You may need to put a ``sudo`` in front of this). For this to work
 you need to have `pip
-<http://www.pip-installer.org/en/latest/index.html>`_ installed. This
+<http://www.pip-installer.org/en/latest/index.html>`__ installed. This
 method allows for easy uninstallation.
 
 You can also simply download the tarball from the PyPI website, unpack it and then do::
@@ -54,4 +104,4 @@ You can also simply download the tarball from the PyPI website, unpack it and th
    python setup.py install
 
 The latest stable package can be downloaded from PyPI: https://pypi.python.org/pypi/gdas.
-The development version can be downloaded from `here <https://github.com/GNOME-physics/gdas>`_.
+The development version can be downloaded from `here <https://github.com/GNOME-physics/gdas>`__.

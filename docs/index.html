@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Welcome! &#8212; gdas  documentation</title>
+    <title>GNOME Data Analysis Software &#8212; gdas 0.3.0 documentation</title>
     
     <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -17,7 +17,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '',
+        VERSION:     '0.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -27,7 +27,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="_static/jquery.cookie.js"></script>
     <script type="text/javascript" src="_static/cloud.base.js"></script>
     <script type="text/javascript" src="_static/cloud.js"></script>
@@ -48,7 +48,7 @@
         <li class="right" >
           <a href="installation.html" title="Installation"
              accesskey="N">next</a> &nbsp; &nbsp;</li>
-    <li><a href="#">gdas  documentation</a> &#187;</li>
+    <li><a href="#">gdas 0.3.0 documentation</a> &#187;</li>
  
       </ul>
     </div>
@@ -60,8 +60,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="welcome">
-<h1>Welcome!<a class="headerlink" href="#welcome" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="gnome-data-analysis-software">
+<h1>GNOME Data Analysis Software<a class="headerlink" href="#gnome-data-analysis-software" title="Permalink to this headline">¶</a></h1>
 <p>This package contains functions useful for magnetic field signal processing, with a focus on Excess Power search analysis and application on the data for the GNOME collaboration, see <a class="reference external" href="https://arxiv.org/abs/1303.5524">Pustelny et al. (2013)</a>. This documentation details all the available functions and tasks available through this software. Here are some example tasks that can (or will soon to) be handled:</p>
 <ul class="simple">
 <li>Plot usual time series and spectrogram of magnetic field data.</li>
@@ -86,42 +86,9 @@
 <h2>Excess Power Search Analysis<a class="headerlink" href="#excess-power-search-analysis" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="excess_power.html">Excess Power Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="excess_power.html">Description of the code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="excess_power_submodules.html">Submodules</a></li>
 </ul>
-</div>
-<div class="section" id="pre-calculations-and-initialization">
-<h3>Pre-calculations and initialization<a class="headerlink" href="#pre-calculations-and-initialization" title="Permalink to this headline">¶</a></h3>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="check_filtering_settings.html">Checking filtering settings</a></li>
-<li class="toctree-l1"><a class="reference internal" href="calculate_psd.html">Calculate Power Spectral Density (PSD)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="calculate_spectral_correlation.html">Two point spectral correlation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="create_filter_bank.html">Computing the filter bank</a></li>
-<li class="toctree-l1"><a class="reference internal" href="compute_channel_renormalization.html">Normalization of virtual channel</a></li>
-<li class="toctree-l1"><a class="reference internal" href="initialization.html">Initialise event list and determine stride boundaries</a></li>
-</ul>
-</div>
-</div>
-<div class="section" id="looping-over-each-block">
-<h3>Looping over each block<a class="headerlink" href="#looping-over-each-block" title="Permalink to this headline">¶</a></h3>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="identify_block.html">Define analysing blocks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="create_tf_plane.html">Create time-frequency map</a></li>
-<li class="toctree-l1"><a class="reference internal" href="construct_tiles.html">Constructing tiles of different bandwidth</a></li>
-<li class="toctree-l1"><a class="reference internal" href="explore_duration.html">Explore multiple tile durations</a></li>
-</ul>
-</div>
-</div>
-<div class="section" id="save-results">
-<h3>Save results<a class="headerlink" href="#save-results" title="Permalink to this headline">¶</a></h3>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="create_xml.html">Extracting GPS time range</a></li>
-<li class="toctree-l1"><a class="reference internal" href="create_xml.html#prepare-output-file-for-given-time-range">Prepare output file for given time range</a></li>
-<li class="toctree-l1"><a class="reference internal" href="create_xml.html#plot-trigger-results">Plot trigger results</a></li>
-</ul>
-</div>
 </div>
 </div>
 </div>
@@ -134,14 +101,9 @@
         <div class="sphinxsidebarwrapper"><div class="sphinx-toc sphinxlocaltoc">
     <h3><a href="#">Page contents</a></h3>
     <ul>
-<li><a class="reference internal" href="#">Welcome!</a><ul>
+<li><a class="reference internal" href="#">GNOME Data Analysis Software</a><ul>
 <li><a class="reference internal" href="#getting-started">Getting Started</a></li>
-<li><a class="reference internal" href="#excess-power-search-analysis">Excess Power Search Analysis</a><ul>
-<li><a class="reference internal" href="#pre-calculations-and-initialization">Pre-calculations and initialization</a></li>
-<li><a class="reference internal" href="#looping-over-each-block">Looping over each block</a></li>
-<li><a class="reference internal" href="#save-results">Save results</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#excess-power-search-analysis">Excess Power Search Analysis</a></li>
 </ul>
 </li>
 </ul>
@@ -201,7 +163,7 @@
         <li class="right" >
           <a href="installation.html" title="Installation"
              >next</a> &nbsp; &nbsp;</li>
-    <li><a href="#">gdas  documentation</a> &#187;</li>
+    <li><a href="#">gdas 0.3.0 documentation</a> &#187;</li>
  
       </ul>
     </div>
@@ -209,7 +171,7 @@
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016, Vincent Dumont.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
     </div>
     <!-- cloud_sptheme 1.4 -->
   </body>

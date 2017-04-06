@@ -64,6 +64,18 @@
             return "/" + stack.join("/");
         },
 
+        // return subpath of url, if it starts with base ("" or non-empty string)
+        // returns undefined if url doesn't start with base.
+        // base url search params & fragments are ignored.
+        getSubUrl: function(url, base){
+            base = base.replace(/(?:\/|[#?].*)$/, '');
+            if(url.startsWith(base)) {
+                var suffix = url.slice(base.length);
+                if(suffix == '' || suffix.match(/^[/#?]/)){ return suffix; }
+            }
+            return;
+        },
+
         // helper to normalize urls for comparison
         // * strips current document's scheme, host, & path from local document links (just fragment will be left)
         // * strips current document's scheme & host from internal urls (just path + fragment will be left)
@@ -100,6 +112,16 @@
             return utils.shortenUrl(url).replace(/[#?].*$/, '');
         }
     };
+
+    /*==========================================================================
+     * misc es5 polyfills
+     *==========================================================================*/
+    var StrProto = String.prototype;
+    if (!StrProto.startsWith) {
+        StrProto.startsWith = function(search, pos){
+          return this.substr(pos || 0, search.length) === search;
+      };
+    }
 
     /*==========================================================================
      * jquery patches
