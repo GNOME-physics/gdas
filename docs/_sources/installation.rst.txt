@@ -28,7 +28,6 @@ python          2.7.13     macports
 scipy           0.18.0     pip
 =============== ========== ============
 
-
 Troubleshooting
 ~~~~~~~~~~~~~~~
 

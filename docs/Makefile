@@ -5,7 +5,7 @@
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
 PAPER         =
-BUILDDIR      = _build
+BUILDDIR      = ./build
 
 # Internal variables.
 PAPEROPT_a4     = -D latex_paper_size=a4
@@ -44,18 +44,15 @@ help:
 	@echo "  coverage   to run coverage check of the documentation (if enabled)"
 	@echo "  dummy      to check syntax errors of document sources"
 
-.PHONY: clean
-clean:
-	rm -rf ../docs/
-
 .PHONY: html
 html:
 	sphinx-autogen -o generated *.rst
-	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
+	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)
 	@echo
-	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
-	cp -r ./_build/html/ ../docs/
-	rm -rf generated _build *~
+	@echo "Build finished. The HTML pages are in $(BUILDDIR)."
+	rm -rf ./*.html ./_static ./_sources
+	mv $(BUILDDIR)/*.html $(BUILDDIR)/_static $(BUILDDIR)/_sources ./
+	rm -rf $(BUILDDIR) *~
 
 .PHONY: dirhtml
 dirhtml:
