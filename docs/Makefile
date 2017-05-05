@@ -50,8 +50,7 @@ html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)."
-	rm -rf ./*.html ./_static ./_sources
-	mv $(BUILDDIR)/*.html $(BUILDDIR)/_static $(BUILDDIR)/_sources ./
+	cp -r $(BUILDDIR)/ ./
 	rm -rf $(BUILDDIR) *~
 
 .PHONY: dirhtml

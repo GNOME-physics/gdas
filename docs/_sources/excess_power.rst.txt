@@ -1,12 +1,19 @@
-Description of the code
-=======================
+Excess Power Search Method
+==========================
 
 Overview
 --------
 
 The **Excess Power method** is known as the *optimal detection strategy* to search for burst signals for which only the duration and frequency band are known, which is basically the case for GNOME and its search of Axion-Like Particles (ALP). This method was developed and introduced by `Anderson et al. (200) <https://arxiv.org/pdf/gr-qc/0008066v1.pdf>`_ and has been extensively used in the detection of burst sources of gravitational radiation. A more technical documentation was written by `Brady et al. (2007) <http://www.lsc-group.phys.uwm.edu/~siemens/power.pdf>`_ describing how the algorithm used by the LIGO collaboration works and how the theory is translated into code.
 
-We present below a step-by-step procedure followed during the Excess Power search analysis. For a better representation of what is happening, the figure at the end shows how the data is being split and analysed to search for multiple signals of different bandwidth and duration in the time-frequency plane.
+
+.. figure:: ./img/overview.png
+   :align: center
+   :width: 90%
+
+   Overview of the Excess Power method and difference between segments, channels, tiles and blocks.
+
+Below, we present a step-by-step procedure followed during the Excess Power search analysis. For a better representation of what is happening, the figure above shows how the data is being split and analysed to search for multiple signals of different bandwidth and duration in the time-frequency plane.
 
 - :ref:`Time domain segmentation and PSD estimate <psdestimate>`
 
@@ -32,10 +39,38 @@ We present below a step-by-step procedure followed during the Excess Power searc
 
    The energy of each tile in the time-frequency space is calculated and compare to a user-defined threshold value. After defining a tile false alarm probability threshold in Gaussian noise and using the number of degrees of freedom for each tile, one can define a energy threshold value above which a burst trigger can be identified by comparing the energy threshold with the tile's energy in the time-frequency map. A tile energy time frequency map plot similar to Figure 5 in `Pustelny et al. (2013) <http://budker.berkeley.edu/~vincent/gnome/documentation/2013_pustelny.pdf>`_ can then be made which plots the outlying tile energies present in the data.
 
-.. figure:: ./img/overview.png
-
-	    Overview of the Excess Power method and difference between segments, channels, tiles and blocks.
+Sub-modules
+-----------
 	    
+.. currentmodule:: gdas.epower
+
+.. autosummary::
+   :toctree: generated/
+
+   excess_power
+   check_filtering_settings
+   calculate_psd
+   calculate_spectral_correlation
+   create_filter_bank
+   convert_to_time_domain
+   identify_block
+   create_tf_plane
+   compute_filter_ips_self
+   compute_filter_ips_adjacent
+   compute_channel_renormalization
+   measure_hrss
+   uw_sum_sq
+   measure_hrss_slowly
+   measure_hrss_poorly
+   trigger_list_from_map
+   make_tiles
+   make_indp_tiles
+   make_filename
+   construct_tiles
+   create_tile_duration
+   create_xml
+   determine_output_segment
+   
 Checking filtering settings
 ---------------------------
 
@@ -123,7 +158,7 @@ This part determines how much data on either side of the tukey window is to be d
 
   window_fraction = 0
 
-The two point spectral correlation is then done with the :ref:`calculate_spectral_correlation <calculate_spectral_correlation>` function which will return both the Tukey window applied to the original time series data and the actual two-point spectral correlation function for the whitened frequency series from the applied whitening window. ::
+The two point spectral correlation is then done with the :py:func:`calculate_spectral_correlation` function which will return both the Tukey window applied to the original time series data and the actual two-point spectral correlation function for the whitened frequency series from the applied whitening window. ::
 
   # Do two point spectral correlation
   window, spec_corr = calculate_spectral_correlation(seg_len,'tukey',window_fraction=window_fraction)
@@ -132,12 +167,34 @@ The two point spectral correlation is then done with the :ref:`calculate_spectra
   # Pre scale the window by its root mean squared -- see eqn 11 of EP document
   #window /= numpy.sqrt(window_sigma_sq)
 
+Spectral correlation calculation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  
+For our data, we apply a Tukey window whose flat bit corresponds to ``window_fraction`` (in percentage) of the segment length (in samples) used for PSD estimation (i.e. ``fft_window_len``). This can be done by using the `CreateTukeyREAL8Window <http://software.ligo.org/docs/lalsuite/lal/_window_8c_source.html#l00597>`_ module from the ``lal`` library. ::
+
+  def calculate_spectral_correlation(fft_window_len, wtype='hann', window_fraction=None):
+      if wtype == 'hann':
+          window = lal.CreateHannREAL8Window(fft_window_len)
+      elif wtype == 'tukey':
+          window = lal.CreateTukeyREAL8Window(fft_window_len, window_fraction)
+      else:
+          raise ValueError("Can't handle window type %s" % wtype)
+  
+Once the window is built, a new frequency plan is created which will help performing a `forward transform <http://fourier.eng.hmc.edu/e101/lectures/fourier_transform_d/node1.html>`_ on the data. This is done with the `CreateForwardREAL8FFTPlan <http://software.ligo.org/docs/lalsuite/lal/group___real_f_f_t__h.html#gac4413752db2d19cbe48742e922670af4>`_ module which takes as argument the total number of points in the real data and the measurement level for plan creation (here 1 stands for measuring the best plan). ::
+
+  fft_plan = lal.CreateForwardREAL8FFTPlan(len(window.data.data), 1)
+
+We can finally compute and return the two-point spectral correlation function for the whitened frequency series (``fft_plan``) from the window applied to the original time series using the `REAL8WindowTwoPointSpectralCorrelation <http://software.ligo.org/docs/lalsuite/lal/group___time_freq_f_f_t__h.html#ga2bd5c4258eff57cc80103d2ed489e076>`_ module. ::
+
+  return window, lal.REAL8WindowTwoPointSpectralCorrelation(window, fft_plan)
+
+  
 .. _filterbank:
   
 Computing the filter bank
 -------------------------
 
-The filter bank will create band-pass filters for each channel in the PSD frequency domain. The :ref:`create_filter_bank <create_filter_bank>` function will san the bandwidth from the central frequency of the first channel (i.e. flow+band/2) to final frequency of the last channel (i.e. band*nchans) in a increment equal to the frequency band. The filter's total extent in Fourier space is actually twice the stated bandwidth (FWHM). ::
+The filter bank will create band-pass filters for each channel in the PSD frequency domain. The :py:func:`create_filter_bank` function will san the bandwidth from the central frequency of the first channel (i.e. flow+band/2) to final frequency of the last channel (i.e. band*nchans) in a increment equal to the frequency band. The filter's total extent in Fourier space is actually twice the stated bandwidth (FWHM). ::
 
   # Define filters
   filter_bank, fdb = create_filter_bank(fd_psd.delta_f, flow+band/2, band, nchans, fd_psd, spec_corr)
@@ -177,7 +234,7 @@ Some extra plots can also be made ::
 Normalization of virtual channel
 --------------------------------
 
-The virtual channels will be used during the excesspower analysis to explore different frequency ranges around each PSD segments and look for possible triggers. Each channel is renormalized using the :ref:`compute_channel_renomalization <compute_channel_renomalization>` internal function. ::
+The virtual channels will be used during the excesspower analysis to explore different frequency ranges around each PSD segments and look for possible triggers. Each channel is renormalized using the :py:func:`compute_channel_renomalization` internal function. ::
 
   # Initialise dictionary
   mu_sq_dict = {}
@@ -326,7 +383,7 @@ The undersampling rate for this tile can be calculated using the channel frequen
           us_rate = int(round(1.0 / (2 * band*(nc_sum+1) * ts_data.delta_t)))
           print >>sys.stderr, "Undersampling rate for this level: %f" % (args.sample_rate/us_rate)
 
-"Virtual" wide bandwidth channels are constructed by summing the samples from multiple channels, and correcting for the overlap between adjacent channel filters. We then define the normalised channel at the current level and create a time frequency map for this tile using the :ref:`make_indp_tiles <make_indp_tiles>` internal function. In other word, we are constructing multiple sub-tiles for which we can determined the respective energy in the given frequency band. ::
+"Virtual" wide bandwidth channels are constructed by summing the samples from multiple channels, and correcting for the overlap between adjacent channel filters. We then define the normalised channel at the current level and create a time frequency map for this tile using the :py:func:`make_indp_tiles` internal function. In other word, we are constructing multiple sub-tiles for which we can determined the respective energy in the given frequency band. ::
 
           mu_sq = mu_sq_dict[nc_sum]
           sys.stderr.write("\t...calculating tiles...")
@@ -406,7 +463,7 @@ In order to find any trigger in the data, we first need to set a false alarm pro
                   #plot_spectrogram(dof_tiles.T)
                   #import pdb; pdb.set_trace()
 
-Once the threshold is set, one can then run the :ref:`trigger_list_from_map <trigger_list_from_map>` function to quickly find the trigger signal from the ``dof_tiles`` array that ::
+Once the threshold is set, one can then run the :py:func:`trigger_list_from_map` function to quickly find the trigger signal from the ``dof_tiles`` array that ::
 
               # Since we clip the data, the start time needs to be adjusted accordingly
               window_offset_epoch = fs_data.epoch + args.psd_segment_length * window_fraction / 2

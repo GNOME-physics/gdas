@@ -1,4 +1,4 @@
-""" Retrieving magnetic field data.""" 
+""" Retrieving magnetic field data. """
 
 import os,glob,h5py,astropy,numpy,astropy,scipy
 from astropy.time    import Time
@@ -8,7 +8,24 @@ from gwpy.segments   import DataQualityDict,DataQualityFlag
 from gwpy.timeseries import TimeSeries,TimeSeriesList
 from pycbc           import types
 
-def magfield(station,starttime,endtime,activity=False,rep='/GNOMEDrive/gnome/serverdata/',resample=None):
+def fake_data(sample_rate,psd_segment_length):
+    """
+    Create fake time series data
+
+    Parameters
+    ----------
+    sample_rate : int
+      Sampling rate of fake data
+    psd_segment_length : int
+      Length of each segment in seconds
+    """
+    epoch   = 1153742447.0 - 10
+    ts_data = numpy.random.normal(0,1,sample_rate*psd_segment_length*16)
+    ts_data = types.TimeSeries(ts_data,delta_t=1.0/sample_rate,epoch=epoch)
+    return ts_data
+
+def extract(station,starttime,endtime,activity=False,
+            rep='/GNOMEDrive/gnome/serverdata/',resample=None):
     """
     Glob all files withing user-defined period and extract data.
     
@@ -27,13 +44,17 @@ def magfield(station,starttime,endtime,activity=False,rep='/GNOMEDrive/gnome/ser
       Time series data for selected time period, list of time series
       for each segment, sampling rate of the retrieved data
     """
-    setname = "MagneticFields"
-    dstr    = ['%Y','%m','%d','%H','%M']
-    dsplit  = '-'.join(dstr[:starttime.count('-')+1])
-    start   = datetime.strptime(starttime,dsplit)
-    dsplit  = '-'.join(dstr[:endtime.count('-')+1])
-    end     = datetime.strptime(endtime,dsplit)
-    dataset = []
+    setname   = "MagneticFields"
+    dstr      = ['%Y','%m','%d','%H','%M']
+    dsplit    = '-'.join(dstr[:starttime.count('-')+1])
+    start     = datetime.strptime(starttime,dsplit)
+    starttime = construct_utc_from_metadata(start.strftime("%Y/%m/%d"),
+                                            start.strftime("%H:%M:%S.%d"))
+    dsplit    = '-'.join(dstr[:endtime.count('-')+1])
+    end       = datetime.strptime(endtime,dsplit)
+    endtime   = construct_utc_from_metadata(end.strftime("%Y/%m/%d"),
+                                            end.strftime("%H:%M:%S.%d"))
+    dataset   = []
     for date in numpy.arange(start,end,timedelta(minutes=1)):
         date = date.astype(datetime)
         path1 = rep+station+'/'+date.strftime("%Y/%m/%d/")
@@ -53,7 +74,8 @@ def magfield(station,starttime,endtime,activity=False,rep='/GNOMEDrive/gnome/ser
     sample_rate = hfile[setname].attrs["SamplingRate(Hz)"]
     # Estimate full segment activity list
     activity = create_activity_list(station,data_order)
-    # Generate an ASCII representation of the GPS timestamped segments of time covered by the input data
+    # Generate an ASCII representation of the GPS timestamped
+    # segments of time covered by the input data
     seglist = segmentlist(data_order.keys())
     # Sort the segment list
     seglist.sort()
@@ -65,13 +87,16 @@ def magfield(station,starttime,endtime,activity=False,rep='/GNOMEDrive/gnome/ser
     new_data_length = len(full_data)/float(sample_rate)*new_sample_rate
     full_data = scipy.signal.resample(full_data,int(new_data_length))
     # Models a time series consisting of uniformly sampled scalar values
-    ts_data = types.TimeSeries(full_data,delta_t=1./new_sample_rate,epoch=seglist[0][0])
+    ts_data = types.TimeSeries(full_data,delta_t=1./new_sample_rate,
+                               epoch=seglist[0][0])
     for v in data_order.values():
-        v.close()        
-    return ts_data,ts_list,activity
+        v.close()
+    return ts_data,ts_list,activity,int(starttime),int(endtime)
 
 def file_to_segment(hfile,segname):
     """
+    .. _file_to_segment:
+
     Define length of data segment. The starting and ending UTC times
     for a specific HDF5 file are determined by using the ``Date``,
     ``t0`` and ``t1`` attributes from the metadata. The

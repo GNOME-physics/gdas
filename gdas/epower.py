@@ -12,7 +12,9 @@ from pycbc                            import psd,types,filter
 from scipy.signal                     import fftconvolve
 from utils                            import *
 
-def excess_power(ts_data,psd_segment_length,psd_segment_stride,psd_estimation,window_fraction,tile_fap,station,nchans=None,band=None,fmin=0,fmax=None,max_duration=None):
+def excess_power(ts_data,psd_segment_length,psd_segment_stride,psd_estimation,
+                 window_fraction,tile_fap,station,nchans=None,band=None,
+                 fmin=0,fmax=None,max_duration=None):
     """
     Perform excess-power search analysis on magnetic field data.
     This method will produce a bunch of time-frequency plots for every
@@ -49,6 +51,10 @@ def excess_power(ts_data,psd_segment_length,psd_segment_stride,psd_estimation,wi
     nchans,band,flow = check_filtering_settings(sample_rate,nchans,band,fmin,fmax)
     seg_len,fd_psd,lal_psd = calculate_psd(ts_data,sample_rate,psd_segment_length,psd_segment_stride,psd_estimation)
     window, spec_corr = calculate_spectral_correlation(seg_len,'tukey',window_fraction=window_fraction)
+    window = window.data.data
+    window_sigma_sq = numpy.mean(window**2)
+    # Pre scale the window by its root mean squared -- see eqn 11 of EP document
+    #window /= numpy.sqrt(window_sigma_sq)
     filter_bank, fdb = create_filter_bank(fd_psd.delta_f,flow+band/2,band,nchans,fd_psd,spec_corr,fmin,fmax)
     # This is necessary to compute the mu^2 normalizations
     #white_filter_ip = compute_filter_ips_self(filter_bank, spec_corr, None)
@@ -133,7 +139,8 @@ def check_filtering_settings(sample_rate,channels,tile_bandwidth,fmin,fmax):
     """
     # Check if tile maximum frequency is not defined
     if fmax is None or fmax>sample_rate/2.:
-        # Set the tile maximum frequency equal to the Nyquist frequency (i.e. half the sampling rate)
+        # Set the tile maximum frequency equal to the Nyquist frequency
+        # (i.e. half the sampling rate)
         fmax = sample_rate / 2.0
     # Check whether or not tile bandwidth and channel are defined
     if tile_bandwidth is None and channels is None:
@@ -161,7 +168,7 @@ def check_filtering_settings(sample_rate,channels,tile_bandwidth,fmin,fmax):
 def calculate_psd(ts_data,sample_rate,psd_segment_length,psd_segment_stride,psd_estimation):
     """
     Estimate Power Spectral Density (PSD)
-
+    
     Parameters
     ----------
     ts_data : TimeSeries
@@ -174,12 +181,12 @@ def calculate_psd(ts_data,sample_rate,psd_segment_length,psd_segment_stride,psd_
       Separation between consecutive segments in seconds
     psd_estimation : string
       Average method to measure PSD from the data
-
+    
     Return
     ------
     seg_len, fd_psd, lal_psd : Segment length in sample unit, PSD results
     in 2 different formats.
-
+    
     Notes
     -----
     Need to contact Chris Pankow for more information on the 2 formats.
@@ -200,7 +207,7 @@ def calculate_psd(ts_data,sample_rate,psd_segment_length,psd_segment_stride,psd_
     # We need this for the SWIG functions
     lal_psd = fd_psd.lal()
     return seg_len,fd_psd,lal_psd
-    
+
 def calculate_spectral_correlation(fft_window_len,wtype='hann',window_fraction=None):
     """
     Calculate the two point spectral correlation introduced by windowing
@@ -216,15 +223,19 @@ def calculate_spectral_correlation(fft_window_len,wtype='hann',window_fraction=N
     else:
         raise ValueError("Can't handle window type %s" % wtype)
     fft_plan = lal.CreateForwardREAL8FFTPlan(len(window.data.data), 1)
-    window = window.data.data
-    window_sigma_sq = numpy.mean(window**2)
-    # Pre scale the window by its root mean squared -- see eqn 11 of EP document
-    #window /= numpy.sqrt(window_sigma_sq)
     return window, lal.REAL8WindowTwoPointSpectralCorrelation(window, fft_plan)
 
 def create_filter_bank(delta_f,flow,band,nchan,psd,spec_corr,fmin=0,fmax=None):
     """
-    Create filter bank
+    Create filter bank. The construction of a filter bank is fairly simple. For
+    each channel, a frequency domain channel filter function will be created using
+    the `CreateExcessPowerFilter <http://software.ligo.org/docs/lalsuite/lalburst/group___e_p_search__h.html#ga899990cbd45111ba907772650c265ec9>`_ module from the ``lalburst`` package. Each channel
+    filter is divided by the square root of the PSD frequency series prior to
+    normalization, which has the effect of de-emphasizing frequency bins with high
+    noise content, and is called `over whitening`. The data and metadata are finally
+    stored in the ``filter_fseries`` and ``filter_bank`` arrays respectively.
+    Finally, we store on a final array, called ``np_filters`` the all time-series
+    generated from each filter so that we can plot them afterwards.
     
     Parameters
     ----------
@@ -287,7 +298,7 @@ def identify_block(ts_data,fd_psd,window,t_idx_min,t_idx_max):
       Index in time series of first data point
     t_idx_max : float
       Index in time series of last data point
-
+    
     Return
     ------
     start_time : float
@@ -526,9 +537,9 @@ def make_tiles(tf_map, nc_sum, mu_sq):
 
 def make_indp_tiles(tf_map, nc_sum, mu_sq):
     """
-    Create a time frequency map with resolution of tf_map binning
-    divided by nc_sum + 1. All tiles will be independent up to
-    overlap from the original tiling. The mu_sq is applied to the
+    Create a time frequency map with resolution of ``tf_map`` binning
+    divided by ``nc_sum`` + 1. All tiles will be independent up to
+    overlap from the original tiling. The ``mu_sq`` is applied to the
     resulting addition to normalize the outputs to be zero-mean
     unit-variance Gaussian variables (if the input is Gaussian).
     

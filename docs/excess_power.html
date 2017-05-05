@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Description of the code &#8212; gdas 0.3.0 documentation</title>
+    <title>Excess Power Search Method &#8212; gdas 0.3.0 documentation</title>
     
     <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -33,7 +33,7 @@
     <script type="text/javascript" src="_static/cloud.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Submodules" href="excess_power_submodules.html" />
+    <link rel="next" title="gdas.epower.excess_power" href="generated/gdas.epower.excess_power.html" />
     <link rel="prev" title="Working Example" href="example.html" /> 
         <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
@@ -47,7 +47,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="excess_power_submodules.html" title="Submodules"
+          <a href="generated/gdas.epower.excess_power.html" title="gdas.epower.excess_power"
              accesskey="N">next</a> &nbsp; &nbsp;</li>
         <li class="right" >
           <a href="example.html" title="Working Example"
@@ -64,12 +64,16 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="description-of-the-code">
-<h1>Description of the code<a class="headerlink" href="#description-of-the-code" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="excess-power-search-method">
+<h1>Excess Power Search Method<a class="headerlink" href="#excess-power-search-method" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>The <strong>Excess Power method</strong> is known as the <em>optimal detection strategy</em> to search for burst signals for which only the duration and frequency band are known, which is basically the case for GNOME and its search of Axion-Like Particles (ALP). This method was developed and introduced by <a class="reference external" href="https://arxiv.org/pdf/gr-qc/0008066v1.pdf">Anderson et al. (200)</a> and has been extensively used in the detection of burst sources of gravitational radiation. A more technical documentation was written by <a class="reference external" href="http://www.lsc-group.phys.uwm.edu/~siemens/power.pdf">Brady et al. (2007)</a> describing how the algorithm used by the LIGO collaboration works and how the theory is translated into code.</p>
-<p>We present below a step-by-step procedure followed during the Excess Power search analysis. For a better representation of what is happening, the figure at the end shows how the data is being split and analysed to search for multiple signals of different bandwidth and duration in the time-frequency plane.</p>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="_images/overview.png"><img alt="_images/overview.png" src="_images/overview.png" style="width: 90%;" /></a>
+<p class="caption"><span class="caption-text">Overview of the Excess Power method and difference between segments, channels, tiles and blocks.</span></p>
+</div>
+<p>Below, we present a step-by-step procedure followed during the Excess Power search analysis. For a better representation of what is happening, the figure above shows how the data is being split and analysed to search for multiple signals of different bandwidth and duration in the time-frequency plane.</p>
 <ul>
 <li><p class="first"><a class="reference internal" href="#psdestimate"><span class="std std-ref">Time domain segmentation and PSD estimate</span></a></p>
 <blockquote>
@@ -102,10 +106,86 @@
 </div></blockquote>
 </li>
 </ul>
-<div class="figure" id="id1">
-<img alt="_images/overview.png" src="_images/overview.png" />
-<p class="caption"><span class="caption-text">Overview of the Excess Power method and difference between segments, channels, tiles and blocks.</span></p>
 </div>
+<div class="section" id="sub-modules">
+<h2>Sub-modules<a class="headerlink" href="#sub-modules" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.excess_power.html#gdas.epower.excess_power" title="gdas.epower.excess_power"><code class="xref py py-obj docutils literal"><span class="pre">excess_power</span></code></a>(ts_data,&nbsp;psd_segment_length,&nbsp;...)</td>
+<td>Perform excess-power search analysis on magnetic field data.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.check_filtering_settings.html#gdas.epower.check_filtering_settings" title="gdas.epower.check_filtering_settings"><code class="xref py py-obj docutils literal"><span class="pre">check_filtering_settings</span></code></a>(sample_rate,&nbsp;...)</td>
+<td>Check filtering settings and define the total number of channels and bandwidth to use for filter bank.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.calculate_psd.html#gdas.epower.calculate_psd" title="gdas.epower.calculate_psd"><code class="xref py py-obj docutils literal"><span class="pre">calculate_psd</span></code></a>(ts_data,&nbsp;sample_rate,&nbsp;...)</td>
+<td>Estimate Power Spectral Density (PSD)</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.calculate_spectral_correlation.html#gdas.epower.calculate_spectral_correlation" title="gdas.epower.calculate_spectral_correlation"><code class="xref py py-obj docutils literal"><span class="pre">calculate_spectral_correlation</span></code></a>(fft_window_len)</td>
+<td>Calculate the two point spectral correlation introduced by windowing the data before transforming to the frequency domain &#8211; valid choices are &#8216;hann&#8217; and &#8216;tukey&#8217;.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.create_filter_bank.html#gdas.epower.create_filter_bank" title="gdas.epower.create_filter_bank"><code class="xref py py-obj docutils literal"><span class="pre">create_filter_bank</span></code></a>(delta_f,&nbsp;flow,&nbsp;band,&nbsp;...)</td>
+<td>Create filter bank.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.convert_to_time_domain.html#gdas.epower.convert_to_time_domain" title="gdas.epower.convert_to_time_domain"><code class="xref py py-obj docutils literal"><span class="pre">convert_to_time_domain</span></code></a>(fdb,&nbsp;sample_rate)</td>
+<td>Convert filter bank from frequency to time domain</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.identify_block.html#gdas.epower.identify_block" title="gdas.epower.identify_block"><code class="xref py py-obj docutils literal"><span class="pre">identify_block</span></code></a>(ts_data,&nbsp;fd_psd,&nbsp;window,&nbsp;...)</td>
+<td>Get frequency series of the current block</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.create_tf_plane.html#gdas.epower.create_tf_plane" title="gdas.epower.create_tf_plane"><code class="xref py py-obj docutils literal"><span class="pre">create_tf_plane</span></code></a>(fd_psd,&nbsp;nchans,&nbsp;seg_len,&nbsp;...)</td>
+<td>Create time-frequency map</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.compute_filter_ips_self.html#gdas.epower.compute_filter_ips_self" title="gdas.epower.compute_filter_ips_self"><code class="xref py py-obj docutils literal"><span class="pre">compute_filter_ips_self</span></code></a>(lal_filters,&nbsp;spec_corr)</td>
+<td>Compute a set of inner products of input filters with themselves.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.compute_filter_ips_adjacent.html#gdas.epower.compute_filter_ips_adjacent" title="gdas.epower.compute_filter_ips_adjacent"><code class="xref py py-obj docutils literal"><span class="pre">compute_filter_ips_adjacent</span></code></a>(lal_filters,&nbsp;...)</td>
+<td>Compute a set of filter inner products between input adjacent filters.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.compute_channel_renormalization.html#gdas.epower.compute_channel_renormalization" title="gdas.epower.compute_channel_renormalization"><code class="xref py py-obj docutils literal"><span class="pre">compute_channel_renormalization</span></code></a>(filter_bank,&nbsp;...)</td>
+<td>Compute the renormalization for the base filters up to a given bandwidth.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.measure_hrss.html#gdas.epower.measure_hrss" title="gdas.epower.measure_hrss"><code class="xref py py-obj docutils literal"><span class="pre">measure_hrss</span></code></a>(z_j_b,&nbsp;uw_ss_ii,&nbsp;uw_ss_ij,&nbsp;...)</td>
+<td>Approximation of unwhitened sum of squares signal energy in a given EP tile.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.uw_sum_sq.html#gdas.epower.uw_sum_sq" title="gdas.epower.uw_sum_sq"><code class="xref py py-obj docutils literal"><span class="pre">uw_sum_sq</span></code></a>(filter1,&nbsp;filter2,&nbsp;spec_corr,&nbsp;psd)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.measure_hrss_slowly.html#gdas.epower.measure_hrss_slowly" title="gdas.epower.measure_hrss_slowly"><code class="xref py py-obj docutils literal"><span class="pre">measure_hrss_slowly</span></code></a>(z_j_b,&nbsp;lal_filters,&nbsp;...)</td>
+<td>Approximation of unwhitened sum of squares signal energy in a given EP tile.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.measure_hrss_poorly.html#gdas.epower.measure_hrss_poorly" title="gdas.epower.measure_hrss_poorly"><code class="xref py py-obj docutils literal"><span class="pre">measure_hrss_poorly</span></code></a>(tile_energy,&nbsp;sub_psd)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.trigger_list_from_map.html#gdas.epower.trigger_list_from_map" title="gdas.epower.trigger_list_from_map"><code class="xref py py-obj docutils literal"><span class="pre">trigger_list_from_map</span></code></a>(tfmap,&nbsp;event_list,&nbsp;...)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.make_tiles.html#gdas.epower.make_tiles" title="gdas.epower.make_tiles"><code class="xref py py-obj docutils literal"><span class="pre">make_tiles</span></code></a>(tf_map,&nbsp;nc_sum,&nbsp;mu_sq)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.make_indp_tiles.html#gdas.epower.make_indp_tiles" title="gdas.epower.make_indp_tiles"><code class="xref py py-obj docutils literal"><span class="pre">make_indp_tiles</span></code></a>(tf_map,&nbsp;nc_sum,&nbsp;mu_sq)</td>
+<td>Create a time frequency map with resolution of <code class="docutils literal"><span class="pre">tf_map</span></code> binning divided by <code class="docutils literal"><span class="pre">nc_sum</span></code> + 1.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.make_filename.html#gdas.epower.make_filename" title="gdas.epower.make_filename"><code class="xref py py-obj docutils literal"><span class="pre">make_filename</span></code></a>(ifo,&nbsp;seg[,&nbsp;tag,&nbsp;ext])</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.construct_tiles.html#gdas.epower.construct_tiles" title="gdas.epower.construct_tiles"><code class="xref py py-obj docutils literal"><span class="pre">construct_tiles</span></code></a>(nc_sum,&nbsp;mu_sq,&nbsp;band,&nbsp;...)</td>
+<td>Constructing tile and calculate their energy</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.create_tile_duration.html#gdas.epower.create_tile_duration" title="gdas.epower.create_tile_duration"><code class="xref py py-obj docutils literal"><span class="pre">create_tile_duration</span></code></a>(j,&nbsp;df,&nbsp;duration,&nbsp;tiles)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.epower.create_xml.html#gdas.epower.create_xml" title="gdas.epower.create_xml"><code class="xref py py-obj docutils literal"><span class="pre">create_xml</span></code></a>(ts_data,&nbsp;psd_segment_length,&nbsp;...)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.epower.determine_output_segment.html#gdas.epower.determine_output_segment" title="gdas.epower.determine_output_segment"><code class="xref py py-obj docutils literal"><span class="pre">determine_output_segment</span></code></a>(inseg,&nbsp;dt_stride,&nbsp;...)</td>
+<td>Given an input data stretch segment inseg, a data block stride dt_stride, the data sample rate, and an optional window_fraction, return the amount of data that can be processed without corruption effects from the window.</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section" id="checking-filtering-settings">
 <h2>Checking filtering settings<a class="headerlink" href="#checking-filtering-settings" title="Permalink to this headline">¶</a></h2>
@@ -189,7 +269,7 @@
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">window_fraction</span> <span class="o">=</span> <span class="mi">0</span>
 </pre></div>
 </div>
-<p>The two point spectral correlation is then done with the <a class="reference internal" href="excess_power_submodules.html#calculate-spectral-correlation"><span class="std std-ref">calculate_spectral_correlation</span></a> function which will return both the Tukey window applied to the original time series data and the actual two-point spectral correlation function for the whitened frequency series from the applied whitening window.</p>
+<p>The two point spectral correlation is then done with the <a class="reference internal" href="generated/gdas.epower.calculate_spectral_correlation.html#gdas.epower.calculate_spectral_correlation" title="gdas.epower.calculate_spectral_correlation"><code class="xref py py-func docutils literal"><span class="pre">calculate_spectral_correlation()</span></code></a> function which will return both the Tukey window applied to the original time series data and the actual two-point spectral correlation function for the whitened frequency series from the applied whitening window.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Do two point spectral correlation</span>
 <span class="n">window</span><span class="p">,</span> <span class="n">spec_corr</span> <span class="o">=</span> <span class="n">calculate_spectral_correlation</span><span class="p">(</span><span class="n">seg_len</span><span class="p">,</span><span class="s1">&#39;tukey&#39;</span><span class="p">,</span><span class="n">window_fraction</span><span class="o">=</span><span class="n">window_fraction</span><span class="p">)</span>
 <span class="n">window</span> <span class="o">=</span> <span class="n">window</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data</span>
@@ -198,10 +278,31 @@
 <span class="c1">#window /= numpy.sqrt(window_sigma_sq)</span>
 </pre></div>
 </div>
+<div class="section" id="spectral-correlation-calculation">
+<h3>Spectral correlation calculation<a class="headerlink" href="#spectral-correlation-calculation" title="Permalink to this headline">¶</a></h3>
+<p>For our data, we apply a Tukey window whose flat bit corresponds to <code class="docutils literal"><span class="pre">window_fraction</span></code> (in percentage) of the segment length (in samples) used for PSD estimation (i.e. <code class="docutils literal"><span class="pre">fft_window_len</span></code>). This can be done by using the <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lal/_window_8c_source.html#l00597">CreateTukeyREAL8Window</a> module from the <code class="docutils literal"><span class="pre">lal</span></code> library.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calculate_spectral_correlation</span><span class="p">(</span><span class="n">fft_window_len</span><span class="p">,</span> <span class="n">wtype</span><span class="o">=</span><span class="s1">&#39;hann&#39;</span><span class="p">,</span> <span class="n">window_fraction</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">wtype</span> <span class="o">==</span> <span class="s1">&#39;hann&#39;</span><span class="p">:</span>
+        <span class="n">window</span> <span class="o">=</span> <span class="n">lal</span><span class="o">.</span><span class="n">CreateHannREAL8Window</span><span class="p">(</span><span class="n">fft_window_len</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">wtype</span> <span class="o">==</span> <span class="s1">&#39;tukey&#39;</span><span class="p">:</span>
+        <span class="n">window</span> <span class="o">=</span> <span class="n">lal</span><span class="o">.</span><span class="n">CreateTukeyREAL8Window</span><span class="p">(</span><span class="n">fft_window_len</span><span class="p">,</span> <span class="n">window_fraction</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t handle window type </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">wtype</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Once the window is built, a new frequency plan is created which will help performing a <a class="reference external" href="http://fourier.eng.hmc.edu/e101/lectures/fourier_transform_d/node1.html">forward transform</a> on the data. This is done with the <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lal/group___real_f_f_t__h.html#gac4413752db2d19cbe48742e922670af4">CreateForwardREAL8FFTPlan</a> module which takes as argument the total number of points in the real data and the measurement level for plan creation (here 1 stands for measuring the best plan).</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">fft_plan</span> <span class="o">=</span> <span class="n">lal</span><span class="o">.</span><span class="n">CreateForwardREAL8FFTPlan</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">window</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can finally compute and return the two-point spectral correlation function for the whitened frequency series (<code class="docutils literal"><span class="pre">fft_plan</span></code>) from the window applied to the original time series using the <a class="reference external" href="http://software.ligo.org/docs/lalsuite/lal/group___time_freq_f_f_t__h.html#ga2bd5c4258eff57cc80103d2ed489e076">REAL8WindowTwoPointSpectralCorrelation</a> module.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="n">window</span><span class="p">,</span> <span class="n">lal</span><span class="o">.</span><span class="n">REAL8WindowTwoPointSpectralCorrelation</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">fft_plan</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="computing-the-filter-bank">
 <span id="filterbank"></span><h2>Computing the filter bank<a class="headerlink" href="#computing-the-filter-bank" title="Permalink to this headline">¶</a></h2>
-<p>The filter bank will create band-pass filters for each channel in the PSD frequency domain. The <a class="reference internal" href="excess_power_submodules.html#create-filter-bank"><span class="std std-ref">create_filter_bank</span></a> function will san the bandwidth from the central frequency of the first channel (i.e. flow+band/2) to final frequency of the last channel (i.e. band*nchans) in a increment equal to the frequency band. The filter&#8217;s total extent in Fourier space is actually twice the stated bandwidth (FWHM).</p>
+<p>The filter bank will create band-pass filters for each channel in the PSD frequency domain. The <a class="reference internal" href="generated/gdas.epower.create_filter_bank.html#gdas.epower.create_filter_bank" title="gdas.epower.create_filter_bank"><code class="xref py py-func docutils literal"><span class="pre">create_filter_bank()</span></code></a> function will san the bandwidth from the central frequency of the first channel (i.e. flow+band/2) to final frequency of the last channel (i.e. band*nchans) in a increment equal to the frequency band. The filter&#8217;s total extent in Fourier space is actually twice the stated bandwidth (FWHM).</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Define filters</span>
 <span class="n">filter_bank</span><span class="p">,</span> <span class="n">fdb</span> <span class="o">=</span> <span class="n">create_filter_bank</span><span class="p">(</span><span class="n">fd_psd</span><span class="o">.</span><span class="n">delta_f</span><span class="p">,</span> <span class="n">flow</span><span class="o">+</span><span class="n">band</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">band</span><span class="p">,</span> <span class="n">nchans</span><span class="p">,</span> <span class="n">fd_psd</span><span class="p">,</span> <span class="n">spec_corr</span><span class="p">)</span>
 </pre></div>
@@ -239,7 +340,7 @@
 </div>
 <div class="section" id="normalization-of-virtual-channel">
 <h2>Normalization of virtual channel<a class="headerlink" href="#normalization-of-virtual-channel" title="Permalink to this headline">¶</a></h2>
-<p>The virtual channels will be used during the excesspower analysis to explore different frequency ranges around each PSD segments and look for possible triggers. Each channel is renormalized using the <a class="reference internal" href="excess_power_submodules.html#compute-channel-renomalization"><span class="std std-ref">compute_channel_renomalization</span></a> internal function.</p>
+<p>The virtual channels will be used during the excesspower analysis to explore different frequency ranges around each PSD segments and look for possible triggers. Each channel is renormalized using the <code class="xref py py-func docutils literal"><span class="pre">compute_channel_renomalization()</span></code> internal function.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Initialise dictionary</span>
 <span class="n">mu_sq_dict</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="c1"># nc_sum additional channel adds</span>
@@ -383,7 +484,7 @@
 <span class="nb">print</span> <span class="o">&gt;&gt;</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="s2">&quot;Undersampling rate for this level: </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">sample_rate</span><span class="o">/</span><span class="n">us_rate</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>&#8220;Virtual&#8221; wide bandwidth channels are constructed by summing the samples from multiple channels, and correcting for the overlap between adjacent channel filters. We then define the normalised channel at the current level and create a time frequency map for this tile using the <a class="reference internal" href="excess_power_submodules.html#make-indp-tiles"><span class="std std-ref">make_indp_tiles</span></a> internal function. In other word, we are constructing multiple sub-tiles for which we can determined the respective energy in the given frequency band.</p>
+<p>&#8220;Virtual&#8221; wide bandwidth channels are constructed by summing the samples from multiple channels, and correcting for the overlap between adjacent channel filters. We then define the normalised channel at the current level and create a time frequency map for this tile using the <a class="reference internal" href="generated/gdas.epower.make_indp_tiles.html#gdas.epower.make_indp_tiles" title="gdas.epower.make_indp_tiles"><code class="xref py py-func docutils literal"><span class="pre">make_indp_tiles()</span></code></a> internal function. In other word, we are constructing multiple sub-tiles for which we can determined the respective energy in the given frequency band.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mu_sq</span> <span class="o">=</span> <span class="n">mu_sq_dict</span><span class="p">[</span><span class="n">nc_sum</span><span class="p">]</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">...calculating tiles...&quot;</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">clip_samples</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -458,7 +559,7 @@
     <span class="c1">#import pdb; pdb.set_trace()</span>
 </pre></div>
 </div>
-<p>Once the threshold is set, one can then run the <a class="reference internal" href="excess_power_submodules.html#trigger-list-from-map"><span class="std std-ref">trigger_list_from_map</span></a> function to quickly find the trigger signal from the <code class="docutils literal"><span class="pre">dof_tiles</span></code> array that</p>
+<p>Once the threshold is set, one can then run the <a class="reference internal" href="generated/gdas.epower.trigger_list_from_map.html#gdas.epower.trigger_list_from_map" title="gdas.epower.trigger_list_from_map"><code class="xref py py-func docutils literal"><span class="pre">trigger_list_from_map()</span></code></a> function to quickly find the trigger signal from the <code class="docutils literal"><span class="pre">dof_tiles</span></code> array that</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Since we clip the data, the start time needs to be adjusted accordingly</span>
 <span class="n">window_offset_epoch</span> <span class="o">=</span> <span class="n">fs_data</span><span class="o">.</span><span class="n">epoch</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">psd_segment_length</span> <span class="o">*</span> <span class="n">window_fraction</span> <span class="o">/</span> <span class="mi">2</span>
 <span class="n">trigger_list_from_map</span><span class="p">(</span><span class="n">dof_tiles</span><span class="p">,</span> <span class="n">event_list</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">window_offset_epoch</span><span class="p">,</span> <span class="n">filter_bank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">f0</span> <span class="o">+</span> <span class="n">band</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">current_band</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -564,11 +665,15 @@
         <div class="sphinxsidebarwrapper"><div class="sphinx-toc sphinxlocaltoc">
     <h3><a href="index.html">Page contents</a></h3>
     <ul>
-<li><a class="reference internal" href="#">Description of the code</a><ul>
+<li><a class="reference internal" href="#">Excess Power Search Method</a><ul>
 <li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#sub-modules">Sub-modules</a></li>
 <li><a class="reference internal" href="#checking-filtering-settings">Checking filtering settings</a></li>
 <li><a class="reference internal" href="#calculate-power-spectral-density-psd">Calculate Power Spectral Density (PSD)</a></li>
-<li><a class="reference internal" href="#two-point-spectral-correlation">Two point spectral correlation</a></li>
+<li><a class="reference internal" href="#two-point-spectral-correlation">Two point spectral correlation</a><ul>
+<li><a class="reference internal" href="#spectral-correlation-calculation">Spectral correlation calculation</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#computing-the-filter-bank">Computing the filter bank</a></li>
 <li><a class="reference internal" href="#normalization-of-virtual-channel">Normalization of virtual channel</a></li>
 <li><a class="reference internal" href="#initialise-event-list-and-determine-stride-boundaries">Initialise event list and determine stride boundaries</a></li>
@@ -597,8 +702,8 @@
   </div>
   <div class="sphinxnext">
     <h4>Next page</h4>
-    <p class="topless"><a href="excess_power_submodules.html"
-                          title="Next page">&rarr; Submodules</a></p>
+    <p class="topless"><a href="generated/gdas.epower.excess_power.html"
+                          title="Next page">&rarr; gdas.epower.excess_power</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -647,7 +752,7 @@
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="excess_power_submodules.html" title="Submodules"
+          <a href="generated/gdas.epower.excess_power.html" title="gdas.epower.excess_power"
              >next</a> &nbsp; &nbsp;</li>
         <li class="right" >
           <a href="example.html" title="Working Example"

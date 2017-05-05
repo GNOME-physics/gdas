@@ -26,11 +26,11 @@ Getting Started
    server
    example
 
-Excess Power Search Analysis
-----------------------------
+Analysis algorithms
+-------------------
 
 .. toctree::
    :maxdepth: 1
 
    excess_power
-   excess_power_submodules
+   
