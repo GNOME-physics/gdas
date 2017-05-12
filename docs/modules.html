@@ -1,0 +1,183 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>General Modules &#8212; gdas 0.3.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.base.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="gdas.retrieve.fake_data" href="generated/gdas.retrieve.fake_data.html" />
+    <link rel="prev" title="Working Example" href="example.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body role="document">
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="generated/gdas.retrieve.fake_data.html" title="gdas.retrieve.fake_data"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="example.html" title="Working Example"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">gdas 0.3.0 documentation</a> &#187;</li>
+ 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="general-modules">
+<h1>General Modules<a class="headerlink" href="#general-modules" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.retrieve.fake_data.html#gdas.retrieve.fake_data" title="gdas.retrieve.fake_data"><code class="xref py py-obj docutils literal"><span class="pre">fake_data</span></code></a>(sample_rate,&nbsp;psd_segment_length)</td>
+<td>Create fake time series data.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.retrieve.extract.html#gdas.retrieve.extract" title="gdas.retrieve.extract"><code class="xref py py-obj docutils literal"><span class="pre">extract</span></code></a>(station,&nbsp;starttime,&nbsp;endtime[,&nbsp;...])</td>
+<td>Glob all files withing user-defined period and extract data.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.retrieve.file_to_segment.html#gdas.retrieve.file_to_segment" title="gdas.retrieve.file_to_segment"><code class="xref py py-obj docutils literal"><span class="pre">file_to_segment</span></code></a>(hfile,&nbsp;segname)</td>
+<td><span class="target" id="file-to-segment"></span></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.retrieve.construct_utc_from_metadata.html#gdas.retrieve.construct_utc_from_metadata" title="gdas.retrieve.construct_utc_from_metadata"><code class="xref py py-obj docutils literal"><span class="pre">construct_utc_from_metadata</span></code></a>(datestr,&nbsp;t0str)</td>
+<td><span class="target" id="construct-utc-from-metadata"></span></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.retrieve.generate_timeseries.html#gdas.retrieve.generate_timeseries" title="gdas.retrieve.generate_timeseries"><code class="xref py py-obj docutils literal"><span class="pre">generate_timeseries</span></code></a>(data_list[,&nbsp;setname])</td>
+<td>Generate time series using list of HDF5 data file paths</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.retrieve.create_activity_list.html#gdas.retrieve.create_activity_list" title="gdas.retrieve.create_activity_list"><code class="xref py py-obj docutils literal"><span class="pre">create_activity_list</span></code></a>(station,&nbsp;data_order)</td>
+<td>Create consecutive list of available data segment.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/gdas.retrieve.retrieve_data_timeseries.html#gdas.retrieve.retrieve_data_timeseries" title="gdas.retrieve.retrieve_data_timeseries"><code class="xref py py-obj docutils literal"><span class="pre">retrieve_data_timeseries</span></code></a>(hfile,&nbsp;setname)</td>
+<td>Retrieve data time series from HDF5 data file</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/gdas.retrieve.retrieve_channel_data.html#gdas.retrieve.retrieve_channel_data" title="gdas.retrieve.retrieve_channel_data"><code class="xref py py-obj docutils literal"><span class="pre">retrieve_channel_data</span></code></a>(hfile,&nbsp;setname)</td>
+<td>Retrieve the data from specific channel</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="example.html"
+                          title="Previous page">&larr; Working Example</a></p>
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="generated/gdas.retrieve.fake_data.html"
+                          title="Next page">&rarr; gdas.retrieve.fake_data</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/modules.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="generated/gdas.retrieve.fake_data.html" title="gdas.retrieve.fake_data"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="example.html" title="Working Example"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">gdas 0.3.0 documentation</a> &#187;</li>
+ 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Vincent Dumont.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

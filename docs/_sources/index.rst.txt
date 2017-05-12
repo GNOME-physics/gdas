@@ -25,7 +25,8 @@ Getting Started
    installation
    server
    example
-
+   modules
+   
 Analysis algorithms
 -------------------
 

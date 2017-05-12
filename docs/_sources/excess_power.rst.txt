@@ -6,11 +6,11 @@ Overview
 
 The **Excess Power method** is known as the *optimal detection strategy* to search for burst signals for which only the duration and frequency band are known, which is basically the case for GNOME and its search of Axion-Like Particles (ALP). This method was developed and introduced by `Anderson et al. (2000) <https://arxiv.org/pdf/gr-qc/0008066v1.pdf>`_ and has been extensively used in the detection of burst sources of gravitational radiation. A more technical documentation was written by `Brady et al. (2007) <http://www.lsc-group.phys.uwm.edu/~siemens/power.pdf>`_ describing how the algorithm used by the LIGO collaboration works and how the theory is translated into code.
 
-
-.. figure:: ./img/overview.png
+.. figure:: _images/overview.png
+   :target: _images/overview.pdf
    :align: center
    :width: 90%
-
+   
    Overview of the Excess Power method and difference between segments, channels, tiles and blocks.
 
 Below, we present a step-by-step procedure followed during the Excess Power search analysis. For a better representation of what is happening, the figure above shows how the data is being split and analysed to search for multiple signals of different bandwidth and duration in the time-frequency plane.

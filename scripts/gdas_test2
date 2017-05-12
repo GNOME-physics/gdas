@@ -1,0 +1,31 @@
+#!/usr/bin/env python
+
+import gdas,os
+
+station    = 'mainz01'
+start_time = '2017-04-15-17-1'
+end_time   = '2017-04-15-18-0'
+datapath   = '/Users/vincent/ASTRO/data/GNOMEDrive_run3/gnome/serverdata/'
+ts_data,ts_list,activity,start_time,end_time = gdas.extract(station,
+                                                            start_time,
+                                                            end_time,
+                                                            rep=datapath)
+path = '%s_%s/%s'%(start_time,end_time,station)
+os.system('mkdir -p %s'%path)
+os.chdir(path)
+#gdas.plot_activity(activity)
+#gdas.plot_time_series(station,ts_data,start_time,end_time,seglist=activity)
+#gdas.plot_asd(station,ts_data)
+#gdas.plot_whitening(station,ts_list,start_time,end_time,activity)
+#gdas.wavelet(ts_data)
+
+psd_segment_length = 60
+psd_segment_stride = 30
+psd_estimation     = 'median-mean'
+window_fraction    = 0
+tile_fap           = 1e-5
+channels           = 256
+gdas.excess_power(ts_data,psd_segment_length,psd_segment_stride,
+                  psd_estimation,window_fraction,tile_fap,station,
+                  nchans=channels)
+gdas.plot_triggers()

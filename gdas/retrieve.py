@@ -10,7 +10,8 @@ from pycbc           import types
 
 def fake_data(sample_rate,psd_segment_length):
     """
-    Create fake time series data
+    Create fake time series data. The flux data is generated using a
+    random Gaussian distribution.
 
     Parameters
     ----------
@@ -82,7 +83,8 @@ def extract(station,starttime,endtime,activity=False,
     # Create list of time series from every segment
     ts_list = generate_timeseries(file_order,setname)
     # Retrieve channel data for all the segments
-    full_data = numpy.hstack([retrieve_channel_data(data_order[seg],setname) for seg in seglist])
+    full_data = numpy.hstack([retrieve_channel_data(data_order[seg],setname)
+                              for seg in seglist])
     new_sample_rate = sample_rate if resample==None else resample
     new_data_length = len(full_data)/float(sample_rate)*new_sample_rate
     full_data = scipy.signal.resample(full_data,int(new_data_length))

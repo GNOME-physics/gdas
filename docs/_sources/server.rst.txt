@@ -9,12 +9,12 @@ The server can be accessed in two ways, either by acceding the `server's webpage
 
 While SSH is very handy for people using UNIX-like operating systems, this can become more complicated for those working on Windows machines. Fortunately, access to a terminal is also possible through the webpage, which means directly from your internet browser! This can be done by clicking on the New tab after login and select Terminal:
 
-.. figure:: img/jupyter1.png
+.. figure:: _images/jupyter1.png
 	    :width: 70%
 	    :align: center
 
 You can then use the terminal window to access files and create new Python scripts for your analysis.
 
-.. figure:: img/jupyter2.png
+.. figure:: _images/jupyter2.png
 	    :width: 70%
 	    :align: center
