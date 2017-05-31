@@ -1,4 +1,4 @@
-import matplotlib,numpy,mlpy
+import matplotlib,numpy
 matplotlib.use('Agg')
 from astropy.units        import Quantity
 from matplotlib           import pyplot
@@ -260,6 +260,7 @@ def plot_tiles():
     plot.savefig("%s/bands.png"%(segfolder),dpi=300)
 
 def wavelet(ts_data):
+    import mlpy
     z = numpy.array([float(i) for i in ts_data])
     t = numpy.array([float(i) for i in ts_data.sample_times])
     # Decimate magnetic field data to 1 sample/second
