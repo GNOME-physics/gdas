@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+
+import gdas
+station            = 'fake'
+psd_estimation     = 'median-mean'
+psd_segment_stride = 32
+psd_segment_length = 64
+sample_rate        = 512
+channels           = 256
+tile_fap           = 1e-5
+window_fraction    = 0
+ts_data = gdas.fake_data(sample_rate,psd_segment_length)
+gdas.excess_power(ts_data,
+                  psd_segment_length,
+                  psd_segment_stride,
+                  psd_estimation,
+                  window_fraction,
+                  tile_fap,
+                  station,
+                  nchans=channels)
+gdas.plot_triggers()

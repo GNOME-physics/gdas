@@ -118,7 +118,7 @@ def check_filtering_settings(sample_rate,channels,tile_bandwidth,fmin,fmax):
     """
     Check filtering settings and define the total number of channels
     and bandwidth to use for filter bank.
-
+    
     Parameters
     ----------
     sample_rate : float

@@ -4,7 +4,7 @@ Excess Power Search Method
 Overview
 --------
 
-The **Excess Power method** is known as the *optimal detection strategy* to search for burst signals for which only the duration and frequency band are known, which is basically the case for GNOME and its search of Axion-Like Particles (ALP). This method was developed and introduced by `Anderson et al. (2000) <https://arxiv.org/pdf/gr-qc/0008066v1.pdf>`_ and has been extensively used in the detection of burst sources of gravitational radiation. A more technical documentation was written by `Brady et al. (2007) <http://www.lsc-group.phys.uwm.edu/~siemens/power.pdf>`_ describing how the algorithm used by the LIGO collaboration works and how the theory is translated into code.
+The **Excess Power method** is designed to detect burst signals of unknown waveform, which is basically the case for GNOME and its search of Axion-Like Particles (ALP). This method was developed and introduced by `Anderson et al. (2000) <https://arxiv.org/pdf/gr-qc/0008066v1.pdf>`_ and has been extensively used in the detection of burst sources of gravitational radiation. A more technical documentation was written by `Brady et al. (2007) <http://www.lsc-group.phys.uwm.edu/~siemens/power.pdf>`_ describing how the algorithm used by the LIGO collaboration works and how the theory is translated into code.
 
 .. figure:: _images/overview.png
    :target: _images/overview.pdf
@@ -25,7 +25,7 @@ Below, we present a step-by-step procedure followed during the Excess Power sear
 
 - :ref:`Creating analysing blocks <analysingblocks>`
 
-   The Excess Power method can lead to moderately-large computational requirements, and it has been found that the computational efficiency of this implementation can be improved upon by considering blocks of data that are much longer than the longest signal time duration. The entire time series is therefore split into separate blocks. We use the length of the segments used for PSD estimate to define the duration of each block. For each block, the time series is c0Aonverted into frequency series which is then filtered by the filter bank throughout all the channels. A time-frequency map is finally created which stores all the filtered frequency series from each channel.
+   The Excess Power method can lead to moderately-large computational requirements, and it has been found that the computational efficiency of this implementation can be improved upon by considering blocks of data that are much longer than the longest signal time duration. The entire time series is therefore split into separate blocks. We use the length of the segments used for PSD estimate to define the duration of each block. For each block, the time series is converted into frequency series which is then filtered by the filter bank throughout all the channels. A time-frequency map is finally created which stores all the filtered frequency series from each channel.
 
 - :ref:`Creating tiles with different bandwidth <tilebandwidth>`
 
@@ -46,7 +46,7 @@ Sub-modules
 
 .. autosummary::
    :toctree: generated/
-
+   
    excess_power
    check_filtering_settings
    calculate_psd

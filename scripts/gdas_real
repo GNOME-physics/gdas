@@ -3,15 +3,17 @@ import gdas
 station    = 'fribourg01'
 start_time = '2016-11-03-17'
 end_time   = '2016-11-03-18'
-#datapath   = '/Volumes/NURI-GNOME/GNOMEDrive/gnome/serverdata/'
 datapath   = '/Users/vincent/ASTRO/data/GNOMEDrive/gnome/serverdata/'
-ts_data,ts_list,activity = gdas.magfield(station,start_time,end_time,rep=datapath)#,resample=512)
+ts_data,ts_list,activity,start_time,end_time = gdas.extract(station,start_time,end_time,rep=datapath,resample=512)
+path = '%s_%s/%s'%(start_time,end_time,station)
+os.system('mkdir -p %s'%path)
+os.chdir(path)
 gdas.plot_activity(activity)
-gdas.plot_time_series(station,ts_list,seglist=activity)
+gdas.plot_time_series(station,ts_list,start_time,end_time,seglist=activity)
 gdas.plot_asd(station,ts_list)
-gdas.plot_whitening(station,ts_list,activity)
-psd_segment_length = 60
-psd_segment_stride = 30
+gdas.plot_whitening(station,ts_list,start_time,end_time,activity)
+psd_segment_length = 64
+psd_segment_stride = 32
 psd_estimation     = 'median-mean'
 window_fraction    = 0
 tile_fap           = 1e-5

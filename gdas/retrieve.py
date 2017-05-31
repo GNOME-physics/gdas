@@ -25,7 +25,7 @@ def fake_data(sample_rate,psd_segment_length):
     ts_data = types.TimeSeries(ts_data,delta_t=1.0/sample_rate,epoch=epoch)
     return ts_data
 
-def extract(station,starttime,endtime,activity=False,
+def get_data(station,starttime,endtime,activity=False,
             rep='/GNOMEDrive/gnome/serverdata/',resample=None):
     """
     Glob all files withing user-defined period and extract data.

@@ -87,10 +87,24 @@ def plot_asd(station,ts_list):
         ax.plot(numpy.sqrt(spectrum))
     # Set x axis to log scale
     ax.set_xscale('log')
+    ax.set_xlabel('Frequency [Hz]')
     # Set y axis to log scale
     ax.set_yscale('log')
+    ax.set_ylabel('Amplitude [pT]')
     # Set x axis limits
     ax.set_xlim(1e-1, 500)
+    import matplotlib.ticker as ticker
+    x = ax.get_xticklabels()
+    def myticks(x,pos):
+        if x == 0: return "$0$"
+        exponent = int(np.log10(x))
+        coeff = x/10**exponent
+        if coeff==1:
+            return r"$10^{{ {:2d} }}$".format(exponent)
+        else:
+            return r"${:2.0f} \times 10^{{ {:2d} }}$".format(coeff,
+                                                             exponent)
+    ax.xaxis.set_major_formatter(ticker.FuncFormatter(myticks))
     # Save figure
     plot.savefig("asd.png",dpi=300)
     
