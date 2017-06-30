@@ -359,7 +359,9 @@ def create_tf_plane(fd_psd,nchans,seg_len,filter_bank,band,fs_data):
         # Define the template to filter the frequency series with
         template = types.FrequencySeries(tmp_filter_bank, delta_f=fd_psd.delta_f, copy=False)
         # Create filtered series
-        filtered_series = filter.matched_filter_core(template,fs_data,h_norm=None,psd=None,low_frequency_cutoff=filter_bank[i].f0,high_frequency_cutoff=filter_bank[i].f0+2*band)
+        filtered_series = filter.matched_filter_core(template,fs_data,h_norm=None,psd=None,
+                                                     low_frequency_cutoff=filter_bank[i].f0,
+                                                     high_frequency_cutoff=filter_bank[i].f0+2*band)
         # Include filtered series in the map
         tf_map[i,:] = filtered_series[0].numpy()
     return tf_map

@@ -160,11 +160,14 @@ def plot_bank(fdb):
     for i, fdt in enumerate(fdb[:5]):
         pyplot.plot(fdt.frequencies, fdt, 'k-')
     pyplot.grid()
+    #xmin = fdb[0].frequencies[0].value
+    #xmax = fdb[-1].frequencies[-1].value
+    #pyplot.xlim([xmin,xmax])
     pyplot.xlabel("frequency [Hz]")
     pyplot.savefig('bank.png',dpi=300)
     pyplot.close()
 
-def plot_filters(tdb,flow,band):
+def plot_filters(tdb,fmin,band):
     pyplot.figure()
     pyplot.subplots_adjust(left=0.2,right=0.95,
                            bottom=0.15,top=0.95,
@@ -172,7 +175,7 @@ def plot_filters(tdb,flow,band):
     for i, tdt in enumerate(tdb[:8:3]):
         ax = pyplot.subplot(3, 1, i+1)
         ax.plot(tdt.times.value - 2., numpy.real_if_close(tdt.value), 'k-')
-        c_f = flow+band/2 + 3 * (band*i) + 2.
+        c_f = fmin + band/2 + 3 * (band*i) + 2.
         ax.set_xlabel("Time (s)")
         ax.set_ylabel("%d Hz" % c_f)
         ax.set_xlim(25.0, 31.0)
