@@ -350,7 +350,15 @@ def excess_power(ts_data,                      # Time series from magnetic field
                     # with the indexing: that is to say that
                     # mod(etime_min_idx, us_rate) == 0 always
                     z_j_b = tf_map[flow_idx:fhigh_idx,etime_min_idx:etime_max_idx:us_rate]
-                    event.amplitude = 0
+                    # FIXME: Deal with negative hrss^2 -- e.g. remove the event
+                    try:
+                        event.amplitude = measure_hrss(z_j_b, unwhite_filter_ip[flow_idx:fhigh_idx],
+                                                       unwhite_ss_ip[flow_idx:fhigh_idx-1],
+                                                       white_ss_ip[flow_idx:fhigh_idx-1],
+                                                       fd_psd.delta_f, tmp_ts_data.delta_t,
+                                                       len(lal_filters[0].data.data), event.chisq_dof)
+                    except ValueError:
+                        event.amplitude = 0
                 print "\t\t|- Total number of events: %d" % len(event_list)
         t_idx_min += int(seg_len * (1 - window_fraction))
         t_idx_max += int(seg_len * (1 - window_fraction))
@@ -386,3 +394,79 @@ def excess_power(ts_data,                      # Time series from magnetic field
     fname = "%s-excesspower-%d-%d.xml.gz" % (ifostr, st_rnd, dur)
     utils.write_filename(xmldoc, fname, gz=fname.endswith("gz"))
     plot_triggers(filename=fname)
+
+def measure_hrss(z_j_b, uw_ss_ii, uw_ss_ij, w_ss_ij, delta_f, delta_t, filter_len, dof):
+    """
+    Approximation of unwhitened sum of squares signal energy in a given EP tile. See T1200125 for equation number reference.
+    z_j_b - time frequency map block which the constructed tile covers
+    uw_ss_ii - unwhitened filter inner products
+    uw_ss_ij - unwhitened adjacent filter inner products
+    w_ss_ij - whitened adjacent filter inner products
+    delta_f - frequency binning of EP filters
+    delta_t - native time resolution of the time frequency map
+    filter_len - number of samples in a fitler
+    dof - degrees of freedom in the tile (twice the time-frequency area)
+    """
+
+    s_j_b_avg = uw_ss_ii * delta_f / 2
+    # unwhitened sum of squares of wide virtual filter
+    s_j_nb_avg = uw_ss_ii.sum() / 2 + uw_ss_ij.sum()
+    s_j_nb_avg *= delta_f
+
+    s_j_nb_denom = s_j_b_avg.sum() + 2 * 2 / filter_len * \
+        numpy.sum(numpy.sqrt(s_j_b_avg[:-1] * s_j_b_avg[1:]) * w_ss_ij)
+
+    # eqn. 62
+    uw_ups_ratio = s_j_nb_avg / s_j_nb_denom
+
+    # eqn. 63 -- approximation of unwhitened signal energy time series
+    # FIXME: The sum in this equation is over nothing, but indexed by frequency
+    # I'll make that assumption here too.
+    s_j_nb = numpy.sum(z_j_b.T * numpy.sqrt(s_j_b_avg), axis=0)
+    s_j_nb *= numpy.sqrt(uw_ups_ratio / filter_len * 2)
+    # eqn. 64 -- approximate unwhitened signal energy minus noise contribution
+    # FIXME: correct axis of summation?
+    return math.sqrt(numpy.sum(numpy.absolute(s_j_nb)**2) * delta_t - s_j_nb_avg * dof * delta_t)
+
+# < s^2_j(f_1, b) > = 1 / 2 / N * \delta_t EPIP{\Theta, \Theta; P}
+def uw_sum_sq(filter1, filter2, spec_corr, psd):
+    return lalburst.ExcessPowerFilterInnerProduct(filter1, filter2, spec_corr, psd)
+
+def measure_hrss_slowly(z_j_b, lal_filters, spec_corr, psd, delta_t, dof):
+    """
+    Approximation of unwhitened sum of squares signal energy in a given EP tile. See T1200125 for equation number reference.
+
+    NOTE: This function is deprecated in favor of measure_hrss, since it requires recomputation of many inner products, making it particularly slow.
+    """
+    # FIXME: Make sure you sum in time correctly
+    # Number of finest bands in given tile
+    nb = len(z_j_b)
+    # eqn. 56 -- unwhitened mean square of filter with itself
+    uw_ss_ii = numpy.array([uw_sum_sq(lal_filters[i], lal_filters[i], spec_corr, psd) for i in range(nb)])
+    s_j_b_avg = uw_ss_ii * lal_filters[0].deltaF / 2
+    # eqn. 57 -- unwhitened mean square of filter with adjacent filter
+    uw_ss_ij = numpy.array([uw_sum_sq(lal_filters[i], lal_filters[i+1], spec_corr, psd) for i in range(nb-1)])
+    # unwhitened sum of squares of wide virtual filter
+    s_j_nb_avg = uw_ss_ii.sum() / 2 + uw_ss_ij.sum()
+    s_j_nb_avg *= lal_filters[0].deltaF
+
+    # eqn. 61
+    w_ss_ij = numpy.array([uw_sum_sq(lal_filters[i], lal_filters[i+1], spec_corr, None) for i in range(nb-1)])
+    s_j_nb_denom = s_j_b_avg.sum() + 2 * 2 / len(lal_filters[0].data.data) * \
+        (numpy.sqrt(s_j_b_avg[:-1] * s_j_b_avg[1:]) * w_ss_ij).sum()
+
+    # eqn. 62
+    uw_ups_ratio = s_j_nb_avg / s_j_nb_denom
+
+    # eqn. 63 -- approximation of unwhitened signal energy time series
+    # FIXME: The sum in this equation is over nothing, but indexed by frequency
+    # I'll make that assumption here too.
+    s_j_nb = numpy.sum(z_j_b.T * numpy.sqrt(s_j_b_avg), axis=0)
+    s_j_nb *= numpy.sqrt(uw_ups_ratio / len(lal_filters[0].data.data) * 2)
+    # eqn. 64 -- approximate unwhitened signal energy minus noise contribution
+    # FIXME: correct axis of summation?
+    return math.sqrt((numpy.absolute(s_j_nb)**2).sum() * delta_t - s_j_nb_avg * dof * delta_t)
+
+def measure_hrss_poorly(tile_energy, sub_psd):
+    return math.sqrt(tile_energy / numpy.average(1.0 / sub_psd) / 2)
+
