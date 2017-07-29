@@ -1,7 +1,7 @@
 Working Example
 ===============
 
-Either on your own computer or on the server, on a Jupyter notebook or on a Python script, the first thing to do is to import the ``gdas`` package that contain all the modules present in the GNOME software. That can be done easily by doing the following::
+In this section we present an example on how to use the analysis tools available on gdas to create your own data analysis script. Either on a Jupyter notebook or on a Python script, the first thing to do is to import the ``gdas`` package that contain all the modules present in the GNOME software. That can be done easily by doing the following::
 
   import gdas
 

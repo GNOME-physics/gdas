@@ -1,7 +1,7 @@
-__version__ = '0.3.0'
+__version__ = '0.3.6'
 
-from .epower     import *
-from .epower2    import *
-from .plots      import *
-from .retrieve   import *
-from .utils      import *
+from .epower      import *
+from .plots       import *
+from .retrieve    import *
+from .utils       import *
+from .coincidence import *

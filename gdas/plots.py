@@ -60,7 +60,7 @@ def plot_time_series(station,ts_list,start_time,end_time,
     matplotlib.pyplot.rcParams['agg.path.chunksize'] = 20000
     # Save figure
     plot.savefig('time_series.png',dpi=300)
-
+    
 def plot_asd(station,ts_list):
     """
     Plot Amplitude Spectral Density. AGG complexity starts to complain
@@ -189,7 +189,7 @@ def plot_ts(ts, fname="ts.png"):
     ax = plot.gca()
     ax.plot(TimeSeries(ts, sample_rate=1.0/ts.delta_t, epoch=ts.start_time))
     ax.set_xlim(ts.start_time,ts.end_time)
-    pyplot.savefig(fname,dpi=300)
+    pyplot.savefig(fname)
     pyplot.close()
 
 def plot_spectrum(fd_psd):

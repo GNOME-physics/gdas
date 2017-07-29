@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Excess Power Search Method &#8212; gdas 0.3.0 documentation</title>
+    <title>Excess Power Search Method &#8212; gdas 0.3.3 documentation</title>
     
     <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -17,7 +17,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.3.0',
+        VERSION:     '0.3.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -52,7 +52,7 @@
         <li class="right" >
           <a href="generated/gdas.retrieve.retrieve_channel_data.html" title="gdas.retrieve.retrieve_channel_data"
              accesskey="P">previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">gdas 0.3.0 documentation</a> &#187;</li>
+    <li><a href="index.html">gdas 0.3.3 documentation</a> &#187;</li>
  
       </ul>
     </div>
@@ -68,7 +68,7 @@
 <h1>Excess Power Search Method<a class="headerlink" href="#excess-power-search-method" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>The <strong>Excess Power method</strong> is known as the <em>optimal detection strategy</em> to search for burst signals for which only the duration and frequency band are known, which is basically the case for GNOME and its search of Axion-Like Particles (ALP). This method was developed and introduced by <a class="reference external" href="https://arxiv.org/pdf/gr-qc/0008066v1.pdf">Anderson et al. (2000)</a> and has been extensively used in the detection of burst sources of gravitational radiation. A more technical documentation was written by <a class="reference external" href="http://www.lsc-group.phys.uwm.edu/~siemens/power.pdf">Brady et al. (2007)</a> describing how the algorithm used by the LIGO collaboration works and how the theory is translated into code.</p>
+<p>The <strong>Excess Power method</strong> is designed to detect burst signals of unknown waveform, which is basically the case for GNOME and its search of Axion-Like Particles (ALP). This method was developed and introduced by <a class="reference external" href="https://arxiv.org/pdf/gr-qc/0008066v1.pdf">Anderson et al. (2000)</a> and has been extensively used in the detection of burst sources of gravitational radiation. A more technical documentation was written by <a class="reference external" href="http://www.lsc-group.phys.uwm.edu/~siemens/power.pdf">Brady et al. (2007)</a> describing how the algorithm used by the LIGO collaboration works and how the theory is translated into code.</p>
 <div class="figure align-center" id="id1">
 <a class="reference external image-reference" href="_images/overview.pdf"><img alt="_images/overview.png" src="_images/overview.png" style="width: 90%;" /></a>
 <p class="caption"><span class="caption-text">Overview of the Excess Power method and difference between segments, channels, tiles and blocks.</span></p>
@@ -87,7 +87,7 @@
 </li>
 <li><p class="first"><a class="reference internal" href="#analysingblocks"><span class="std std-ref">Creating analysing blocks</span></a></p>
 <blockquote>
-<div><p>The Excess Power method can lead to moderately-large computational requirements, and it has been found that the computational efficiency of this implementation can be improved upon by considering blocks of data that are much longer than the longest signal time duration. The entire time series is therefore split into separate blocks. We use the length of the segments used for PSD estimate to define the duration of each block. For each block, the time series is c0Aonverted into frequency series which is then filtered by the filter bank throughout all the channels. A time-frequency map is finally created which stores all the filtered frequency series from each channel.</p>
+<div><p>The Excess Power method can lead to moderately-large computational requirements, and it has been found that the computational efficiency of this implementation can be improved upon by considering blocks of data that are much longer than the longest signal time duration. The entire time series is therefore split into separate blocks. We use the length of the segments used for PSD estimate to define the duration of each block. For each block, the time series is converted into frequency series which is then filtered by the filter bank throughout all the channels. A time-frequency map is finally created which stores all the filtered frequency series from each channel.</p>
 </div></blockquote>
 </li>
 <li><p class="first"><a class="reference internal" href="#tilebandwidth"><span class="std std-ref">Creating tiles with different bandwidth</span></a></p>
@@ -757,7 +757,7 @@
         <li class="right" >
           <a href="generated/gdas.retrieve.retrieve_channel_data.html" title="gdas.retrieve.retrieve_channel_data"
              >previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">gdas 0.3.0 documentation</a> &#187;</li>
+    <li><a href="index.html">gdas 0.3.3 documentation</a> &#187;</li>
  
       </ul>
     </div>

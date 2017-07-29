@@ -4,7 +4,7 @@ station    = 'fribourg01'
 start_time = '2016-11-03-17'
 end_time   = '2016-11-03-18'
 datapath   = '/Users/vincent/ASTRO/data/GNOMEDrive/gnome/serverdata/'
-ts_data,ts_list,activity,start_time,end_time = gdas.extract(station,start_time,end_time,rep=datapath,resample=512)
+ts_data,ts_list,activity,start_time,end_time = gdas.get_data(station,start_time,end_time,rep=datapath,resample=512)
 path = '%s_%s/%s'%(start_time,end_time,station)
 os.system('mkdir -p %s'%path)
 os.chdir(path)

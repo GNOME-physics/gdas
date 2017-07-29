@@ -8,7 +8,7 @@ from gwpy.segments   import DataQualityDict,DataQualityFlag
 from gwpy.timeseries import TimeSeries,TimeSeriesList
 from pycbc           import types
 
-def fake_data(sample_rate,psd_segment_length):
+def impulse_data(sample_rate=512,psd_segment_length=60):
     """
     Create fake time series data. The flux data is generated using a
     random Gaussian distribution.
@@ -20,8 +20,27 @@ def fake_data(sample_rate,psd_segment_length):
     psd_segment_length : int
       Length of each segment in seconds
     """
-    epoch   = 1153742447.0 - 10
-    ts_data = numpy.random.normal(0,1,sample_rate*psd_segment_length*16)
+    epoch   = 1153742417.0
+    ts_data = numpy.zeros(sample_rate * psd_segment_length)
+    ts_data = types.TimeSeries(ts_data, delta_t=1.0/sample_rate, epoch=epoch)
+    return ts_data
+
+def fake_data(sample_rate=512,psd_segment_length=60,nsegs=16):
+    """
+    Create fake time series data. The flux data is generated using a
+    random Gaussian distribution.
+
+    Parameters
+    ----------
+    sample_rate : int
+      Sampling rate of fake data
+    psd_segment_length : int
+      Length of each segment in seconds
+    nsegs : int
+      Number of segments present in time series
+    """
+    epoch   = 1153742417.0
+    ts_data = numpy.random.normal(0,1,sample_rate*psd_segment_length*nsegs)
     ts_data = types.TimeSeries(ts_data,delta_t=1.0/sample_rate,epoch=epoch)
     return ts_data
 
@@ -86,7 +105,7 @@ def get_data(station,starttime,endtime,activity=False,
     full_data = numpy.hstack([retrieve_channel_data(data_order[seg],setname)
                               for seg in seglist])
     new_sample_rate = sample_rate if resample==None else resample
-    new_data_length = len(full_data)/float(sample_rate)*new_sample_rate
+    new_data_length = len(full_data)*new_sample_rate/float(sample_rate)
     full_data = scipy.signal.resample(full_data,int(new_data_length))
     # Models a time series consisting of uniformly sampled scalar values
     ts_data = types.TimeSeries(full_data,delta_t=1./new_sample_rate,

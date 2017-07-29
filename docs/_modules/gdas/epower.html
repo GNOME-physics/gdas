@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gdas.epower &#8212; gdas 0.3.0 documentation</title>
+    <title>gdas.epower &#8212; gdas 0.3.3 documentation</title>
     
     <link rel="stylesheet" href="../../_static/cloud.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -17,7 +17,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.3.0',
+        VERSION:     '0.3.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -44,7 +44,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
-    <li><a href="../../index.html">gdas 0.3.0 documentation</a> &#187;</li>
+    <li><a href="../../index.html">gdas 0.3.3 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
@@ -178,7 +178,7 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check filtering settings and define the total number of channels</span>
 <span class="sd">    and bandwidth to use for filter bank.</span>
-
+<span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    sample_rate : float</span>
@@ -419,7 +419,9 @@
         <span class="c1"># Define the template to filter the frequency series with</span>
         <span class="n">template</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">FrequencySeries</span><span class="p">(</span><span class="n">tmp_filter_bank</span><span class="p">,</span> <span class="n">delta_f</span><span class="o">=</span><span class="n">fd_psd</span><span class="o">.</span><span class="n">delta_f</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="c1"># Create filtered series</span>
-        <span class="n">filtered_series</span> <span class="o">=</span> <span class="nb">filter</span><span class="o">.</span><span class="n">matched_filter_core</span><span class="p">(</span><span class="n">template</span><span class="p">,</span><span class="n">fs_data</span><span class="p">,</span><span class="n">h_norm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">psd</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">low_frequency_cutoff</span><span class="o">=</span><span class="n">filter_bank</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">f0</span><span class="p">,</span><span class="n">high_frequency_cutoff</span><span class="o">=</span><span class="n">filter_bank</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">f0</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">band</span><span class="p">)</span>
+        <span class="n">filtered_series</span> <span class="o">=</span> <span class="nb">filter</span><span class="o">.</span><span class="n">matched_filter_core</span><span class="p">(</span><span class="n">template</span><span class="p">,</span><span class="n">fs_data</span><span class="p">,</span><span class="n">h_norm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">psd</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                                     <span class="n">low_frequency_cutoff</span><span class="o">=</span><span class="n">filter_bank</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">f0</span><span class="p">,</span>
+                                                     <span class="n">high_frequency_cutoff</span><span class="o">=</span><span class="n">filter_bank</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">f0</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">band</span><span class="p">)</span>
         <span class="c1"># Include filtered series in the map</span>
         <span class="n">tf_map</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">filtered_series</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">tf_map</span></div>
@@ -752,7 +754,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
-    <li><a href="../../index.html">gdas 0.3.0 documentation</a> &#187;</li>
+    <li><a href="../../index.html">gdas 0.3.3 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
