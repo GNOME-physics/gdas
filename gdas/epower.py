@@ -26,6 +26,7 @@ def excess_power(ts_data,                      # Time series from magnetic field
                  psd_segment_stride=30,        # Separation between 2 consecutive segments in seconds
                  station='station-name',       # Station name
                  tile_fap=1e-7,                # Tile false alarm probability threshold in Gaussian noise.
+                 verbose=True,                 # Print details
                  window_fraction=0,            # Withening window fraction
                  wtype='tukey'):               # Whitening type, can tukey or hann
     """
@@ -85,8 +86,8 @@ def excess_power(ts_data,                      # Time series from magnetic field
         # Check if number of channels is superior than unity
         assert nchans > 1
     # Print segment information
-    print '|- Estimating PSD from segments of',
-    print '%.2f s, with %.2f s stride...'%(psd_segment_length, psd_segment_stride)
+    if verbose: print '|- Estimating PSD from segments of',
+    if verbose: print '%.2f s, with %.2f s stride...'%(psd_segment_length, psd_segment_stride)
     # Convert time series as array of float
     data = ts_data.astype(numpy.float64)
     # Define segment length for PSD estimation in sample unit
@@ -112,21 +113,18 @@ def excess_power(ts_data,                      # Time series from magnetic field
     # We need this for the SWIG functions
     lal_psd = fd_psd.lal()
     # Create whitening window
-    print "|- Whitening window and spectral correlation..."
-    if wtype == 'hann':
-        window = lal.CreateHannREAL8Window(seg_len)
-    elif wtype == 'tukey':
-        window = lal.CreateTukeyREAL8Window(seg_len, window_fraction)
-    else:
-        raise ValueError("Can't handle window type %s" % wtype)
+    if verbose: print "|- Whitening window and spectral correlation..."
+    if wtype == 'hann': window = lal.CreateHannREAL8Window(seg_len)
+    elif wtype == 'tukey': window = lal.CreateTukeyREAL8Window(seg_len, window_fraction)
+    else: raise ValueError("Can't handle window type %s" % wtype)
     # Create FFT plan
     fft_plan = lal.CreateForwardREAL8FFTPlan(len(window.data.data), 1)
     # Perform two point spectral correlation
     spec_corr = lal.REAL8WindowTwoPointSpectralCorrelation(window, fft_plan)
     # Determine length of individual filters
     filter_length = int(2*band/fd_psd.delta_f)+1
-    # Initialise filter bank 
-    print "|- Create bank of %i filters of %i Hz bandwidth..."%(nchans,filter_length)
+    # Initialise filter bank
+    if verbose: print "|- Create bank of %i filters of %i Hz bandwidth..."%(nchans,filter_length)
     # Initialise array to store filter's frequency series and metadata
     lal_filters = []
     # Initialise array to store filter's time series
@@ -147,7 +145,7 @@ def excess_power(ts_data,                      # Time series from magnetic field
         # Plot filter bank
         plot_bank(fdb)
         # Convert filter bank from frequency to time domain
-        print "|- Convert all the frequency domain to the time domain..."
+        if verbose: print "|- Convert all the frequency domain to the time domain..."
         tdb = []
         # Loop for each filter's spectrum
         for fdt in fdb:
@@ -188,9 +186,9 @@ def excess_power(ts_data,                      # Time series from magnetic field
         # Define first and last timestamps of the block
         start_time = ts_data.start_time + t_idx_min/float(ts_data.sample_rate)
         end_time   = ts_data.start_time + t_idx_max/float(ts_data.sample_rate)
-        print "\n|- Analyzing block %i to %i (%.2f percent)"%(start_time,end_time,100*float(t_idx_max)/len(ts_data))
+        if verbose: print "\n|- Analyzing block %i to %i (%.2f percent)"%(start_time,end_time,100*float(t_idx_max)/len(ts_data))
+        # Debug for impulse response
         if impulse:
-            # Debug for impulse response
             for i in range(t_idx_min, t_idx_max):
                 ts_data[i] = 1000. if i == (t_idx_max + t_idx_min)/2 else 0.
         # Model a withen time series for the block
@@ -204,17 +202,17 @@ def excess_power(ts_data,                      # Time series from magnetic field
             plot_ts(tmp_ts_data,fname='segments/time-series/%i-%i.png'%(start_time,end_time))
         # Convert times series to frequency series
         fs_data = tmp_ts_data.to_frequencyseries()
-        print "|- Frequency series data has variance: %s" % fs_data.data.std()**2
+        if verbose: print "|- Frequency series data has variance: %s" % fs_data.data.std()**2
         # Whitening (FIXME: Whiten the filters, not the data)
         fs_data.data /= numpy.sqrt(fd_psd) / numpy.sqrt(2 * fd_psd.delta_f)
-        print "|- Whitened frequency series data has variance: %s" % fs_data.data.std()**2
-        print "|- Create time-frequency plane for current block"
+        if verbose: print "|- Whitened frequency series data has variance: %s" % fs_data.data.std()**2
+        if verbose: print "|- Create time-frequency plane for current block"
         # Return the complex snr, along with its associated normalization of the template,
         # matched filtered against the data
         #filter.matched_filter_core(types.FrequencySeries(tmp_filter_bank,delta_f=fd_psd.delta_f),
         #                           fs_data,h_norm=1,psd=fd_psd,low_frequency_cutoff=lal_filters[0].f0,
         #                           high_frequency_cutoff=lal_filters[0].f0+2*band)
-        print "|- Filtering all %d channels...\n" % nchans,
+        if verbose: print "|- Filtering all %d channels...\n" % nchans,
         # Initialise 2D zero array
         tmp_filter_bank = numpy.zeros(len(fd_psd), dtype=numpy.complex128)
         # Initialise 2D zero array for time-frequency map
@@ -245,15 +243,15 @@ def excess_power(ts_data,                      # Time series from magnetic field
         for nc_sum in range(0, int(math.log(nchans, 2)))[::-1]:
             # Calculate total number of summed channels
             nc_sum = 2**nc_sum
-            print "\n\t|- Contructing tiles containing %d narrow band channels"%nc_sum
+            if verbose: print "\n\t|- Contructing tiles containing %d narrow band channels"%nc_sum
             # Compute full bandwidth of virtual channel
             df = band * nc_sum
             # Compute minimal signal's duration in virtual channel
             dt = 1.0 / (2 * df)
             # Compute under sampling rate
             us_rate = int(round(dt / ts_data.delta_t))
-            print "\t|- Undersampling rate for this level: %f" % (ts_data.sample_rate/us_rate)
-            print "\t|- Calculating tiles..."
+            if verbose: print "\t|- Undersampling rate for this level: %f" % (ts_data.sample_rate/us_rate)
+            if verbose: print "\t|- Calculating tiles..."
             # Clip the boundaries to remove window corruption
             clip_samples = int(psd_segment_length * window_fraction * ts_data.sample_rate / 2)
             # Undersample narrow band channel's time series 
@@ -278,8 +276,8 @@ def excess_power(ts_data,                      # Time series from magnetic field
                     mu_sq += 2*lalburst.ExcessPowerFilterInnerProduct(lal_filters[n-k],lal_filters[n-1-k],spec_corr,None)
                 # Normalise tile's time series
                 tiles[i] = ts_tile.real**2 / mu_sq
-            print "\t|- TF-plane is %dx%s samples" % tiles.shape
-            print "\t|- Tile energy mean %f, var %f" % (numpy.mean(tiles), numpy.var(tiles))
+            if verbose: print "\t|- TF-plane is %dx%s samples" % tiles.shape
+            if verbose: print "\t|- Tile energy mean %f, var %f" % (numpy.mean(tiles), numpy.var(tiles))
             # Define maximum number of degrees of freedom and check it larger or equal to 2
             max_dof = 32 if max_duration==None else int(max_duration / dt)
             assert max_dof >= 2
@@ -287,11 +285,11 @@ def excess_power(ts_data,                      # Time series from magnetic field
             for j in [2**l for l in xrange(0, int(math.log(max_dof, 2)))]:
                 # Duration is fixed by the NDOF and bandwidth
                 duration = j * dt
-                print "\n\t\t|- Summing DOF = %d ..." % (2*j)
-                print "\t\t|- Explore signal duration of %f s..." % duration
+                if verbose: print "\n\t\t|- Summing DOF = %d ..." % (2*j)
+                if verbose: print "\t\t|- Explore signal duration of %f s..." % duration
                 # Construct filter
                 sum_filter = numpy.array([1,0] * (j-1) + [1])
-                print sample_rate,dt,df,us_rate,j
+                if verbose: print sample_rate,dt,df,us_rate,j
                 # Calculate length of filtered time series
                 tlen = tiles.shape[1] - sum_filter.shape[0] + 1
                 # Initialise filtered time series array
@@ -300,15 +298,15 @@ def excess_power(ts_data,                      # Time series from magnetic field
                 for f in range(tiles.shape[0]):
                     # Sum and drop correlate tiles
                     dof_tiles[f] = fftconvolve(tiles[f], sum_filter, 'valid')
-                print "\t\t|- Summed tile energy mean: %f" % (numpy.mean(dof_tiles))
-                print "\t\t|- Variance tile energy: %f" % (numpy.var(dof_tiles))
+                if verbose: print "\t\t|- Summed tile energy mean: %f" % (numpy.mean(dof_tiles))
+                if verbose: print "\t\t|- Variance tile energy: %f" % (numpy.var(dof_tiles))
                 if make_plot:
                     plot_spectrogram(dof_tiles.T,dt,df,ts_data.sample_rate,start_time,end_time,
                                      fname='segments/%i-%i/tf_%02ichans_%02idof.png'%(start_time,end_time,nc_sum,2*j))
                 threshold = scipy.stats.chi2.isf(tile_fap, j)
-                print "\t\t|- Threshold for this level: %f" % threshold
+                if verbose: print "\t\t|- Threshold for this level: %f" % threshold
                 spant, spanf = dof_tiles.shape[1] * dt, dof_tiles.shape[0] * df
-                print "\t\t|- Processing %.2fx%.2f time-frequency map." % (spant, spanf)
+                if verbose: print "\t\t|- Processing %.2fx%.2f time-frequency map." % (spant, spanf)
                 # Since we clip the data, the start time needs to be adjusted accordingly
                 window_offset_epoch = fs_data.epoch + psd_segment_length * window_fraction / 2
                 window_offset_epoch = LIGOTimeGPS(float(window_offset_epoch))
@@ -359,11 +357,11 @@ def excess_power(ts_data,                      # Time series from magnetic field
                                                        len(lal_filters[0].data.data), event.chisq_dof)
                     except ValueError:
                         event.amplitude = 0
-                print "\t\t|- Total number of events: %d" % len(event_list)
+                if verbose: print "\t\t|- Total number of events: %d" % len(event_list)
         t_idx_min += int(seg_len * (1 - window_fraction))
         t_idx_max += int(seg_len * (1 - window_fraction))
     setname="MagneticFields"
-    __program__ = 'pyburst_excesspower'
+    __program__ = 'pyburst_excesspower_gnome'
     start_time = LIGOTimeGPS(int(ts_data.start_time))
     end_time = LIGOTimeGPS(int(ts_data.end_time))
     inseg = segment(start_time,end_time)
@@ -393,7 +391,6 @@ def excess_power(ts_data,                      # Time series from magnetic field
     dur = end_rnd - st_rnd    
     fname = "%s-excesspower-%d-%d.xml.gz" % (ifostr, st_rnd, dur)
     utils.write_filename(xmldoc, fname, gz=fname.endswith("gz"))
-    plot_triggers(filename=fname)
 
 def measure_hrss(z_j_b, uw_ss_ii, uw_ss_ij, w_ss_ij, delta_f, delta_t, filter_len, dof):
     """

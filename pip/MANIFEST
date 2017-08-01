@@ -3,8 +3,10 @@ setup.py
 gdas/__init__.py
 gdas/coincidence.py
 gdas/epower.py
+gdas/generator.py
 gdas/plots.py
 gdas/retrieve.py
 gdas/utils.py
+scripts/fake_trigger_generator
 scripts/gdas_real
 scripts/gdas_sim

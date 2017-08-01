@@ -1,0 +1,68 @@
+#!/usr/bin/env python
+
+__program__ = 'pyburst_excesspower_gnome'
+
+from optparse import OptionParser
+
+parser = OptionParser(version = "Name: %prog\n",
+                      usage = "%prog [options]",
+                      description = "Perform excess power search analysis on either real or simulated data.")
+
+parser.add_option("--band",default=None, help="Bandwidth of the finest filters. Default is None, and would be inferred from the data bandwidth and number of channels.")
+parser.add_option("--channel-name",default='channel-name',help="Channel name")
+parser.add_option("--end-time",default=None,help="End time in format YYYY-M-D-H-M")
+parser.add_option("--fmin",default=0,help="Lowest frequency of the filter bank, default is 0 Hz.")
+parser.add_option("--fmax",default=None,help="Highest frequency of the filter bank, default is None, meaning use Nyquist.")
+parser.add_option("--impulse",default=False,action="store_true",help="Do impulse response test")
+parser.add_option("--make-plot",default=True,action="store_true",help="Produce plots")
+parser.add_option("--max-duration",default=None, help="Longest duration tile to compute.")
+parser.add_option("--nchans",metavar=256,default=256,help="Number of frequency channels to use.")
+parser.add_option("--nsegs",default=10,help="Number of segments to be created.")
+parser.add_option("--psd-estimation",metavar="median-mean",default='median-mean',help="Average method")
+parser.add_option("--psd-segment-length",metavar=60,default=60,help="Length of each segment in seconds")
+parser.add_option("--psd-segment-stride",metavar=30,default=30,help="Separation between 2 consecutive segments in seconds")
+parser.add_option("--rep",default="/GNOMEDrive/gnome/serverdata/",help="Custom path where data are stored")
+parser.add_option("--resample",default=None,help="New sampling rate for real data resampling")
+parser.add_option("--sim",default=False,action="store_true",help="Use artificial data")
+parser.add_option("--sample-rate",default=512,help="Sampling rate")
+parser.add_option("--station",default='station-name',help="Station name")
+parser.add_option("--start-time",default=None,help="Start time in format YYYY-M-D-H-M")
+parser.add_option("--tile-fap",default=1e-7,help="Tile false alarm probability threshold in Gaussian noise.")
+parser.add_option("-v","--verbose",action="store_true",help="Be verbose")
+parser.add_option("--window-fraction",default=0,help="Withening window fraction")
+parser.add_option("--wtype",default='tukey',help="Whitening type, can tukey or hann")
+options, filenames = parser.parse_args()
+
+import gdas
+
+if options.sim:
+    ts_data = gdas.fake_data(sample_rate=options.sample_rate,
+                             psd_segment_length=options.psd_segment_length,
+                             nsegs=options.nsegs)
+elif options.impulse:
+    ts_data = gdas.impulse_data(sample_rate=options.sample_rate,
+                             psd_segment_length=options.psd_segment_length)
+else:
+    ts_data = gdas.get_data(options.station,
+                            options.start_time,
+                            options.end_time,
+                            options.rep,
+                            options.resample)[0]
+
+gdas.excess_power(ts_data,
+                  band=options.band,
+                  channel_name=options.channel_name,
+                  fmin=options.fmin,
+                  fmax=options.fmax,
+                  impulse=options.impulse,
+                  make_plot=options.make_plot,
+                  max_duration=options.max_duration,
+                  nchans=options.nchans,
+                  psd_estimation=options.psd_estimation,
+                  psd_segment_length=options.psd_segment_length,
+                  psd_segment_stride=options.psd_segment_stride,
+                  station=options.station,
+                  tile_fap=options.tile_fap,
+                  verbose=options.verbose,
+                  window_fraction=options.window_fraction,
+                  wtype=options.wtype)
