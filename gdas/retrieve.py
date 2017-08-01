@@ -103,7 +103,7 @@ def get_data(station,starttime,endtime,rep='/GNOMEDrive/gnome/serverdata/',resam
     # Retrieve channel data for all the segments
     full_data = numpy.hstack([retrieve_channel_data(data_order[seg],setname)
                               for seg in seglist])
-    new_sample_rate = sample_rate if resample==None else resample
+    new_sample_rate = float(sample_rate) if resample==None else float(resample)
     new_data_length = len(full_data)*new_sample_rate/float(sample_rate)
     full_data = scipy.signal.resample(full_data,int(new_data_length))
     # Models a time series consisting of uniformly sampled scalar values

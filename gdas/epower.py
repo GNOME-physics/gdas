@@ -289,7 +289,6 @@ def excess_power(ts_data,                      # Time series from magnetic field
                 if verbose: print "\t\t|- Explore signal duration of %f s..." % duration
                 # Construct filter
                 sum_filter = numpy.array([1,0] * (j-1) + [1])
-                if verbose: print sample_rate,dt,df,us_rate,j
                 # Calculate length of filtered time series
                 tlen = tiles.shape[1] - sum_filter.shape[0] + 1
                 # Initialise filtered time series array
