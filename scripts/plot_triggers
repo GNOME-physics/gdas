@@ -1,0 +1,3 @@
+#!/usr/bin/env python
+import gdas,sys
+gdas.plot_triggers(sys.argv[1],fname=sys.argv[2])

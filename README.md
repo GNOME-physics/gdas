@@ -6,7 +6,6 @@
 ## Installation & Documentation
 
 The program is available through [pip](https://pypi.python.org/pypi/pip).
-A full description of the software is provided at the following link:
 
  https://gnome-physics.github.io/gdas
 

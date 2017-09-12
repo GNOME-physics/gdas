@@ -1,22 +1,20 @@
 #!/usr/bin/env python
 import gdas
-station    = 'fribourg01'
-start_time = '2016-11-03-17'
-end_time   = '2016-11-03-18'
-datapath   = '/Users/vincent/ASTRO/data/GNOMEDrive/gnome/serverdata/'
-ts_data,ts_list,activity,start_time,end_time = gdas.get_data(station,start_time,end_time,rep=datapath,resample=512)
-path = '%s_%s/%s'%(start_time,end_time,station)
-os.system('mkdir -p %s'%path)
-os.chdir(path)
-gdas.plot_activity(activity)
-gdas.plot_time_series(station,ts_list,start_time,end_time,seglist=activity)
+station = 'fribourg01'
+t0 = '2016-11-03-17'
+t1 = '2016-11-03-18'
+datapath = '/Users/vincent/ASTRO/data/GNOME/GNOMEDrive/gnome/serverdata/'
+ts_data,ts_list,activity = gdas.get_data(station,t0,t1,rep=datapath,resample=512)
 gdas.plot_asd(station,ts_list)
-gdas.plot_whitening(station,ts_list,start_time,end_time,activity)
-psd_segment_length = 64
-psd_segment_stride = 32
-psd_estimation     = 'median-mean'
-window_fraction    = 0
-tile_fap           = 1e-5
-channels           = 256
-gdas.excess_power(ts_data,psd_segment_length,psd_segment_stride,psd_estimation,window_fraction,tile_fap,station,nchans=channels)
-gdas.plot_triggers()
+gdas.plot_activity(activity)
+gdas.plot_time_series(station,ts_list,t0=t0,t1=t1,seglist=activity)
+gdas.plot_whitening(station,ts_list,t0=t0,t1=t1,seglist=activity)
+#psd_segment_length = 64
+#psd_segment_stride = 32
+#psd_estimation     = 'median-mean'
+#window_fraction    = 0
+#tile_fap           = 1e-5
+#channels           = 256
+#gdas.excess_power(ts_data,psd_segment_length,psd_segment_stride,psd_estimation,window_fraction,tile_fap,station,nchans=channels)
+#gdas.plot_triggers()
+#

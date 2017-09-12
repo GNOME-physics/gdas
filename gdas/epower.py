@@ -5,12 +5,11 @@ from glue.ligolw                      import lsctables,ligolw,utils
 from glue.ligolw.utils.search_summary import append_search_summary
 from glue.ligolw.utils.process        import register_to_xmldoc
 from glue.segments                    import segment
-from gwpy.spectrum                    import Spectrum
+from gwpy.frequencyseries             import FrequencySeries
 from gwpy.timeseries                  import TimeSeries
 from plots                            import *
 from pycbc                            import psd,types,filter
 from scipy.signal                     import fftconvolve
-from utils                            import *
 
 def excess_power(ts_data,                      # Time series from magnetic field data 
                  band=None,                    # Channel bandwidth
@@ -140,7 +139,9 @@ def excess_power(ts_data,                      # Time series from magnetic field
         # Append entire filter structure
         lal_filters.append(lal_filter)
         # Append filter's spectrum
-        fdb.append(Spectrum.from_lal(lal_filter))
+        fdb.append(FrequencySeries.from_lal(lal_filter))
+        #print fdb[0].frequencies
+        #print fdb[0]
     if make_plot:
         # Plot filter bank
         plot_bank(fdb)
@@ -159,6 +160,7 @@ def excess_power(ts_data,                      # Time series from magnetic field
             tdb.append(tdt)
         # Plot time series filter
         plot_filters(tdb,fmin,band)
+    quit()
     # Computer whitened inner products of input filters with themselves
     white_filter_ip = numpy.array([lalburst.ExcessPowerFilterInnerProduct(f, f, spec_corr, None) for f in lal_filters])
     # Computer unwhitened inner products of input filters with themselves
@@ -195,8 +197,7 @@ def excess_power(ts_data,                      # Time series from magnetic field
         tmp_ts_data = types.TimeSeries(ts_data[t_idx_min:t_idx_max]*window.data.data,
                                        delta_t=1./ts_data.sample_rate,epoch=start_time)
         # Save time series in relevant repository
-        segfolder = 'segments/%i-%i'%(start_time,end_time)
-        os.system('mkdir -p '+segfolder)
+        os.system('mkdir -p segments/%i-%i'%(start_time,end_time))
         if make_plot:
             # Plot time series
             plot_ts(tmp_ts_data,fname='segments/time-series/%i-%i.png'%(start_time,end_time))
@@ -237,8 +238,15 @@ def excess_power(ts_data,                      # Time series from magnetic field
             tf_map[i,:] = filtered_series[0].numpy()
         if make_plot:
             # Plot spectrogram
-            plot_spectrogram(numpy.abs(tf_map).T,tmp_ts_data.delta_t,band,ts_data.sample_rate,start_time,
-                             end_time,fname='segments/time-frequency/%i-%i.png'%(start_time,end_time))
+            plot_spectrogram(numpy.abs(tf_map).T,dt=tmp_ts_data.delta_t,df=band,
+                             ymax=ts_data.sample_rate/2.,t0=start_time,t1=end_time,
+                             fname='segments/time-frequency/%i-%i.png'%(start_time,end_time))
+            plot_tiles_ts(numpy.abs(tf_map),2,1,sample_rate=ts_data.sample_rate,t0=start_time,t1=end_time,
+                          fname='segments/%i-%i/ts.png'%(start_time,end_time))
+            plot_tiles_tf(numpy.abs(tf_map),2,1,ymax=ts_data.sample_rate/2,
+                          sample_rate=ts_data.sample_rate,t0=start_time,t1=end_time,
+                          fname='segments/%i-%i/tf.png'%(start_time,end_time))
+            quit()
         # Loop through powers of 2 up to number of channels
         for nc_sum in range(0, int(math.log(nchans, 2)))[::-1]:
             # Calculate total number of summed channels
@@ -300,8 +308,13 @@ def excess_power(ts_data,                      # Time series from magnetic field
                 if verbose: print "\t\t|- Summed tile energy mean: %f" % (numpy.mean(dof_tiles))
                 if verbose: print "\t\t|- Variance tile energy: %f" % (numpy.var(dof_tiles))
                 if make_plot:
-                    plot_spectrogram(dof_tiles.T,dt,df,ts_data.sample_rate,start_time,end_time,
-                                     fname='segments/%i-%i/tf_%02ichans_%02idof.png'%(start_time,end_time,nc_sum,2*j))
+                    plot_spectrogram(dof_tiles.T,dt,df,ymax=ts_data.sample_rate/2,t0=start_time,t1=end_time,
+                                     fname='segments/%i-%i/%02ichans_%02idof.png'%(start_time,end_time,nc_sum,2*j))
+                    plot_tiles_ts(dof_tiles,2*j,df,sample_rate=ts_data.sample_rate/us_rate,t0=start_time,t1=end_time,
+                                  fname='segments/%i-%i/%02ichans_%02idof_ts.png'%(start_time,end_time,nc_sum,2*j))
+                    plot_tiles_tf(dof_tiles,2*j,df,ymax=ts_data.sample_rate/2,
+                                  sample_rate=ts_data.sample_rate/us_rate,t0=start_time,t1=end_time,
+                                  fname='segments/%i-%i/%02ichans_%02idof_tf.png'%(start_time,end_time,nc_sum,2*j))
                 threshold = scipy.stats.chi2.isf(tile_fap, j)
                 if verbose: print "\t\t|- Threshold for this level: %f" % threshold
                 spant, spanf = dof_tiles.shape[1] * dt, dof_tiles.shape[0] * df
@@ -390,6 +403,7 @@ def excess_power(ts_data,                      # Time series from magnetic field
     dur = end_rnd - st_rnd    
     fname = "%s-excesspower-%d-%d.xml.gz" % (ifostr, st_rnd, dur)
     utils.write_filename(xmldoc, fname, gz=fname.endswith("gz"))
+    plot_triggers(fname)
 
 def measure_hrss(z_j_b, uw_ss_ii, uw_ss_ij, w_ss_ij, delta_f, delta_t, filter_len, dof):
     """

@@ -1,16 +1,17 @@
 import matplotlib,numpy
 matplotlib.use('Agg')
-from astropy.units        import Quantity
-from matplotlib           import pyplot
-from gwpy.plotter         import SegmentPlot,TimeSeriesPlot
-from gwpy.plotter         import SpectrumPlot,SpectrogramPlot
-from gwpy.segments        import SegmentList
-from gwpy.spectrum        import Spectrum
-from gwpy.spectrogram     import Spectrogram
-from gwpy.table.lsctables import SnglBurstTable
-from gwpy.timeseries      import TimeSeries
-from pylab                import *
-from scipy                import signal
+from .retrieve             import time_convert
+from astropy.units         import Quantity
+from matplotlib            import pyplot
+from gwpy.table            import EventTable
+from gwpy.plotter          import SegmentPlot,TimeSeriesPlot
+from gwpy.plotter          import FrequencySeriesPlot,SpectrogramPlot
+from gwpy.segments         import SegmentList
+from gwpy.frequencyseries  import FrequencySeries
+from gwpy.spectrogram      import Spectrogram
+from gwpy.timeseries       import TimeSeries
+from pylab                 import *
+from scipy                 import signal
 
 def plot_activity(full_seglist):
     """
@@ -30,55 +31,24 @@ def plot_activity(full_seglist):
     # Save figure
     pyplot.savefig("activity.png",dpi=300)
 
-def plot_time_series(station,ts_list,start_time,end_time,
-                     seglist=None,hp=None):
-    """
-    Generate a plot of the whole data time series
-    """
-    plot = TimeSeriesPlot()
-    ax = plot.gca()
-    # Loop over all the time series
-    for ts in ts_list:
-        # Plot time series for each segment
-        ax.plot(ts, color='black')
-    # Display title
-    ax.set_title('$\mathrm{'+station+'}$')
-    # Plot fake signal
-    if hp!=None:
-        ax.plot(hp, color='red')
-    # Plot activity segments
-    if seglist!=None:
-        plot.add_state_segments(SegmentList(seglist[station].active),
-                                plotargs={'label':'data present',
-                                          'facecolor': 'g',
-                                          'edgecolor': 'k'})
-    # Set limits
-    plot.axes[0].set_epoch(start_time)
-    plot.axes[1].set_epoch(start_time)
-    ax.set_xlim(start_time,end_time)
-    # Fix exceeded cell block limit error
-    matplotlib.pyplot.rcParams['agg.path.chunksize'] = 20000
-    # Save figure
-    plot.savefig('time_series.png',dpi=300)
-    
-def plot_asd(station,ts_list):
+def plot_asd(station,data):
     """
     Plot Amplitude Spectral Density. AGG complexity starts to complain
     with large numbers of points. And we somehow invoke precision issues
     that need to be ameliorated.
     """
     if station!='fake':
-        for d in ts_list:
+        for d in data:
             d.x0 = Quantity(int(d.x0.value * 500), d.xunit)
             d.dx = Quantity(1, d.xunit)
-        ts_list.coalesce()
-        for d in ts_list:
+        data.coalesce()
+        for d in data:
             d.x0 = Quantity(d.x0.value / 500, d.xunit)
             d.dx = Quantity(0.002, d.xunit)
     # Initialize plotting functionality
-    plot = SpectrumPlot()
+    plot = FrequencySeriesPlot()
     # Loop over all the time series
-    for d in ts_list:
+    for d in data:
         # Generate 8 seconds per FFT with 4 second (50%) overlap
         spectrum = d.asd(8, 4)
         # Create plotting axis
@@ -108,24 +78,61 @@ def plot_asd(station,ts_list):
     # Save figure
     plot.savefig("asd.png",dpi=300)
     
-def plot_whitening(station,ts_list,start_time,end_time,seglist=None):
+def plot_time_series(data,station='station-name',t0=None,t1=None,seglist=None,burst=None,fname='time_series'):
+    """
+    Generate a plot of the whole data time series
+    """
+    if type(data[0])==float64:
+        data = [TimeSeries(data,sample_rate=data.sample_rate,epoch=data.start_time)]
+    plot = TimeSeriesPlot()
+    ax = plot.gca()
+    # Loop over all the time series
+    for ts in data:
+        # Plot time series for each segment
+        ax.plot(ts, color='black')
+    # Display title
+    ax.set_title('$\mathrm{'+station+'}$')
+    ax.set_ylabel('Magnetic Field')
+    # Plot fake signal
+    if burst is not None:
+        ax.plot(burst, color='red')
+    # Plot activity segments
+    if seglist!=None:
+        activity = SegmentList(seglist[station].active)
+        plotargs = {'label':'data present','facecolor':'g','edgecolor':'k'}
+        plot.add_state_segments(activity,plotargs=plotargs)
+    # Set limits
+    if t0 is not None and t1 is not None:
+        t0,t1 = time_convert(t0,t1)
+        plot.axes[0].set_epoch(t0)
+        plot.axes[1].set_epoch(t0)
+        ax.set_xlim(t0,t1)
+    # Fix exceeded cell block limit error
+    matplotlib.pyplot.rcParams['agg.path.chunksize'] = 20000
+    # Save figure
+    plot.savefig('%s.png'%fname)
+    
+def plot_whitening(data,station='station-name',t0=None,t1=None,stride=20,fftlength=6,overlap=3,seglist=None):
     """
     Generate a spectrogram plot and normalized spectrogram
     norm: \sqrt{S(f,t)} / \sqrt{\overbar{S(f)}}
     """
-    stride,fftlength,overlap = 20,6,3
+    if type(data[0])==float64:
+        data = [TimeSeries(data,sample_rate=data.sample_rate,epoch=data.start_time)]
+    # Setup plots
     plot = SpectrogramPlot()
     ax = plot.gca()
     white_plot = SpectrogramPlot()
     wax = white_plot.gca()
-    for ts in ts_list:
+    # Loop through available time series
+    for ts in data:
         if (len(ts) * ts.dt).value < stride:
             continue
-        spec = ts.spectrogram(stride, fftlength=fftlength, overlap=overlap)
-        ax.plot(spec, cmap='jet',norm=matplotlib.colors.LogNorm())
+        spec = ts.spectrogram(stride,fftlength=fftlength,overlap=overlap)
         wspec = spec.ratio('median')
-        wax.plot(wspec, vmin=0.1, vmax=100,cmap='jet',
-                 norm=matplotlib.colors.LogNorm())
+        ax.plot(spec, cmap='jet')
+        wax.plot(wspec, vmin=0.1, vmax=100,cmap='jet')
+    # Define y axis and title
     ax.set_title('$\mathrm{'+station+'}$')
     ax.set_ylim(0.1, ts.sample_rate.value/2.)
     ax.set_yscale('log')
@@ -134,31 +141,45 @@ def plot_whitening(station,ts_list,start_time,end_time,seglist=None):
     wax.set_yscale('log')
     plot.add_colorbar(label='Amplitude')
     white_plot.add_colorbar(label='Amplitude')
+    # Plot activity panels for real data
     if seglist!=None:
-        plot.add_state_segments(SegmentList(seglist[station].active),
-                                plotargs={'label':'data present',
-                                          'facecolor':'g',
-                                          'edgecolor':'k'})
-        white_plot.add_state_segments(SegmentList(seglist[station].active),
-                                      plotargs={'label':'data present',
-                                                'facecolor':'g',
-                                                'edgecolor':'k'})
-    # Set limits
-    plot.axes[0].set_epoch(start_time)
-    plot.axes[2].set_epoch(start_time)
-    #plot.axes[1].set_epoch(start_time)
-    white_plot.axes[0].set_epoch(start_time)
-    white_plot.axes[2].set_epoch(start_time)
-    ax.set_xlim(start_time,end_time)
-    wax.set_xlim(start_time,end_time)
+        activity = SegmentList(seglist[station].active)
+        plotargs = {'label':'data present','facecolor':'g','edgecolor':'k'}
+        plot.add_state_segments(activity,plotargs=plotargs)
+        white_plot.add_state_segments(activity,plotargs=plotargs)
+    # Set plotting limits of x axis if edges defined
+    if t0!=None and t1!=None:
+        t0,t1 = time_convert(t0,t1)
+        plot.axes[0].set_epoch(t0)
+        plot.axes[2].set_epoch(t0)
+        white_plot.axes[0].set_epoch(t0)
+        white_plot.axes[2].set_epoch(t0)
+        ax.set_xlim(t0,t1)
+        wax.set_xlim(t0,t1)
     # Save figures
     plot.savefig("spectrogram.png",dpi=300)
     white_plot.savefig("whitened.png",dpi=300)
 
+def plot_triggers(filename='excesspower.xml.gz',fname='triggers.png'):
+    events = EventTable.read(filename,format='ligolw.sngl_burst')
+    #plot = events.plot('time','central_freq','duration','bandwidth',color='snr')
+    time = events['peak_time'] + events['peak_time_ns'] * 1e-9
+    events.add_column(events['peak_time'] + events['peak_time_ns'] * 1e-9, name='time')
+    plot = events.plot('time','central_freq',color='snr',edgecolor='none')
+    plot.axes[0].set_epoch(int(min(time)))
+    plot.set_xlim((int(min(time)),round(max(time))))
+    plot.set_ylabel('Frequency [Hz]')
+    plot.set_yscale('log')
+    #plot.set_title('GNOME '+station+' station event triggers')
+    plot.add_colorbar(cmap='copper_r',label='Tile Energy')
+    pyplot.savefig(fname,dpi=300)
+
 def plot_bank(fdb):
     pyplot.figure()
-    for i, fdt in enumerate(fdb[:5]):
-        pyplot.plot(fdt.frequencies, fdt, 'k-')
+    for i, fdt in enumerate(fdb):
+        if i==2:
+            pyplot.plot(fdt.frequencies, fdt, 'k-')
+            break
     pyplot.grid()
     #xmin = fdb[0].frequencies[0].value
     #xmax = fdb[-1].frequencies[-1].value
@@ -169,9 +190,7 @@ def plot_bank(fdb):
 
 def plot_filters(tdb,fmin,band):
     pyplot.figure()
-    pyplot.subplots_adjust(left=0.2,right=0.95,
-                           bottom=0.15,top=0.95,
-                           hspace=0,wspace=0)
+    pyplot.subplots_adjust(left=0.2,right=0.95,bottom=0.15,top=0.95,hspace=0,wspace=1)
     for i, tdt in enumerate(tdb[:8:3]):
         ax = pyplot.subplot(3, 1, i+1)
         ax.plot(tdt.times.value - 2., numpy.real_if_close(tdt.value), 'k-')
@@ -180,7 +199,7 @@ def plot_filters(tdb,fmin,band):
         ax.set_ylabel("%d Hz" % c_f)
         ax.set_xlim(25.0, 31.0)
         ax.set_ylim([-max(tdt.value), max(tdt.value)])
-        if i!=2: pyplot.setp(ax.get_xticklabels(), visible=False)
+        #if i!=2: pyplot.setp(ax.get_xticklabels(), visible=False)
     pyplot.savefig('filters.png',dpi=300)
     pyplot.close()
     
@@ -193,85 +212,76 @@ def plot_ts(ts, fname="ts.png"):
     pyplot.close()
 
 def plot_spectrum(fd_psd):
-    plot = SpectrumPlot()
+    plot = FrequencySeriesPlot()
     ax = plot.gca()
-    ax.plot(Spectrum(fd_psd, df=fd_psd.delta_f))
-    #pyplot.ylim(1e-10, 1e-3)
+    ax.plot(FrequencySeries(fd_psd, df=fd_psd.delta_f))
+     #pyplot.ylim(1e-10, 1e-3)
     pyplot.xlim(0.1, 500)
     pyplot.loglog()
     pyplot.savefig("psd.png",dpi=300)
     pyplot.close()
 
-def plot_spectrogram(spec,dt,df,sample_rate,start_time,end_time,
-                     fname="specgram.png"):
+def plot_spectrogram(spec,dt,df,ymax,t0,t1,fname="specgram.png"):
     plot = SpectrogramPlot()
     ax = plot.gca()
-    ax.plot(Spectrogram(spec,dt=dt,df=df,epoch=start_time), cmap='viridis')
+    ax.plot(Spectrogram(spec,dt=dt,df=df,epoch=float(t0)),cmap='viridis')
     plot.add_colorbar(label='Amplitude')
-    pyplot.xlim(start_time,end_time)
-    pyplot.ylim(0,sample_rate/2.)
+    pyplot.xlim(t0,t1)
+    pyplot.ylim(0,ymax)
     pyplot.savefig(fname)#,dpi=300)
     pyplot.close()
 
-def plot_spectrogram_from_ts(ts):
+def plot_tiles_ts(tdb,ndof,df,sample_rate,t0,t1,fname="tiles.png"):
+    fig = TimeSeriesPlot(figsize=(12,12))
+    fig.suptitle('%i channels, %i Hz bandwidth, %i DOF'%(len(tdb),df,ndof))
+    plt.subplots_adjust(left=0.03, right=0.97, bottom=0.07, top=0.95, hspace=0, wspace=0)
+    for i, tdf in enumerate(tdb):
+        ts_data = TimeSeries(tdf,epoch=float(t0),sample_rate=sample_rate)
+        ax = fig.add_subplot(len(tdb),1,len(tdb)-i)
+        ax.plot(ts_data)
+        ax.set_xlim(t0,t1)
+        if i>0:
+            ax.get_xaxis().set_visible(False)
+        ax.get_yaxis().set_visible(False)
+    pyplot.savefig(fname)
+    pyplot.close()
+
+def plot_tiles_tf(tdb,ndof,df,ymax,sample_rate,t0,t1,fname="tiles.png"):
+    for i, tdf in enumerate(tdb):
+        ts_data = TimeSeries(tdf,epoch=float(t0),sample_rate=sample_rate)
+        f, t, Sxx = signal.spectrogram(tdf, sample_rate)
+        pyplot.figure(figsize=(12,8))
+        pyplot.subplots_adjust(left=0.1, right=0.97, bottom=0.07, top=0.95, hspace=0, wspace=0)
+        pyplot.pcolormesh(t, f, Sxx)
+        pyplot.ylabel('Frequency [Hz]')
+        pyplot.xlabel('Time [sec]')
+        pyplot.ylim(0,ymax)
+        pyplot.show()
+        pyplot.savefig(fname.replace('.png','_%03i.png'%i))
+        pyplot.close()
+    quit()
+
+def plot_spectrogram_from_ts(ts,fname='specgram.png'):
     plot = SpectrogramPlot()
     ax = plot.gca()
     ax.plot(Spectrogram(spec))
     #pyplot.ylim(1e-9, 1e-2)
     #pyplot.xlim(0.1, 500)
     #pyplot.loglog()
-    pyplot.savefig("specgram.png",dpi=300)
+    pyplot.savefig(fname)
     pyplot.close()
 
-def plot_triggers(filename='excesspower.xml.gz'):
-    events = SnglBurstTable.read(filename)
-    #plot = events.plot('time', 'central_freq', "duration", "bandwidth", color='snr')
-    plot = events.plot('time','central_freq',color='snr',edgecolor='none')
-    #plot.set_xlim(time_start,time_end)
-    #plot.set_ylim(band, sample_rate/2.)
-    plot.set_ylabel('Frequency [Hz]')
-    plot.set_yscale('log')
-    #plot.set_title('GNOME '+station+' station event triggers')
-    plot.add_colorbar(cmap='copper_r',label='Tile Energy')
-    pyplot.savefig("triggers.png",dpi=300)
-
-def plot_tiles():    
-    bins = numpy.linspace(0, 40, 100)
-    cnt = numpy.zeros(bins.shape[0]-1)
-    for i, tdf in enumerate(tdb[:nchans]):
-        us_rate = int(1.0 / (2 * band*nc_sum * ts_data.dt.value))
-        pyplot.figure(0, figsize=(10, 10))
-        pyplot.subplot(nchans, 1, i+1)
-        white = tmp_ts_data.whiten(64,32,
-                                   asd=numpy.sqrt(cdata_psd_tmp),
-                                   window='boxcar') * sample_rate/4
-        snr_1dof = numpy.convolve(tdf, white, "valid")
-        # Undersample the data
-        snr_1dof = snr_1dof[::us_rate]**2
-        # Sum semi-adjacent samples to get 2 DOF tiles
-        snr_2dof = numpy.convolve(snr_1dof, numpy.array([1, 0, 1, 0]))
-        t = TimeSeries(snr_2dof,epoch=white.epoch,
-                       sample_rate=int(1.0/(us_rate * tmp_ts_data.dt.value)))
-        pyplot.plot(t.times + len(tdf)/2 * tdf.dt, snr_2dof, 'k-')
-        pyplot.axvline(random_time)
-        tmp, _ = numpy.histogram(snr_2dof, bins=bins)
-        cnt += tmp
-    plot_spectrogram(dof_tiles.T,
-                     fname='%s/tf_%ichans_%02idof.png'%(segfolder,
-                                                        nc_sum+1,
-                                                        2*j))
-    plot.savefig("%s/bands.png"%(segfolder),dpi=300)
-
-def wavelet(ts_data):
+def wavelet(ts_data,fname='wavelet.png'):
     import mlpy
+    sample_rate = int(ts_data.sample_rate.value)
     z = numpy.array([float(i) for i in ts_data])
-    t = numpy.array([float(i) for i in ts_data.sample_times])
+    t = numpy.array([float(i) for i in ts_data.times.value])
     # Decimate magnetic field data to 1 sample/second
-    rate = [5,10,10] if ts_data.sample_rate==500 else [8,8,8]
+    rate = [5,10,10] if sample_rate==500 else [8,8,8]
     for i in rate:
         z = signal.decimate(z,i,zero_phase=True)
     # Extract time every 500 sample
-    t = [t[n*ts_data.sample_rate] for n in range(len(t)/ts_data.sample_rate)]
+    t = [t[n*sample_rate] for n in range(int(len(t)/sample_rate))]
     # Convert every timing points to scale (hr,min,sec) units
     s = 60.
     t = [(t[i]-t[0])/s for i in range(len(t))]
@@ -310,4 +320,4 @@ def wavelet(ts_data):
     ax2.set_xlabel('Time [mins]')
     ax2.set_ylabel('Frequency [mHz]',labelpad=50)
     fig.colorbar(img, cax=ax3)
-    plt.savefig('wavelet.png',dpi=300)
+    plt.savefig(fname,dpi=300)
