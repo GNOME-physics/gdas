@@ -3,11 +3,9 @@
 [![License MIT](https://img.shields.io/badge/License-MIT-blue.svg)](http://opensource.org/licenses/MIT)
 [![PyPI version](https://badge.fury.io/py/gdas.svg)](https://badge.fury.io/py/gdas)
 
-## Installation & Documentation
+## Installation
 
 The program is available through [pip](https://pypi.python.org/pypi/pip).
-
- https://gnome-physics.github.io/gdas
 
 ## License
 
